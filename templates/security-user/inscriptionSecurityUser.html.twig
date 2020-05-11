@@ -1,0 +1,17 @@
+{% extends 'security-user/base.html.twig' %}
+
+
+{% block body %}
+    {{ form_start(form, {'attr' : {'class': 'form-signin' }}) }}
+
+        <h1 class="h3 mb-3 font-weight-normal text-center">Lucas Robin : Portfolio</h1>
+
+        {{ form_row(form.username, {'label' : 'Nom d\'utilisateur' ,'attr' : {'class': 'form-control', 'placeholder' : 'Choisir un nom d\'utilisateur', 'id' : 'inputUser'}}) }}
+
+        {{ form_row(form.password, {'label' : 'Mot de passe', 'attr' : {'class': 'form-control', 'placeholder' : 'Choisir un mot de passe', 'id' : 'inputPassword'}}) }}
+
+        {{ form_row(form.confirm_password, {'label' : 'Confirmation', 'attr' : {'class': 'form-control', 'placeholder' : 'Confirmation du mot de passe', 'id' : 'inputConfirm'}}) }}
+
+        <button class="btn btn-lg btn-primary btn-block mt-2" type="submit">Je m'inscris !</button>
+    {{ form_end(form) }}
+{% endblock %}

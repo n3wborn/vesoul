@@ -1,0 +1,73 @@
+#panier{
+    h1{
+        color: $color-text-dark;
+        font-weight: bold;
+        font-size: 2em;
+    }
+    .legend{
+        background-color: $color-header;
+        color: $color-text-light;
+        h3{
+            font-size: 1em;
+        }
+        .livre{
+            width: 400px;
+        }
+        .prix{
+            width: 80px;
+        }
+        .qty{
+            width: 80px;
+        }
+        .total{
+            width: 60px;
+        }
+    }
+    .article{
+        background-color: $color-bg-clear;
+        position: relative;
+        .livre{
+            width: 400px;
+            h4{
+                font-weight: bold;
+                font-size: 1.4em;
+            }
+            h5{
+                font-size: 1em;
+            }
+        }
+        .total{
+            font-weight: bold;
+        }
+        .delete-article{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+        }
+        .btn-quantity{
+            // width: 30px;
+            // height: 30px;
+            font-weight: bold;
+            // font-size: 1.5em;
+            // line-height: 30px;
+        }
+    }
+    #total{
+        background-color: $color-bg-clear;
+        height: 400px;
+        .titre{
+            font-weight: bold;
+            font-size: 1.4em;
+            color: $color-main;
+        }
+        .infos{
+            font-weight: bold;
+        }
+        .total{
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+    }
+}

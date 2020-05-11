@@ -1,0 +1,236 @@
+{% extends "dashboard-admin/base.html.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{# {% block stylesheets %}{% endblock %} #}
+
+{% block body %}
+
+<div class="titre d-flex justify-content-between align-items-center">
+    <p class="p-3 m-0">Gestion des livres</p>
+    <input type="text" placeholder="Rechercher un titre">
+    <button type="button" class="ajouter p-2 mr-2" title="Ajouter" data-toggle="modal" data-target="#lightboxAdd">
+        <i class="p-1 fas fa-plus"></i> Ajouter un livre</button>
+
+</div>
+<div class="listBook">
+    <div class="nom-colonne w-100 m-0 row pt-2 d-flex justify-content-around align-items-center">
+        <p class="text-center m-0 py-3 col-2">En stock</p>
+        <p class="text-center m-0 py-3 col-3">Titre</p>
+        <p class="text-center m-0 py-3 col-3">Code ISBN</p>
+        <p class="text-center m-0 py-3 col-2">Prix</p>
+        <p class="text-center m-0 py-3 col-2">Options</p>
+    </div>
+    <section class="livres">
+        {% for book in books %}
+
+        <div class="livre row m-0 d-flex justify-content-between">
+            <p class="m-0 col-2">{{ book.stock }}</p>
+            <p class="m-0 col-3">{{ book.title }}</p>
+            <p class="m-0 col-3">{{ book.isbn }}</p>
+            <p class="m-0 col-2">{{ book.price }} €</p>
+            <div class="options col-2 d-flex justify-content-around">
+                {# bouton voir les détails #}
+                <button type="button" class="details btn btn-primary" data-toggle="modal" data-target="#lightboxDetails">
+                    <i title="Voir les détails" class="fas fa-eye"></i>
+                </button>
+                {# bouton modifier les détails #}
+                <button type="button" class="modifier" data-toggle="modal" data-target="#lightboxEdit">
+                    <i title="Modifier" class="fas fa-pen"></i>
+                </button>
+                {# supprimer le livre #}
+                <button type="button" class="effacer" data-toggle="modal" data-target="#lightboxDelete">
+                    <i title="Effacer" class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        {% endfor %}
+    </section>
+</div>
+
+{# lightbox détails livre #}
+
+<div class="modal fade" id="lightboxDetails" tabindex="-1" role="dialog" aria-labelledby="lightboxDetails" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">TITRE DU LIVRE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                    <p class="pt-4 m-0"><strong>Code ISBN : </strong>CODE ISBN</p>
+                    <p class="pt-4 m-0"><strong>Auteur : </strong>PRENOM NOM</p>
+                    <p class="pt-4 m-0"><strong>Prix : </strong>PRIX €</p>
+                    <p class="pt-4 m-0"><strong>Catégories : </strong>CATEGORIES</p>
+                    <p class="pt-4 m-0"><strong>Description : </strong>DESCRIPTION</p>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex flex-column justify-content-center align-items-center">
+                    <div class="slider-for">
+                        {# {% for image in book.images %} #}
+                        <div class="">
+                            <img class="" src="/build/images/livre1.jpg" alt="">
+                        </div>
+                        <div class="">
+                            <img class="" src="/build/images/livre2.jpg" alt="">
+                        </div>
+                        <div class="">
+                            <img class="" src="/build/images/livre3.jpg" alt="">
+                        </div>
+                        {# {% endfor %} #}
+
+                    </div>
+                    <div class="slider-nav pt-5">
+                        {# {% for image in book.images %} #}
+                        <div class="elem">
+                            <img class="" src="/build/images/livre1.jpg" alt="">
+                        </div>
+                        <div class="elem">
+                            <img class="" src="/build/images/livre2.jpg" alt="">
+                        </div>
+                        <div class="elem">
+                            <img class="" src="/build/images/livre3.jpg" alt="">
+                        </div>
+                        {# {% endfor %} #}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# lightbox modifier un livre #}
+
+<div class="modal fade" id="lightboxEdit" tabindex="-1" role="dialog" aria-labelledby="lightboxEdit" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Modifier TITRE DU LIVRE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                {# {{ form_start(form) }} #}
+
+                {# <strong class="py-1 m-0 col-4">{{ form_label(form.title, 'Titre') }}</strong>
+                {{ form_widget(form.title, {'value': '{{ book.title }}', 'attr': {'class': 'my-1 col-8'}} ) }}
+
+                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
+                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }}
+
+                <strong class="py-1 m-0 col-4">{{ form_label(form.price, 'Prix en euro €') }}</strong>
+                {{ form_widget(form.price, {'value': '{{ book.price }}', 'attr': {'class': 'my-1 col-8'}} ) }}
+
+                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
+                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }}
+
+                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
+                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }}
+
+                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
+                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }} #}
+                {# <label class="py-1 m-0 col-4" for="prix"><strong>{{ form_label(form.price) }}</strong></label>
+                <input class="my-1 col-7" name="prix" type="text" value="{{ book.price }}">
+                <label class="py-1 m-0 col-4" for="cat"><strong>Catégories : </strong></label>
+                <input class="my-1 col-7" name="cat" type="text" value="{% for categorie in book.categories %}{{ categorie.name }} {% endfor %}">
+                <label class="py-1 m-0 col-4" for="desc"><strong>{{ form_label(form.description) }}</strong></label>
+                <input class="my-1 col-7" name="desc" type="text" value="{{ book.description }}"> #}
+                <div class="images d-flex flex-wrap">
+                    <fieldset>
+                        <label class="addImg mt-1 ml-1 d-flex justify-content-center align-items-center" for="img"><i
+                                class="p-1 fas fa-plus"></i></label>
+                        <input class="" name="img" id="img" type="file">
+                    </fieldset>
+                    {# {% for image in book.images %} #}
+                    <div class="elem">
+                        <img class="mt-1 ml-1" src="/build/images/livre1.jpg" width="100" height="170" alt="">
+                    </div>
+                    {# {% endfor %} #}
+                    {# {{ form_end(form) }} #}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="save btn btn-secondary" data-dismiss="modal">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# lightbox ajouter un livre #}
+
+<div class="modal fade" id="lightboxAdd" tabindex="-1" role="dialog" aria-labelledby="lightboxAdd" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter un livre</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <label class="py-1 m-0 col-4" for="title"><strong>Titre : </strong></label>
+                <input class="my-1 col-7" name="title" type="text">
+                <label class="py-1 m-0 col-4" for="isbn"><strong>Code ISBN : </strong></label>
+                <input class="my-1 col-7" name="isbn" type="text">
+                <label class="py-1 m-0 col-4" for="auteur"><strong>Auteur : </strong></label>
+                <input class="my-1 col-7" name="auteur" type="text">
+                <label class="py-1 m-0 col-4" for="prix"><strong>Prix : </strong></label>
+                <input class="my-1 col-7" name="prix" type="text">€
+                <label class="py-1 m-0 col-4" for="cat"><strong>Catégories : </strong></label>
+                <input class="my-1 col-7" name="cat" type="text">
+                <label class="py-1 m-0 col-4" for="desc"><strong>Description : </strong></label>
+                <input class="my-1 col-7" name="desc" type="text">
+                <p class="pl-3"><strong>Image(s) : </strong></p>
+                <div class="images d-flex flex-wrap">
+                    <fieldset>
+                        <label class="addImg mt-1 ml-1 d-flex justify-content-center align-items-center" for="img"><i
+                                class="p-1 fas fa-plus"></i></label>
+                        <input class="" name="img" id="img" type="file">
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# lightbox supprimer un livre #}
+
+<div class="modal fade" id="lightboxDelete" tabindex="-1" role="dialog" aria-labelledby="lightboxDelete" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Supprimer TITRE DU LIVRE ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <p class="w-100 pb-3 text-center">Voulez-vous vraiment effacer TITRE DU LIVRE ?</p>
+                <div class="deleteButtons w-100 d-flex justify-content-around">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        ANNULER
+                    </button>
+                    <button class="supprimer">
+                        SUPPRIMER
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{# {% block javascripts %}{% endblock %} #}

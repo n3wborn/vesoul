@@ -1,0 +1,81 @@
+
+.inscription-wrapper {
+
+    width: 100%;
+    min-height: 80vh;
+
+    div {
+
+        width: 90%;
+        
+        .inscription-part-left {
+
+            background-color: $color-main;
+        
+            h1 {
+                color: $color-text-light;
+                font-family: $font-main;
+                font-weight: bolder;
+            }
+        
+            p {
+                color: $color-text-light;
+                font-family: $font-main;
+            }
+
+            
+        }
+        
+        .inscription-part-right {
+
+            background-color: white;
+
+            h3 {
+                color: $color-main;
+                font-family: $font-secondary;
+                font-weight: bold;
+            }
+            
+            form {
+                
+                input {
+                    border-radius: 0px;
+                    border: solid lightgrey 2px;
+                }
+
+                input::placeholder {
+                    color: lightgrey;
+                }
+                
+                .register-gender { // Wrapper Homme/Femme
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .required { // Label Homme/Femme
+                        padding: 10px;     
+                        margin: 0;
+                    }
+                }
+
+                .wrapper-tel-birth > div, .wrapper-lastname-firstname > div  {
+                    width: 13.5rem;
+                }
+
+                .btn-inscription {
+                    border-radius: 2px;
+                    background-color: $color-main;
+                    color: white;
+                    font-family: $font-main;
+                    font-size: 15px;
+                }
+            }
+
+            
+
+        }
+
+    }
+       
+}
+

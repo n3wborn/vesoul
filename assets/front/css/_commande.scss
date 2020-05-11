@@ -1,0 +1,69 @@
+#commande {
+    .card {
+        background-color: $color-bg-clear;
+
+        h2 {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: $color-main;
+        }
+
+        h3 {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: $color-text-dark;
+        }
+
+        .fa-user {
+            color: $color-text-dark;
+        }
+
+        .fa-map-marker-alt {
+            color: $color-text-dark;
+        }
+
+        .fa-envelope {
+            color: $color-text-dark;
+        }
+
+        .fa-phone {
+            color: $color-text-dark;
+        }
+    }
+
+    .adresses {
+
+        .same-adress {
+            font-size: 0.8em;
+        }
+    }
+
+    .livraison {
+
+        .details {
+            font-size: 0.8em;
+            color: $color-text-dark;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        textarea {
+            height: 155px;
+        }
+    }
+
+    .recap {
+        
+        .items {
+            font-weight: bold;
+        }
+
+        .total {
+            font-size: 1.3em;
+            font-weight: bold
+        }
+
+    }
+}

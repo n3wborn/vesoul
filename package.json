@@ -1,0 +1,33 @@
+{
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.27.0",
+        "copy-webpack-plugin": "^5.0.0",
+        "node-sass": "^4.11.0",
+        "sass-loader": "^7.0.1",
+        "ts-loader": "^5.3.0",
+        "typescript": "^3.3.1",
+        "webpack-notifier": "^1.6.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "node_modules/@symfony/webpack-encore/bin/encore.js dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@babel/plugin-transform-async-to-generator": "^7.8.3",
+        "@babel/plugin-transform-runtime": "^7.8.3",
+        "@babel/runtime": "^7.8.4",
+        "air-datepicker": "^2.2.3",
+        "babel-plugin-syntax-async-functions": "^6.13.0",
+        "bootstrap": "^4.2.1",
+        "chart.js": "^2.7.3",
+        "jquery": "^3.3.1",
+        "materialize-css": "^1.0.0",
+        "mjml": "^4.4.0-beta.1",
+        "popper.js": "^1.14.7",
+        "slick-carousel": "^1.8.1"
+    }
+}

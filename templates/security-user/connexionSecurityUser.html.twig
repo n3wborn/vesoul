@@ -1,0 +1,48 @@
+{% extends 'vesoul-edition/base.html.twig' %}
+
+{% block title %}VesoulEdition - Connexion client{% endblock %}
+
+{% block content %}
+<div id="client-connexion" class="d-flex justify-content-center align-items-center">
+    <div class="frame row p-5">
+        <div class="left-panel col-6 d-flex flex-column justify-content-center align-items-center">
+            <h3 class="py-5">Nouveau sur notre site ?</h3>
+            <p class="py-2 text-center">Inscrivez-vous des maintenant
+                <br>pour poursuivre votre commande</p>
+            <a class="py-5" href="{{ path('security_user_registration') }}"><button class="btn btn-warning">Créer un compte</button></a>
+        </div>
+        <div class="right-panel col-6 d-flex flex-column justify-content-center align-items-center py-4">
+            <form action="{{ path('security_user_login') }}" method="post" class="form-signin">
+
+                {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <div class="wrapper-login d-flex flex-column justify-content-around align-items-center">
+
+                    <h2 class="m-3 text-center">Déjà client ?</h2>
+                    <h3 class="m-4 text-center">Connectez-vous</h3>
+                    <input type="text" id="inputName" class="form-control m-2" placeholder="Entrez votre mail"
+                        value="{{ last_username }}" name="_username" required autofocus>
+
+                    <input type="password" id="inputPassword" class="form-control m-2" placeholder="Entrez votre mot de passe"
+                        name="_password" required>
+                    <div class="d-flex align-items-center m-3 w-100">
+                        <input type="checkbox" id="remember-me" name="remember-me">
+                        <label for="remember-me" class="m-0 px-3">Se souvenir de moi</label>
+                    </div>
+                </div>
+                <button class="btn btn-lg btn-info btn-block my-2" type="submit">Connexion</button>
+                <div class="d-flex justify-content-center">
+                    <a href="#" class="py-3 my-3 text-center" id="recup-mdp">Mot de passe oublié ?</a>
+                </div>
+
+                {# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate')}}"> #}
+                {# <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to')}}"> #}
+        </div>
+
+        {# <p class="mt-5 mb-3 text-muted text-center">&copy; 2019-2020</p> #}
+
+        </form>
+    </div>
+</div>
+{% endblock %}

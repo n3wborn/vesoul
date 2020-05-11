@@ -1,0 +1,47 @@
+{% extends "vesoul-edition/base.html.twig" %}
+
+
+{% block content %}
+
+    <div id="product-page" class="pt-4 pb-4 d-flex">
+
+        <nav id="menu-compte" class="col-3">
+            <ul>
+                <a class="list" href="{{ path('dashboard_user_informations' )}}">
+                    <li>INFORMATIONS</li>
+                </a>
+                <a class="list active" href="{{ path('dashboard_user_addresses' )}}">
+                    <li>ADRESSES</li>
+                </a>
+                <a class="list" href="{{ path('dashboard_user_commands' )}}">
+                    <li>COMMANDES</li>
+                </a>
+            </ul>
+        </nav>
+        
+        <div id="infos-compte" class="col-9 d-flex justify-content-center">
+
+            <div class="wrapper-infos d-flex flex-column">
+
+                <div class="d-flex flex-column">
+                    <input type="text" placeholder="Prénom">
+                    <input type="text" placeholder="Nom">
+                    <input type="text" placeholder="Société">
+                    <input type="text" placeholder="Numéro de TVA">
+                    <input type="text" placeholder="Complément d'adresse">
+                    <input type="text" placeholder="Code postal">
+                    <input type="text" placeholder="Ville">
+                </div>
+                    <div class="d-flex align-items-end justify-content-end">
+                        <button class="mt-4">Enregistrer</button>
+                    </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

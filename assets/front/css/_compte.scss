@@ -1,0 +1,393 @@
+#compte-page {
+
+    display: flex;
+    height: 100%;
+    flex: 1;
+    
+    #menu-compte {
+        background-color: transparent;
+        color: $color-header;
+        padding: 0px;
+        min-height: 70vh;
+
+        // display: flex;
+        // flex: 1;
+
+        h2 {
+            background-color: white;
+            margin-bottom: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: $color-main;
+            padding: 15px 0 15px 0;
+        }
+
+        .active {
+            background-color: $color-main;
+            color: white;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 11px 0 5px 0;
+            margin-bottom: 0px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+        }
+
+        .list {
+            border-bottom: solid white 6px;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            padding-left: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .list:not(.active) {
+            background-color: rgba(0, 188, 212, 0.2);
+            color: $color-header;
+        }
+        
+        .list:hover {
+            background-color: $color-main;
+            text-decoration: none;
+            color: white;
+        }
+        
+        li {
+            display: flex;
+            align-items: center;
+            list-style: none;
+        }
+
+    }
+
+   
+
+}
+
+#infos-compte {
+
+    min-height: 70vh;
+
+    input:not(.check) {
+        border: none;
+        border: solid rgb(168, 168, 168) 1px;
+        border-radius: 0px;
+        background-color: transparent;
+        margin-top: 50px;
+        height: 40px;
+        padding-left: 10px;
+    }
+
+    input:focus {
+        outline: none;
+        border: solid black 1px;
+        transition: all 0.2s linear;
+    }
+
+    input[type="checkbox"] {
+        width: 17px;
+        height: 17px;
+      }
+
+    input:active {
+        outline: none;
+    }
+
+    button {
+        background-color: $color-main;
+        color: white;
+        width: 350px;
+        height: 60px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        font-size: 1.3em;
+    }
+
+    .infos-content {
+        width: 100%;
+        background-color: white;
+        padding: 50px 100px 50px 100px;
+    }
+
+    .wrapper-infos {
+        width: 100%;
+    }
+      
+
+}
+
+#adresses-compte {
+
+    .modal-head {
+        background-color: $color-main;
+        color: white;
+        height: 70px;
+        h5 {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    }
+
+    .modal-footer {
+        button:nth-child(1) {
+            background-color: $color-main;
+            color: white;
+            // height: 33px;
+
+        }
+        button:nth-child(2) {
+            // height: 33px;
+        }
+    }
+
+    padding-left: 15px;
+
+    .icon {
+        font-size: 1.3em;
+    }
+
+    .delete-address {
+        background-color: red;
+    }
+    
+    .edit-address {
+        background-color: $color-title;
+        color: white;
+    }
+
+    .wrapper-adresses {
+        width: 100%;
+        margin-left: 15px;
+
+        .list-adresses:first-child {
+            margin-top: 0px !important;
+        }
+        
+        h3 {
+            justify-self: stretch;
+            color: $color-main;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .list-adresse {
+            height: 200px;
+        }
+
+        .nouvelle-adresse {
+            background-color: rgba(0, 188, 212, 0.2)
+        }
+
+        .add-address {
+            color: $color-title;
+            background-color: white;
+        }
+
+        .add-address:hover {
+            background-color: rgb(221, 221, 221);
+        }
+
+        .new-card {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .fa-plus-circle {
+            background-color: white;
+        }
+
+        .button-add {
+            border-radius: 50%;
+            color: white;
+            background-color: $color-main;
+            padding: 10px;
+        }
+    }
+
+    .trash-address {
+        color: white;
+    }
+
+    span {
+        font-weight: bold;
+    }
+
+
+}
+
+#commandes-compte {
+
+
+    .col-2 {
+        display: flex;
+        justify-content: center;
+    }
+
+    .wrapper-commandes {
+        width: 100%;
+        background-color: white;
+        
+        .table-commandes:nth-child(odd) {
+            background-color: rgba(212, 212, 212, 0.6);
+        }
+    }
+
+    .commandes-header, .commandes-tableau {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .commandes-header {
+
+        background-color: $color-header; 
+        color: white;
+        font-size: 12px;        
+    }
+    
+    .commandes-tableau {
+        color: $color-text-dark;
+        font-size: 16px;
+    }
+
+    .commandes-tableau div:nth-child(1) {
+        color: $color-main;
+        font-weight: bold;
+    }
+
+    .commandes-tableau div:nth-child(3), .commandes-tableau div:nth-child(4), .commandes-tableau div:nth-child(5) {
+        font-weight: bold;
+    }
+
+    .commandes-tableau {
+        button {
+            background-color: $color-main;
+            color: white;
+        }
+    }
+
+    .modal-head {
+        background-color: $color-main;
+        color: white;
+        height: 70px;
+        h5 {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    }
+    
+    .subsection-cmd {
+        h3 {
+            color: $color-main;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        p {
+            margin-bottom: 0px;
+            font-size: 0.8em;
+        }
+    }
+
+    .modal-footer {
+        button {
+            font-size: 0.8em;
+        }
+
+        button:nth-child(2) {
+            background-color: #FF6666;
+            color: white;
+        }
+    }
+
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 800px;
+        }
+    }
+
+    .table-sm {
+        thead {
+            background-color: $color-header;
+            color: white;
+            text-align: center;
+            vertical-align: middle !important;
+        }
+
+        .th-title {
+            color: $color-main;
+        }
+
+        tr {
+            height: 50px;
+            font-size: 0.8em
+        }
+
+        tbody {
+            tr:nth-child(odd):not(.last) {
+                background-color: rgba(212, 212, 212, 0.6);
+            }
+            tr {
+                height: 30px;
+                text-align: center;
+            }
+        }
+
+        .last {
+            background-color: rgba(0, 188, 212, 0.2);
+            td {
+                border-top: 0px;
+            }
+        }
+
+        .last:nth-last-child(1) {
+            td:nth-child(3), td:nth-child(4) {
+                color: $color-main;
+                font-weight: bold;
+            }
+        }
+    }
+
+}
+
+.green {
+    color: green;
+}
+
+.orange {
+    color: rgb(196, 127, 0);
+}
+
+.title-wrapper {
+    background-color : #EDEDED;
+    width: 100%;
+}
+
+.title-compte {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    background-color: $color-main;
+    color: white;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 20px;
+    
+    h2 {
+        font-weight: bold;
+        margin-bottom: 0;
+        font-size: 1.4em;
+    }
+}
+
+

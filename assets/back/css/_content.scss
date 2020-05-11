@@ -1,0 +1,443 @@
+$color-ajouter: #84B103;
+$color-details: #65b2ff;
+$color-modifier: #1976d2;
+$color-supprimer: #D93A30;
+
+main {
+    position: absolute;
+    right: 0;
+    width: 85%;
+    min-height: 100vh;
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        width: 100%;
+    }
+
+    @media (min-width: 576px) and (max-width: 767.98px) {
+        width: 100%;
+    }
+
+    @media (max-width: 575.98px) {
+        width: 100%;
+    }
+
+    .date {
+        right: 5%;
+        width: 90%;
+    }
+
+    .carres {
+        width: inherit;
+        height: 150px;
+
+        .carre {
+            width: 22%;
+            height: 80%;
+            ;
+            border: #999999 solid 1px;
+            border-radius: 0.1rem;
+
+            p {
+                color: #838383;
+                font-weight: bold;
+            }
+
+            .chiffre {
+                color: black;
+                font-size: 2rem;
+            }
+        }
+    }
+
+    .titre {
+        background-color: #999999;
+        width: 85%;
+
+        @media (min-width: 992px) and (max-width: 1199.98px) {
+            width: 95%;
+        }
+
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            width: 95%;
+        }
+
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            width: 95%;
+        }
+
+        @media (max-width: 575.98px) {
+            width: 95%;
+        }
+
+        color: white;
+        font-weight: bold;
+
+        button {
+            font-weight: inherit;
+            background-color: $color-ajouter;
+            color: inherit;
+            border: none;
+            border-radius: 0.25rem;
+            height: fit-content;
+            transition: all 0.3s ease;
+
+            i {
+                font-size: 0.8rem;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: #86a828;
+            }
+        }
+    }
+
+    // Tableau des livres
+
+    // En-tête
+    .listBook,
+    .listCommande,
+    .info-boutique,
+    .mentions {
+        width: 85%;
+
+        @media (min-width: 992px) and (max-width: 1199.98px) {
+            width: 95%;
+        }
+
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            width: 95%;
+        }
+
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            width: 95%;
+        }
+
+        @media (max-width: 575.98px) {
+            width: 95%;
+        }
+
+        .nom-colonne {
+            border: #999999 solid 1px;
+            border-top: none;
+
+            p {
+                color: #999999;
+            }
+        }
+
+        .mention {
+            border: #999999 solid 1px;
+            width: 95%;
+            min-height: 30vh;
+        }
+
+        .save-mentions {
+            width: 95%;
+
+            button {
+                background-color: $color-details;
+                color: white;
+                font-weight: bold;
+                font-size: 1rem;
+                height: 2.5rem;
+                width: 9rem;
+                border: none;
+                border-radius: 0.25rem;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #58a0e7;
+                }
+            }
+        }
+
+        .form-input {
+            input {
+                height: 2.5rem;
+            }
+        }
+
+        .parent-save-info {
+
+            .save-info {
+                background-color: $color-details;
+                color: white;
+                font-size: 1rem;
+                font-weight: bold;
+                height: 2.5rem;
+                width: 9rem;
+                border: none;
+                border-radius: 0.25rem;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #58a0e7;
+                }
+            }
+        }
+
+        .livres,
+        .commandes {
+
+            .livre,
+            .commande {
+                border: #999999 solid 1px;
+                border-top: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &:nth-child(2n+1) {
+                    background-color: rgb(223, 223, 223);
+                }
+
+                p {
+                    height: fit-content;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                div {
+                    .pdf {
+                        color: white;
+                        font-weight: bold;
+                        font-size: 1rem;
+                        height: 2.5rem;
+                        width: 5.5rem;
+                        border: none;
+                        border-radius: 0.25rem;
+                        transition: all 0.3s ease;
+                        background-color: $color-details;
+
+                        &:hover {
+                            text-decoration: none;
+                            cursor: pointer;
+                            background-color: #58a0e7;
+                        }
+                    }
+                }
+
+                .options {
+                    button {
+                        color: white;
+                        font-size: 1rem;
+                        height: 2.5rem;
+                        width: 2.5rem;
+                        border: none;
+                        border-radius: 0.25rem;
+                        transition: all 0.3s ease;
+                    }
+
+                    .details {
+                        background-color: $color-details;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #58a0e7;
+                        }
+                    }
+
+                    .modifier {
+                        background-color: $color-modifier;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #165ca3;
+                        }
+                    }
+
+                    .effacer {
+                        background-color: $color-supprimer;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #B03229;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // lightbox details
+
+    #lightboxDetails {
+        .modal-dialog {
+            max-width: 50%;
+
+            .modal-content {
+                .modal-body {
+                    div {
+                        .slider-for {
+                            width: 350px;
+                            height: 350px;
+
+                            .slick-list {
+                                width: 350px;
+                                height: 350px;
+                                .slik-track {
+                                    width: 350px;
+                                    height: 350px;
+                                    div{
+                                        width: 350px;
+                                        height: 350px;
+                                        img {
+                                            width: 350px;
+                                            height: 350px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .slider-nav {
+                            width: 360px;
+
+                            .elem {
+                                img {
+                                    width: 120px;
+                                    height: 120px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // lightbox modifier
+
+    #lightboxEdit {
+        .modal-dialog {
+            .modal-content {
+                .modal-body {
+                    .images {
+                        width: 90%;
+                        margin-left: 5%;
+                        margin-right: 5%;
+
+                        fieldset {
+                            width: fit-content;
+                            height: fit-content;
+
+                            .addImg {
+                                width: 100px;
+                                height: 170px;
+                                border: $color-details solid 3px;
+                                color: $color-details;
+                                border-radius: 0.25rem;
+                                transition: all 0.3s ease;
+
+                                &:hover {
+                                    cursor: pointer;
+                                    font-size: 1.3rem;
+                                }
+                            }
+
+                            input {
+                                width: 0.1px;
+                                height: 0.1px;
+                                opacity: 0;
+                                overflow: hidden;
+                                position: absolute;
+                                z-index: -1;
+                            }
+
+                            .elem {
+                                i {}
+                            }
+                        }
+                    }
+                }
+
+                .modal-footer {
+                    .save {
+                        background-color: $color-modifier;
+                        border-color: $color-modifier;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #165ca3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// lightbox ajouter
+
+#lightboxAdd {
+    .modal-dialog {
+        .modal-content {
+            .modal-body {
+                .images {
+                    width: 90%;
+                    margin-left: 5%;
+                    margin-right: 5%;
+
+                    fieldset {
+                        width: fit-content;
+                        height: fit-content;
+
+                        .addImg {
+                            width: 75px;
+                            height: 125px;
+                            border: $color-details solid 3px;
+                            color: $color-details;
+                            border-radius: 0.25rem;
+                            transition: all 0.3s ease;
+
+                            &:hover {
+                                cursor: pointer;
+                                font-size: 1.3rem;
+                            }
+                        }
+
+                        input {
+                            width: 0.1px;
+                            height: 0.1px;
+                            opacity: 0;
+                            overflow: hidden;
+                            position: absolute;
+                            z-index: -1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// lightbox supprimer
+
+#lightboxDelete {
+    .modal-dialog {
+        .modal-content {
+            .modal-body {
+                div {
+                    .supprimer {
+                        background-color: $color-supprimer;
+                        border: none;
+                        color: white;
+                        font-weight: bold;
+                        border-radius: 0.25rem;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #B03229;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

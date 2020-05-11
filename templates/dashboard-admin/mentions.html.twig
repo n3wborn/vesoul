@@ -1,0 +1,19 @@
+{% extends "dashboard-admin/base.html.twig" %}
+
+{% block title %} {{ title}} {% endblock %}
+
+{# {% block stylesheets %}{% endblock %} #}
+
+{% block body %}
+<section class="mentions">
+    <h2>Mise à jour des mentions légales</h2>
+    <div class="mention"></div>
+    <h2 class="pt-3">Mise à jour RGPD</h2>
+    <div class="mention"></div>
+    <div class="save-mentions py-3 d-flex justify-content-end">
+        <button>Enregistrer</button>
+    </div>
+</section>
+{% endblock %}
+
+{# {% block javascripts %}{% endblock %} #}

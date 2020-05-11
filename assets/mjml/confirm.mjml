@@ -1,0 +1,44 @@
+<mjml>
+  <mj-head>
+    <mj-title>Bienvenue sur Vesoul Edition !</mj-title>
+    <mj-font name="Alice" href="https://fonts.googleapis.com/css?family=Alice"></mj-font>
+    <mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto:400,700"></mj-font>
+    <mj-attributes>
+      <mj-all font-family="Roboto, Helvetica, Arial, sans-serif" padding="0px"></mj-all>
+      <mj-text font-weight="400" font-size="14px" color="#000000" line-height="21px"></mj-text>
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#EAE8E5">
+    <mj-section padding="20px 0 0 0">
+      <mj-column>
+        <mj-image src="http://nimus.de/share/tpl-realestate/box-head.png" alt="" align="center" border="none" padding="0px"></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-section padding-top="40px" background-color="#FFFFFF">
+      <mj-column width="570px">
+        <mj-text align="left" padding="0 20px" color="#1D83A8" font-size="36px" line-height="40px" font-family="Alice, Helvetica, Arial, sans-serif">Félicitation !</mj-text>
+        <mj-text align="left" padding="0 20px"><strong><span style="font-size: 40px;">⚊</span></strong><br /><br /></mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#FFFFFF">
+      <mj-column width="300px">
+        <mj-text align="left" padding="0 20px 30px 20px"><strong>Félicitation {{ firstname }} !</strong> Vous voici membre exclusif de <strong>Vesoul Edition</strong>. N'hésitez pas à consulter l'ensemble de notre collection. Pour de plus ample informations, <strong>contactez-nous</strong> via le numéro suivant : <strong>06.99.65.86.00 </strong> </mj-text>
+      </mj-column>
+      <mj-column width="260px">
+        <mj-image src="https://image.noelshack.com/fichiers/2019/08/2/1550605935-book-open.png" alt="" padding-bottom="30px" width="150px" align="center" border="none"></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-section background-url="https://image.noelshack.com/fichiers/2019/08/2/1550605958-mail-bg.jpg" vertical-align="middle" background-size="cover" padding="30px" background-repeat="no-repeat">
+      <mj-column vertical-align="middle" width="60%">
+        <mj-text align="center" padding="40px 30px" color="#FFFFFF" font-size="42px" line-height="48px" font-family="Alice, Helvetica, Arial, sans-serif">Vesoul Edition</mj-text>
+      </mj-column>
+      <mj-column vertical-align="middle" width="40%" background-color="#FFFFFF">
+        <mj-image src="http://nimus.de/share/tpl-realestate/box-top.png" width="220px" alt="" align="center" border="none"></mj-image>
+        <mj-text align="center" padding="20px 20px 0 20px" color="#1D83A8" font-size="26px" line-height="30px" font-family="Alice, Helvetica, Arial, sans-serif">– Livraison –</mj-text>
+        <mj-text align="center" padding="10px 20px" font-size="22px" line-height="30px">Haute-Saône</mj-text>
+        <mj-text align="center" padding="0 20px">Commandez-vite !</mj-text>
+        <mj-button background-color="#F44E3C" color="white" padding="20px 20px 30px 20px" border-radius="20px">J'y vais !</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

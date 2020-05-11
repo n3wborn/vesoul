@@ -1,0 +1,11 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'vesoul-edition/base.html.twig' %}
+
+{% block content %}
+    <h1>Erreur {{ status_code }}: Page introuvable</h1>
+
+    <p>
+        {# {{ status_text }} #}
+        Ce chemin n'existe pas. Vérifier votre URL ou <a href="{{ path('vesoul_edition_home') }}">revenir à l'accueil</a>.
+    </p>
+{% endblock %}

@@ -1,0 +1,153 @@
+
+.wrapper{
+    min-height: 100vh;
+}
+header {
+    font-family: $font-main;
+    height: 100%;
+    background-color: $color-header;
+    color: $color-text-light;
+    a{
+        text-decoration: none !important;
+        color: $color-text-light;
+        font-size: 1em;
+
+    }
+    a:hover{
+        color: $color-main !important;
+        transition: all 0.3s;
+    }
+    .brand{
+        font-weight: bold;
+        text-decoration: none !important;
+        color: $color-text-light;
+        font-size: 1.5em;
+        font-family: $font-title;
+        
+
+        span {
+            color: $color-main;
+            font-size: 30px;
+        }
+    }
+    form{
+        width: 100%;
+        .search-bar{
+            width: 70% !important;
+            border: solid $color-main 1px;
+        }
+    }
+    .user-icon{
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 50%;
+        border: solid 1px white;
+    }
+
+    .banner {
+        background-color: $color-main;
+        
+
+        h3 {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: $font-secondary;
+            font-size: 16px;
+            
+        }
+
+        i{
+            font-size: 5em;
+
+        }
+        p{
+            font-size: 0.9em;
+        }
+    }
+}
+
+main {
+    background-color: $color-container;
+    min-height: 73vh;
+
+}
+
+footer {    
+    background-color: $color-footer;
+    color: $color-text-light;
+    font-family: $font-main;
+
+    h3 {
+        text-transform: uppercase;
+        font-weight: lighter;
+        font-family: $font-secondary;
+        font-size: 16px;
+        // border-bottom: solid white 1px;
+        padding-bottom: 0.5rem;
+    }
+    a{
+        text-decoration: none !important;
+        color: $color-text-footer;
+        font-size: 0.9em;
+        font-weight: lighter;
+
+    }
+    a:hover{
+        color: $color-main !important;
+        transition: all 0.3s;
+    }
+    input{
+        width: 170px !important;
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;         
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important; 
+    }
+    .btn-newsletter{
+        font-size: 0.8em;
+        border-top-right-radius: 2px !important;
+        border-bottom-right-radius: 2px !important;         
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important; 
+    }
+    
+
+    li {
+        list-style: none;
+        text-decoration: none;
+
+        p{
+            font-size: 0.9em;
+            color: $color-text-footer;
+            font-size: 0.9em;
+            font-weight: lighter;
+        }
+    }
+
+    hr {
+        background-color: $color-text-footer;
+        width: 5vw;
+    }
+
+  
+}
+
+
+nav {
+    .search-bar {
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;         
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important; 
+    }
+
+    .btn-search {
+        border-top-right-radius: 2px !important;
+        border-bottom-right-radius: 2px !important;         
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important; 
+        
+    }
+}
+
+

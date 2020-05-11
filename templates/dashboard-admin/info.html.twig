@@ -1,0 +1,34 @@
+{% extends "dashboard-admin/base.html.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{# {% block stylesheets %}{% endblock %} #}
+
+{% block body %}
+<section class="info-boutique">
+    <h2 class="pb-4">Modifier les informations de la boutique</h2>
+    {{ form_start(form, {'attr': {'class': 'w-100'}} ) }}
+    <div class="form-input d-flex flex-column w-25 py-2">
+        {{ form_label(form.company, 'Nom de la boutique')}}
+        {{ form_widget(form.company)}}
+    </div>
+    <div class="form-input d-flex flex-column w-25 py-2">
+        {{ form_label(form.email, 'Email')}}
+        {{ form_widget(form.email)}}
+    </div>
+    <div class="form-input d-flex flex-column w-25 py-2">
+        {{ form_label(form.tel, 'Téléphone')}}
+        {{ form_widget(form.tel)}}
+    </div>
+    <div class="form-input d-flex w-50 flex-column py-2">
+        {{ form_label(form.address, 'Adresse')}}
+        {{ form_widget(form.address)}}
+    </div>
+    <div class="parent-save-info d-flex justify-content-end py-2">
+        <button class="save-info">Enregistrer</button>
+    </div>
+    {{ form_end(form, {'render_rest': false}) }}
+</section>
+{% endblock %}
+
+{# {% block javascripts %}{% endblock %} #}

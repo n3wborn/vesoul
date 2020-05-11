@@ -1,0 +1,60 @@
+{% extends "dashboard-admin/base.html.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{# {% block stylesheets %}{% endblock %} #}
+
+{% block body %}
+<div class="carres row d-flex justify-content-around align-items-center">
+    <div class="carre col-3 text-center">
+        <p>Commandes en cours :</p>
+        <p class="chiffre ">{{ enCours }}</p>
+    </div>
+    <div class="carre col-3 text-center">
+        <p>Commandes Expédiée :</p>
+        <p class="chiffre ">{{ expedie }}</p>
+    </div>
+    <div class="carre col-3 text-center">
+        <p>Nombre totale de commandes :</p>
+        <p class="chiffre ">{{ total }}</p>
+    </div>
+</div>
+<div class="titre d-flex justify-content-between align-items-center">
+    <p class="p-3 m-0">Gestion des commandes</p>
+
+</div>
+<div class="listCommande">
+    <div class="nom-colonne w-100 m-0 row pt-2 d-flex justify-content-around align-items-center">
+        <p class="text-center m-0 py-3 col-1">Date</p>
+        <p class="text-center m-0 py-3 col-1">N° Commande</p>
+        <p class="text-center m-0 py-3 col-2">Nom Prenom</p>
+        <p class="text-center m-0 py-3 col-3">Adresse de livraison</p>
+        <p class="text-center m-0 py-3 col-2">Article(s)</p>
+        <p class="text-center m-0 py-3 col-2">Facture</p>
+        <p class="text-center m-0 py-3 col-1">Status</p>
+    </div>
+    <section class="commandes">
+        {% for command in commands %}
+
+        <div class="commande row m-0 d-flex justify-content-between">
+            <p class="m-0 py-3 col-1">{{ command.date|date("d/m/y") }}</p>
+            <p class="m-0 py-3 col-1">{{ command.id }}</p>
+            <p class="m-0 py-3 col-2">{{ command.user.lastname }} {{ command.user.firstname }}</p>
+            <p class="m-0 py-3 col-3 text-center">
+                {{ command.livraison.number }} {{ command.livraison.type }} {{ command.livraison.street }}{% if command.livraison.additional %}, {{ command.livraison.additional }}{% endif %},</br> {{ command.livraison.city }} {{ command.livraison.cp }}</p>
+            <p class="m-0 py-1 col-2">
+                {% for book in command.books %}
+                - {{ book.title }}</br>
+                {% endfor %}
+            </p>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                <a href=" {{ path('dashboard_admin_commandes_imprime',{id: command.id} ) }} " class="pdf d-flex justify-content-center align-items-center">PDF</a>
+            </div>
+            <p class="text-center m-0 py-3 col-1">{{ command.state }}</p>
+        </div>
+        {% endfor %}
+    </section>
+
+    {% endblock %}
+
+    {# {% block javascripts %}{% endblock %} #}
