@@ -19,10 +19,13 @@ use Dompdf\Options;
 use App\Entity\Command;
 
 /**
- * @Route("/pannel-admin")
+ * @Route("/admin")
  */
 class DashboardAdminController extends AbstractController
 {
+
+    //Onglet Acceuil
+
     /**
      * @Route("/accueil", name="dashboard_admin_home")
      */
@@ -32,6 +35,8 @@ class DashboardAdminController extends AbstractController
             'title' => 'Accueil',
         ]);
     }
+
+    // Onglet Commandes 
 
     /**
      * @Route("/commandes", name="dashboard_admin_commandes")
@@ -174,7 +179,7 @@ class DashboardAdminController extends AbstractController
         return $this->redirectToRoute('dashboard_admin_commandes');
     }
 
-
+    // Onglet livres
 
     /**
      * @Route("/livres", name="dashboard_admin_livres")
@@ -182,31 +187,36 @@ class DashboardAdminController extends AbstractController
      */
     public function books(Request $request, BookRepository $repo, ObjectManager $manager)
     {
-        $toggle = false;
-        if ($request->get('id') != null) {
-            $toggle = $request->get('id');
-            $book = $repo->findBy(['id' => $request->get('id')]);
-            $book = $this->getDoctrine()->getRepository(Book::class)->find($request->get('id'));
-        } else {
-            $book = new Book();
-        }
-
-        $form = $this->createForm(BookType::class, $book);
-        $form->handleRequest($request);
-        $allBooks = $repo->findAll();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($book);
-            $manager->flush();
-            return $this->redirectToRoute('dashboard_admin_livres');
-        } else {
-            return $this->render('dashboard-admin/books.html.twig', [
+        return $this->render('dashboard-admin/books.html.twig', [
                 'title' => 'Livres',
-                'books' => $allBooks,
-                'form' => $form->createView(),
-                'toggle' => $toggle,
-            ]);
-        }
+                'books' => $repo->findAll()
+        ]);
+
+        // $toggle = false;
+        // if ($request->get('id') != null) {
+        //     $toggle = $request->get('id');
+        //     $book = $repo->findBy(['id' => $request->get('id')]);
+        //     $book = $this->getDoctrine()->getRepository(Book::class)->find($request->get('id'));
+        // } else {
+        //     $book = new Book();
+        // }
+
+        // $form = $this->createForm(BookType::class, $book);
+        // $form->handleRequest($request);
+        // $allBooks = $repo->findAll();
+
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $manager->persist($book);
+        //     $manager->flush();
+        //     return $this->redirectToRoute('dashboard_admin_livres');
+        // } else {
+        //     return $this->render('dashboard-admin/books.html.twig', [
+        //         'title' => 'Livres',
+        //         'books' => $allBooks,
+        //         'form' => $form->createView(),
+        //         'toggle' => $toggle,
+        //     ]);
+        // }
     }
 
     /**
