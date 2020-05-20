@@ -104,64 +104,8 @@
     </div>
 </div>
 
-{# lightbox modifier un livre #}
-
-<div class="modal fade" id="lightboxEdit" tabindex="-1" role="dialog" aria-labelledby="lightboxEdit" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Modifier TITRE DU LIVRE</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body row">
-                {# {{ form_start(form) }} #}
-
-                {# <strong class="py-1 m-0 col-4">{{ form_label(form.title, 'Titre') }}</strong>
-                {{ form_widget(form.title, {'value': '{{ book.title }}', 'attr': {'class': 'my-1 col-8'}} ) }}
-
-                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
-                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }}
-
-                <strong class="py-1 m-0 col-4">{{ form_label(form.price, 'Prix en euro €') }}</strong>
-                {{ form_widget(form.price, {'value': '{{ book.price }}', 'attr': {'class': 'my-1 col-8'}} ) }}
-
-                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
-                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }}
-
-                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
-                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }}
-
-                <strong class="py-1 m-0 col-4">{{ form_label(form.isbn, 'Code ISBN') }}</strong>
-                {{ form_widget(form.isbn, {'value': '{{ book.isbn }}', 'attr': {'class': 'my-1 col-8'}} ) }} #}
-                {# <label class="py-1 m-0 col-4" for="prix"><strong>{{ form_label(form.price) }}</strong></label>
-                <input class="my-1 col-7" name="prix" type="text" value="{{ book.price }}">
-                <label class="py-1 m-0 col-4" for="cat"><strong>Catégories : </strong></label>
-                <input class="my-1 col-7" name="cat" type="text" value="{% for categorie in book.categories %}{{ categorie.name }} {% endfor %}">
-                <label class="py-1 m-0 col-4" for="desc"><strong>{{ form_label(form.description) }}</strong></label>
-                <input class="my-1 col-7" name="desc" type="text" value="{{ book.description }}"> #}
-                <div class="images d-flex flex-wrap">
-                    <fieldset>
-                        <label class="addImg mt-1 ml-1 d-flex justify-content-center align-items-center" for="img"><i
-                                class="p-1 fas fa-plus"></i></label>
-                        <input class="" name="img" id="img" type="file">
-                    </fieldset>
-                    {# {% for image in book.images %} #}
-                    <div class="elem">
-                        <img class="mt-1 ml-1" src="/build/images/livre1.jpg" width="100" height="170" alt="">
-                    </div>
-                    {# {% endfor %} #}
-                    {# {{ form_end(form) }} #}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" class="save btn btn-secondary" data-dismiss="modal">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-</div>
+{# lors du clic sur "edit" on ouvre la modal #}
+{% include "dashboard-admin/book-crud/edit-book.html.twig" %}
 
 {# lors du clic sur "ajouter un livre" on ouvre la modal #}
 {% include "dashboard-admin/book-crud/add-book.html.twig" %}
