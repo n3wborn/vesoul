@@ -163,8 +163,10 @@
     </div>
 </div>
 
+{# lors du clic sur "ajouter un livre" on ouvre la modal #}
+{% include "dashboard-admin/book-crud/add-book.html.twig" %}
 
-
+{# lors du clic sur "delete" on ouvre la modal #}
 {% include "dashboard-admin/book-crud/delete-book.html.twig" %}
 
 {% endblock %}
