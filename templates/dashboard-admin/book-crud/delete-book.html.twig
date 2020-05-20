@@ -14,7 +14,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         ANNULER
                     </button>
-                    <button class="supprimer">
+                    <a href="{{ path('admin_delete_book', {'id' : book.id }) }}" type="button" class="supprimer">
                         SUPPRIMER
                     </button>
                 </div>

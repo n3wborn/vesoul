@@ -188,8 +188,8 @@ class DashboardAdminController extends AbstractController
     public function books(Request $request, BookRepository $repo, ObjectManager $manager)
     {
         return $this->render('dashboard-admin/books.html.twig', [
-                'title' => 'Livres',
-                'books' => $repo->findAll()
+            'title' => 'Livres',
+            'books' => $repo->findAll()
         ]);
 
         // $toggle = false;
@@ -236,6 +236,15 @@ class DashboardAdminController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/livres/delete/{id} ", name="admin_delete_book")
+     */
+    public function deleteBook(Book $book, ObjectManager $manager)
+    {
+        $manager->remove($book);
+        $manager->flush();
+        return $this->redirectToRoute('dashboard_admin_livres');
+    }
     /**
      * @Route("/boutique", name="dashboard_admin_boutique")
      */

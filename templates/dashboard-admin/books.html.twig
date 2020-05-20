@@ -11,47 +11,55 @@
         <i class="p-1 fas fa-plus"></i> Ajouter un livre</button>
 
 </div>
-<div class="listBook">
-    <div class="nom-colonne w-100 m-0 row pt-2 d-flex justify-content-around align-items-center">
-        <p class="text-center m-0 py-3 col-2">En stock</p>
-        <p class="text-center m-0 py-3 col-3">Titre</p>
-        <p class="text-center m-0 py-3 col-3">Code ISBN</p>
-        <p class="text-center m-0 py-3 col-2">Prix</p>
-        <p class="text-center m-0 py-3 col-2">Options</p>
-    </div>
-    <section class="livres">
+
+<table class="listBook">
+    <thead class="nom-colonne">
+        <tr class="d-flex py-3">
+            <th class="col-2">En stock</th>
+            <th class="col-3">Titre</th>
+            <th class="col-3">Code ISBN</th>
+            <th class="col-2">Prix</th>
+            <th class="ml-5 col-2">Options</th>
+        </tr>
+    </thead>
+    <tbody class="livres">
         {% for book in books %}
 
-        <div class="livre row m-0 d-flex justify-content-between py-2">
-            <p class="m-0 col-2">{{ book.stock }}</p>
-            <p class="m-0 col-3">{{ book.title }}</p>
-            <p class="m-0 col-3">{{ book.isbn }}</p>
-            <p class="m-0 col-2">{{ book.price }} €</p>
+        <tr class="livre py-2">
+            <td class="col-2">{{ book.stock }}</td>
+            <td class="col-3">{{ book.id }} - {{ book.title }}</td>
+            <td class="col-3">{{ book.isbn }}</td>
+            <td class="col-2">{{ book.price }} €</td>
 
             {# the action's button #}
-            <div class="options col-2 d-flex justify-content-around">
+            <td class="options col-2">
 
                 {# bouton voir les détails #}
-                <button type="button" class="details btn btn-primary mx-1" data-toggle="modal" data-target="#lightboxDetails">
-                    <i title="Voir les détails" class="fas fa-eye"></i>
-                </button>
+                <a href="#" type="button" class="btn btn-success mx-1" data-toggle="modal" data-target="#lightboxDetails">
+                    <i title="Voir les détails" class="fas fa-eye text-light"></i>
+                </a>
 
                 {# bouton modifier les détails #}
-                <button type="button" class="modifier mx-1" data-toggle="modal" data-target="#lightboxEdit">
-                    <i title="Modifier" class="fas fa-pen"></i>
-                </button>
+                <a href"#" type="button" class="btn btn-primary mx-1" data-toggle="modal" data-target="#lightboxEdit">
+                    <i title="Modifier" class="fas fa-pen text-light"></i>
+                </a>
 
                 {# supprimer le livre #}
-                <button type="button" class="effacer mx-1" data-toggle="modal" data-target="#lightboxDelete">
-                    <i title="Effacer" class="fas fa-trash"></i>
-                </button>
+                <a  href="{{ path('admin_delete_book', {'id' : book.id }) }}" type="button" class="btn btn-danger mx-1" 
+                {# data-toggle="modal" data-target="#lightboxDelete" #}
+                >
+                    <i title="Effacer" class="fas fa-trash text-light"></i>
+                </a>
+                
 
-            </div>
-        </div>
+            </td>
+        </tr>
 
         {% endfor %}
     </section>
-</div>
+</table>
+
+{% for book in books %}
 
 {# lors du clic sur "see details" on ouvre la modal #}
 {% include "dashboard-admin/book-crud/details-book.html.twig" %}
@@ -63,7 +71,11 @@
 {% include "dashboard-admin/book-crud/add-book.html.twig" %}
 
 {# lors du clic sur "delete" on ouvre la modal #}
-{% include "dashboard-admin/book-crud/delete-book.html.twig" %}
+{# {% include "dashboard-admin/book-crud/delete-book.html.twig" %} #}
+
+{% endfor %}
+
+
 
 {% endblock %}
 
