@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Command;
+use App\Entity\Image;
 
 /**
  * @Route("/admin")
@@ -237,14 +238,17 @@ class DashboardAdminController extends AbstractController
     }
 
     /**
-     * @Route("/livres/delete/{id} ", name="admin_delete_book")
+     * @Route("/livres/delete/{id}", name="admin_delete_book")
      */
-    public function deleteBook(Book $book, ObjectManager $manager)
+    public function removeBook(Book $book, Image $image, ObjectManager $manager, RouterInterface $router)
     {
         $manager->remove($book);
+        $manager->remove($image);
         $manager->flush();
         return $this->redirectToRoute('dashboard_admin_livres');
     }
+
+
     /**
      * @Route("/boutique", name="dashboard_admin_boutique")
      */
