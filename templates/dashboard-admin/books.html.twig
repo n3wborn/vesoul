@@ -22,25 +22,30 @@
     <section class="livres">
         {% for book in books %}
 
-        <div class="livre row m-0 d-flex justify-content-between">
+        <div class="livre row m-0 d-flex justify-content-between py-2">
             <p class="m-0 col-2">{{ book.stock }}</p>
             <p class="m-0 col-3">{{ book.title }}</p>
             <p class="m-0 col-3">{{ book.isbn }}</p>
             <p class="m-0 col-2">{{ book.price }} €</p>
+
+            {# the action's button #}
             <div class="options col-2 d-flex justify-content-around">
+
                 {# bouton voir les détails #}
-                <button type="button" class="details btn btn-primary" data-toggle="modal" data-target="#lightboxDetails">
+                <button type="button" class="details btn btn-primary mx-1" data-toggle="modal" data-target="#lightboxDetails">
                     <i title="Voir les détails" class="fas fa-eye"></i>
                 </button>
+
                 {# bouton modifier les détails #}
-                <button type="button" class="modifier" data-toggle="modal" data-target="#lightboxEdit">
+                <button type="button" class="modifier mx-1" data-toggle="modal" data-target="#lightboxEdit">
                     <i title="Modifier" class="fas fa-pen"></i>
                 </button>
+
                 {# supprimer le livre #}
-                {# la class sert pour le css #}
-                <button type="button" class="effacer" data-toggle="modal" data-target="#lightboxDelete">
+                <button type="button" class="effacer mx-1" data-toggle="modal" data-target="#lightboxDelete">
                     <i title="Effacer" class="fas fa-trash"></i>
                 </button>
+
             </div>
         </div>
 
@@ -48,61 +53,8 @@
     </section>
 </div>
 
-{# lightbox détails livre #}
-
-<div class="modal fade" id="lightboxDetails" tabindex="-1" role="dialog" aria-labelledby="lightboxDetails" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">TITRE DU LIVRE</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-                    <p class="pt-4 m-0"><strong>Code ISBN : </strong>CODE ISBN</p>
-                    <p class="pt-4 m-0"><strong>Auteur : </strong>PRENOM NOM</p>
-                    <p class="pt-4 m-0"><strong>Prix : </strong>PRIX €</p>
-                    <p class="pt-4 m-0"><strong>Catégories : </strong>CATEGORIES</p>
-                    <p class="pt-4 m-0"><strong>Description : </strong>DESCRIPTION</p>
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex flex-column justify-content-center align-items-center">
-                    <div class="slider-for">
-                        {# {% for image in book.images %} #}
-                        <div class="">
-                            <img class="" src="/build/images/livre1.jpg" alt="">
-                        </div>
-                        <div class="">
-                            <img class="" src="/build/images/livre2.jpg" alt="">
-                        </div>
-                        <div class="">
-                            <img class="" src="/build/images/livre3.jpg" alt="">
-                        </div>
-                        {# {% endfor %} #}
-
-                    </div>
-                    <div class="slider-nav pt-5">
-                        {# {% for image in book.images %} #}
-                        <div class="elem">
-                            <img class="" src="/build/images/livre1.jpg" alt="">
-                        </div>
-                        <div class="elem">
-                            <img class="" src="/build/images/livre2.jpg" alt="">
-                        </div>
-                        <div class="elem">
-                            <img class="" src="/build/images/livre3.jpg" alt="">
-                        </div>
-                        {# {% endfor %} #}
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            </div>
-        </div>
-    </div>
-</div>
+{# lors du clic sur "see details" on ouvre la modal #}
+{% include "dashboard-admin/book-crud/details-book.html.twig" %}
 
 {# lors du clic sur "edit" on ouvre la modal #}
 {% include "dashboard-admin/book-crud/edit-book.html.twig" %}
