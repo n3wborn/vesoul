@@ -29,6 +29,7 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/accueil", name="dashboard_admin_home")
+     * Dashboard admin Home
      */
     public function home()
     {
@@ -52,6 +53,17 @@ class DashboardAdminController extends AbstractController
     }
 
     /**
+     * @Route("/livres/new", name="admin_add_book")
+     * Add a book in database (by Benaor)
+     */
+    public function addBook(Request $request, BookRepository $repo, ObjectManager $manager)
+    {
+        return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
+            'title' => 'Ajouter un livre'
+        ]);
+    }
+
+    /**
      * @Route("/livres/delete/{id}", name="admin_delete_book")
      * Delete book in database (by Benaor)
      */
@@ -62,6 +74,14 @@ class DashboardAdminController extends AbstractController
         $manager->flush();
         return $this->redirectToRoute('dashboard_admin_livres');
     }
+
+
+
+
+
+
+
+
 
     /**
      * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
@@ -79,6 +99,40 @@ class DashboardAdminController extends AbstractController
             return $this->redirectToRoute('dashboard_admin_livres');
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // Onglet Commandes 
