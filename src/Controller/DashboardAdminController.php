@@ -1,5 +1,5 @@
 <?php
-//maj
+
 namespace App\Controller;
 
 use App\Entity\Book;
@@ -36,6 +36,50 @@ class DashboardAdminController extends AbstractController
             'title' => 'Accueil',
         ]);
     }
+
+    // Onglet livres
+
+    /**
+     * @Route("/livres", name="dashboard_admin_livres")
+     * Display all books in database (by Benaor)
+     */
+    public function books(Request $request, BookRepository $repo, ObjectManager $manager)
+    {
+        return $this->render('dashboard-admin/books.html.twig', [
+            'title' => 'Livres',
+            'books' => $repo->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/livres/delete/{id}", name="admin_delete_book")
+     * Delete book in database (by Benaor)
+     */
+    public function removeBook(Book $book, Image $image, ObjectManager $manager, RouterInterface $router)
+    {
+        $manager->remove($book);
+        $manager->remove($image);
+        $manager->flush();
+        return $this->redirectToRoute('dashboard_admin_livres');
+    }
+
+    /**
+     * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
+     */
+    public function reditBooks(Book $book, Request $request, ObjectManager $manager, RouterInterface $router)
+    {
+        $form = $this->createForm(BookType::class, $book);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $manager->persist($book);
+            $manager->flush();
+            // return new RedirectResponse($router->generate('handle_tools'));
+            return $this->redirectToRoute('dashboard_admin_livres');
+        }
+    }
+
 
     // Onglet Commandes 
 
@@ -180,73 +224,6 @@ class DashboardAdminController extends AbstractController
         return $this->redirectToRoute('dashboard_admin_commandes');
     }
 
-    // Onglet livres
-
-    /**
-     * @Route("/livres", name="dashboard_admin_livres")
-     * @Route("/livres/modifier/{id}", name="dashboard_admin_modif_livres")
-     */
-    public function books(Request $request, BookRepository $repo, ObjectManager $manager)
-    {
-        return $this->render('dashboard-admin/books.html.twig', [
-            'title' => 'Livres',
-            'books' => $repo->findAll()
-        ]);
-
-        // $toggle = false;
-        // if ($request->get('id') != null) {
-        //     $toggle = $request->get('id');
-        //     $book = $repo->findBy(['id' => $request->get('id')]);
-        //     $book = $this->getDoctrine()->getRepository(Book::class)->find($request->get('id'));
-        // } else {
-        //     $book = new Book();
-        // }
-
-        // $form = $this->createForm(BookType::class, $book);
-        // $form->handleRequest($request);
-        // $allBooks = $repo->findAll();
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $manager->persist($book);
-        //     $manager->flush();
-        //     return $this->redirectToRoute('dashboard_admin_livres');
-        // } else {
-        //     return $this->render('dashboard-admin/books.html.twig', [
-        //         'title' => 'Livres',
-        //         'books' => $allBooks,
-        //         'form' => $form->createView(),
-        //         'toggle' => $toggle,
-        //     ]);
-        // }
-    }
-
-    /**
-     * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
-     */
-    public function reditBooks(Book $book, Request $request, ObjectManager $manager, RouterInterface $router)
-    {
-        $form = $this->createForm(BookType::class, $book);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $manager->persist($book);
-            $manager->flush();
-            // return new RedirectResponse($router->generate('handle_tools'));
-            return $this->redirectToRoute('dashboard_admin_livres');
-        }
-    }
-
-    /**
-     * @Route("/livres/delete/{id}", name="admin_delete_book")
-     */
-    public function removeBook(Book $book, Image $image, ObjectManager $manager, RouterInterface $router)
-    {
-        $manager->remove($book);
-        $manager->remove($image);
-        $manager->flush();
-        return $this->redirectToRoute('dashboard_admin_livres');
-    }
 
 
     /**
