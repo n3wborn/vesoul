@@ -49,8 +49,7 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-secondary text-light'
                 ]
-            ])
-
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

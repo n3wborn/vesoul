@@ -56,10 +56,13 @@ class DashboardAdminController extends AbstractController
      * @Route("/livres/new", name="admin_add_book")
      * Add a book in database (by Benaor)
      */
-    public function addBook(Request $request, BookRepository $repo, ObjectManager $manager)
+    public function addBook(Request $request, ObjectManager $manager)
     {
+        $book = new Book();
+        $form = $this->createForm(BookType::class, $book);
         return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
-            'title' => 'Ajouter un livre'
+            'title' => 'Ajouter un livre',
+            'form' => $form->createView()
         ]);
     }
 
