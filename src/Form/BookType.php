@@ -7,29 +7,50 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class BookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description')
-            ->add('price')
-            ->add('isbn')
-            ->add('stock')
-            ->add('title')
+            ->add('title', TextType::class, [
+                'label' => 'Titre du livre'
+            ])          
+            ->add('isbn', TextType::class, [
+                'label' => 'Code ISBN du livre'
+            ])
+            ->add('author', ChoiceType::class, [
+                'label' => 'Auteur du livre',
+                'choices' => ['firstname', 'lastname']
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description du livre'
+            ])
+            ->add('price', NumberType::class, [
+                'label' => 'Prix du livre'
+            ])
+            ->add('stock', NumberType::class, [
+                'label' => 'Nombre de livre en stock'
+            ])
             ->add('commands', ChoiceType::class, [
                 'choices' => [],
                 'label' => 'Commandes',
             ])
             ->add('genras', ChoiceType::class, [
-                // 'choices' => $this->getChoices(),
-                'label' => 'Catégories',
+                'label' => 'Catégories du livre',
+                // 'choices' => $this->getChoices()
             ])
-            ->add('author', ChoiceType::class, [
-                'choices' => ['firstname', 'lastname'],
-                'label' => 'Auteur',
-            ]);
+            ->add('Enregistrer', SubmitType::class, [
+                'label' => 'enregistrer',
+                'attr' => [
+                    'class' => 'btn btn-secondary text-light'
+                ]
+            ])
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -39,7 +60,7 @@ class BookType extends AbstractType
         ]);
     }
 
-//     private function getChoices(){
-//         $choices = 
-//     }
+    //     private function getChoices(){
+    //         $choices = 
+    //     }
 }
