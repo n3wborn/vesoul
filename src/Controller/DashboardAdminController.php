@@ -58,11 +58,14 @@ class DashboardAdminController extends AbstractController
      */
     public function addBook(Request $request, ObjectManager $manager)
     {
-        $book = new Book();
-        $form = $this->createForm(BookType::class, $book);
+        $book = new Book(); // Create the book 
+        $form = $this->createForm(BookType::class, $book); //Create the form
+        if($form->isSubmitted() && $form->isValid()){
+
+        }
         return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
             'title' => 'Ajouter un livre',
-            'form' => $form->createView()
+            'form' => $form->createView() //Display the form
         ]);
     }
 

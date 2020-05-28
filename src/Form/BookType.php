@@ -18,33 +18,81 @@ class BookType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre du livre'
+                'label' => 'Titre du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
             ])          
             ->add('isbn', TextType::class, [
-                'label' => 'Code ISBN du livre'
+                'label' => 'Code ISBN du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
             ])
             ->add('author', ChoiceType::class, [
                 'label' => 'Auteur du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ],
                 'choices' => ['firstname', 'lastname']
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description du livre'
+                'label' => 'Description du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
             ])
             ->add('price', NumberType::class, [
-                'label' => 'Prix du livre'
+                'label' => 'Prix du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
             ])
             ->add('stock', NumberType::class, [
-                'label' => 'Nombre de livre en stock'
+                'label' => 'Nombre de livre en stock',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
             ])
             ->add('commands', ChoiceType::class, [
                 'choices' => [],
                 'label' => 'Commandes',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
             ])
             ->add('genras', ChoiceType::class, [
                 'label' => 'Catégories du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
                 // 'choices' => $this->getChoices()
             ])
-            ->add('Enregistrer', SubmitType::class, [
+            ->add('submit', SubmitType::class, [
                 'label' => 'enregistrer',
                 'attr' => [
                     'class' => 'btn btn-secondary text-light'

@@ -14,41 +14,39 @@
     <div class="container">
 
         <h5 class="text-center">Ajouter un livre</h5>
-
-        {# titre du livre  #}
-        <label class="py-1 m-0 col-4" for="title"><strong> Titre :</strong></label>
-        <input class="my-1 col-7" name="title" type="text">
         
-        {# code ISBN du livre #}
-        <label class="py-1 m-0 col-4" for="isbn"><strong>Code ISBN :</strong></label>
-        <input class="my-1 col-7" name="isbn" type="text">
+		{{ form_start(form) }}  
 
-        {# Auteur du livre #}
-        <label class="py-1 m-0 col-4" for="auteur"><strong>Auteur :</strong></label>
-        <input class="my-1 col-7" name="auteur" type="text">
+			{{ form_label(form.title) }}
+			{{ form_widget(form.title) }}
 
-        {# Prix du livre #}
-        <label class="py-1 m-0 col-4" for="prix"><strong>Prix :</strong></label>
-        <input class="my-1 col-7" name="prix" type="text">€
+			{{ form_label(form.isbn) }}
+			{{ form_widget(form.isbn) }}
 
-        {# Catégorie du livre #}
-        <label class="py-1 m-0 col-4" for="cat"><strong>Catégories :</strong></label>
-        <input class="my-1 col-7" name="cat" type="text">
+			{{ form_label(form.author) }}
+			{{ form_widget(form.author) }}
 
-        {# Description du livre #}
-        <label class="py-1 m-0 col-4" for="desc"><strong>Description :</strong></label>
-        <textarea class="my-1 col-7" name="desc" type="textarea"></textarea>
+			{{ form_label(form.price) }}
+			{{ form_widget(form.price) }}
 
-        {# image du livre #}
-        <label class="py-1 m-0 col-4" for="img"><strong>Images :</strong></label>
-        <input class="my-1 col-7" name="img" id="img" type="file">
-        
-        {# bouton d'action #}
-        <div class="text-center">
-            <a type="button" class="btn btn-secondary text-light">Annuler</a>
-            <a type="submit" class="btn btn-secondary text-light">Enregistrer</a>
-        </div>
-        
+			{{ form_label(form.genras) }}
+			{{ form_widget(form.genras) }}
+
+			{{ form_label(form.description) }}
+			{{ form_widget(form.description) }}
+
+			{# image du livre #}
+			<label class="py-1 m-0 col-4" for="img"><strong>Images :</strong></label>
+			<input class="my-1 col-7" name="img" id="img" type="file">
+
+        	<div class="text-center">
+				{{ form_widget(form.submit) }}
+				<a type="button" class="btn btn-secondary text-light">Annuler</a>
+			</div>
+
+		{{ form_start(form) }}  
+
+
     </div>
 
 </div>
