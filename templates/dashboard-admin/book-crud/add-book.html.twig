@@ -23,26 +23,35 @@
 			{{ form_label(form.isbn) }}
 			{{ form_widget(form.isbn) }}
 
-			{{ form_label(form.author) }}
-			{{ form_widget(form.author) }}
+			{# {{ form_label(form.author) }}
+			{{ form_widget(form.author) }} #}
 
 			{{ form_label(form.price) }}
 			{{ form_widget(form.price) }}
 
-			{{ form_label(form.genras) }}
-			{{ form_widget(form.genras) }}
+			{# {{ form_label(form.genras) }}
+			{{ form_widget(form.genras) }} #}
 
 			{{ form_label(form.description) }}
 			{{ form_widget(form.description) }}
 
+			{{ form_label(form.year) }}
+			{{ form_widget(form.year) }}
+
+			{{ form_label(form.stock) }}
+			{{ form_widget(form.stock) }}
+
+
 			{# image du livre #}
-			<label class="py-1 m-0 col-4" for="img"><strong>Images :</strong></label>
-			<input class="my-1 col-7" name="img" id="img" type="file">
+			{# <label class="py-1 m-0 col-4" for="img"><strong>Images :</strong></label>
+			<input class="my-1 col-7" name="img" id="img" type="file"> #}
 
         	<div class="text-center">
 				{{ form_widget(form.submit) }}
 				<a type="button" class="btn btn-secondary text-light">Annuler</a>
 			</div>
+
+			{{ form_widget(form._token) }}
 
 		{{ form_start(form) }}  
 

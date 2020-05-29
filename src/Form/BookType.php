@@ -6,7 +6,6 @@ use App\Entity\Book;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -16,6 +15,7 @@ class BookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre du livre',
@@ -35,18 +35,8 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
-            ->add('author', ChoiceType::class, [
+            ->add('author', textType::class, [
                 'label' => 'Auteur du livre',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'my-1 col-7'
-                ],
-                'choices' => ['firstname', 'lastname']
-            ])
-            ->add('description', TextareaType::class, [
-                'label' => 'Description du livre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
@@ -63,6 +53,24 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
+            ])
+            ->add('year', NumberType::class, [
+                'label' => 'Date de sortie du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
+            ])
             ->add('stock', NumberType::class, [
                 'label' => 'Nombre de livre en stock',
                 'label_attr' => [
@@ -72,26 +80,26 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
-            ->add('commands', ChoiceType::class, [
-                'choices' => [],
-                'label' => 'Commandes',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'my-1 col-7'
-                ]
-            ])
-            ->add('genras', ChoiceType::class, [
-                'label' => 'Catégories du livre',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'my-1 col-7'
-                ]
-                // 'choices' => $this->getChoices()
-            ])
+            // ->add('commands', ChoiceType::class, [
+            //     'choices' => [],
+            //     'label' => 'Commandes',
+            //     'label_attr' => [
+            //         'class' => 'font-weight-bold py-1 m-0 col-4'
+            //     ],
+            //     'attr' => [
+            //         'class' => 'my-1 col-7'
+            //     ]
+            // ])
+            // ->add('genras', ChoiceType::class, [
+            //     'label' => 'Catégories du livre',
+            //     'label_attr' => [
+            //         'class' => 'font-weight-bold py-1 m-0 col-4'
+            //     ],
+            //     'attr' => [
+            //         'class' => 'my-1 col-7'
+            //     ]
+            //     // 'choices' => $this->getChoices()
+            // ])
             ->add('submit', SubmitType::class, [
                 'label' => 'enregistrer',
                 'attr' => [
