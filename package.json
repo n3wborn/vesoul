@@ -13,7 +13,7 @@
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "node_modules/@symfony/webpack-encore/bin/encore.js dev",
-        "watch": "encore dev --watch",
+        "watch": "node_modules/@symfony/webpack-encore/bin/encore.js dev --watch",
         "build": "encore production --progress"
     },
     "dependencies": {
