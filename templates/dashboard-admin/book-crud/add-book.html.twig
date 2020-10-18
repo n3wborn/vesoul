@@ -3,9 +3,7 @@
 
 {% extends "dashboard-admin/base.html.twig" %}
 
-	{% block title %}
-{{ title }}
-{% endblock %}
+	{% block title %}{{ title }}{% endblock %}
 
 	{% block body %}
 
@@ -42,9 +40,8 @@
 			{{ form_widget(form.stock) }}
 
 
-			{# image du livre #}
-			{# <label class="py-1 m-0 col-4" for="img"><strong>Images :</strong></label>
-			<input class="my-1 col-7" name="img" id="img" type="file"> #}
+			{{ form_row(form.image) }}
+
 
         	<div class="text-center">
 				{{ form_widget(form.submit) }}
@@ -53,7 +50,7 @@
 
 			{{ form_widget(form._token) }}
 
-		{{ form_start(form) }}  
+		{{ form_end(form) }}
 
 
     </div>
