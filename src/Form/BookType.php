@@ -56,7 +56,7 @@ class BookType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Description du livre',
                 'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
                 ],
                 'attr' => [
                     'class' => 'my-1 col-7'
