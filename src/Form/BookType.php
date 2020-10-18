@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
+
 
 class BookType extends AbstractType
 {
@@ -25,7 +28,7 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'my-1 col-7'
                 ]
-            ])          
+            ])
             ->add('isbn', TextType::class, [
                 'label' => 'Code ISBN du livre',
                 'label_attr' => [
@@ -80,6 +83,29 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
+            ->add('image', FileType::class, [
+                'label' => 'Couverture',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'placeholder' => 'Sélectionnez un fichier',
+                    'class' => 'my-1 col-7'
+                ],
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '512m',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                            'image/jpg',
+                        ],
+                        'mimeTypesMessage' => 'Fichier png/jpg/jpeg inférieur à 512Mo',
+                    ])
+                ],
+            ])
             // ->add('commands', ChoiceType::class, [
             //     'choices' => [],
             //     'label' => 'Commandes',
@@ -116,6 +142,6 @@ class BookType extends AbstractType
     }
 
     //     private function getChoices(){
-    //         $choices = 
+    //         $choices =
     //     }
 }
