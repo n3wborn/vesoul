@@ -25,7 +25,7 @@ use App\Entity\Image;
 class DashboardAdminController extends AbstractController
 {
 
-    //Onglet Acceuil
+    //Onglet Accueil
 
     /**
      * @Route("/accueil", name="dashboard_admin_home")
