@@ -22,13 +22,13 @@ class AuthorRepository extends ServiceEntityRepository
 
     public function findAllAuthors()
     {
-        $qb = $this->createQueryBuilder('a')
-        ->select('a.id','a.firstname', 'a.lastname')
-        ->groupBy('a.lastname')
-        ->orderBy('a.lastname')
-        ->getQuery();
-
-    return $qb->execute();
+         return $this->createQueryBuilder('a')
+            ->select('a.id','a.firstname', 'a.lastname')
+            ->groupBy('a.lastname')
+            ->orderBy('a.lastname')
+            ->getQuery()
+            ->execute()
+         ;
     }
     // /**
     //  * @return Author[] Returns an array of Author objects
