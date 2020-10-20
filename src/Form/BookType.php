@@ -43,7 +43,15 @@ class BookType extends AbstractType
             ])
             // TODO: à modifier
 /*            ->add('author', NumberType::class, [
+            ->add('author',  EntityType::class, [
                 'label' => 'ID auteur',
+                'class' => Author::class,
+                'choice_label' =>  function (Author $author) {
+                    $first = $author->getFirstname();
+                    $last = $author->getLastname();
+                    // peuple le select avec les auteurs existants
+                    return $first. ' ' .$last;
+                },
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
