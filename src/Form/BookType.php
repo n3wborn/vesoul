@@ -68,8 +68,35 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
+            ->add('length', NumberType::class, [
+                'label' => 'Nombre de pages',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
+            ])
+            ->add('width', NumberType::class, [
+                'label' => 'Largeur',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
+            ])
             ->add('year', NumberType::class, [
-                'label' => 'Date de sortie du livre',
+                'label' => 'Année de sortie du livre',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
+            ])
+            ->add('new', NumberType::class, [
+                'label' => 'Inédit ?',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
@@ -78,7 +105,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('stock', NumberType::class, [
-                'label' => 'Nombre de livre en stock',
+                'label' => 'Quantité',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
