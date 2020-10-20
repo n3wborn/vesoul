@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Author;
 use App\Entity\Book;
-use App\Repository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -42,7 +42,6 @@ class BookType extends AbstractType
                 ]
             ])
             // TODO: à modifier
-/*            ->add('author', NumberType::class, [
             ->add('author',  EntityType::class, [
                 'label' => 'ID auteur',
                 'class' => Author::class,
@@ -51,6 +50,12 @@ class BookType extends AbstractType
                     $last = $author->getLastname();
                     // peuple le select avec les auteurs existants
                     return $first. ' ' .$last;
+                    $choices = $first. ' ' .$last;
+                    return $choices;
+                },
+                'query_builder' => function(EntityRepository $author) {
+                    return $author->createQueryBuilder('a')
+                        ->orderBy('a.firstname','ASC');
                 },
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
