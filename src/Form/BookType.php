@@ -63,7 +63,7 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'my-1 col-7'
                 ]
-            ])*/
+            ])
             ->add('price', NumberType::class, [
                 'label' => 'Prix du livre',
                 'label_attr' => [
