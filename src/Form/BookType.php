@@ -24,6 +24,7 @@ class BookType extends AbstractType
 
         $builder
             ->add('title', TextType::class, [
+                // varchar 150
                 'label' => 'Titre du livre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
@@ -33,6 +34,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('isbn', TextType::class, [
+                // varchar 100
                 'label' => 'Code ISBN du livre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
@@ -49,7 +51,6 @@ class BookType extends AbstractType
                     $first = $author->getFirstname();
                     $last = $author->getLastname();
                     // peuple le select avec les auteurs existants
-                    return $first. ' ' .$last;
                     $choices = $first. ' ' .$last;
                     return $choices;
                 },
@@ -65,6 +66,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('price', NumberType::class, [
+                // double
                 'label' => 'Prix du livre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
@@ -74,6 +76,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('description', TextareaType::class, [
+                // longtext
                 'label' => 'Description du livre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
@@ -83,6 +86,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('length', NumberType::class, [
+                // int 11
                 'label' => 'Nombre de pages',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
@@ -92,6 +96,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('width', NumberType::class, [
+                // int 11
                 'label' => 'Largeur',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
@@ -101,6 +106,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('year', NumberType::class, [
+                // int 11
                 'label' => 'Année de sortie du livre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
@@ -110,7 +116,8 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('new', NumberType::class, [
-                'label' => 'Inédit ?',
+                // tiny int
+                'label' => 'Inédit ? (0=non, 1=oui)',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
@@ -119,6 +126,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('stock', NumberType::class, [
+                // int 11
                 'label' => 'Quantité',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
@@ -127,7 +135,8 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
-            ->add('image', FileType::class, [
+
+/*            ->add('image', FileType::class, [
                 'label' => 'images',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
@@ -150,6 +159,7 @@ class BookType extends AbstractType
                     ])
                 ],
             ])
+            */
             // ->add('commands', ChoiceType::class, [
             //     'choices' => [],
             //     'label' => 'Commandes',
