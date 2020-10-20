@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Author;
 use App\Entity\Book;
+use App\Repository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class BookType extends AbstractType
@@ -84,7 +87,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('image', FileType::class, [
-                'label' => 'Couverture',
+                'label' => 'images',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],

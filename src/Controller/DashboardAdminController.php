@@ -65,6 +65,7 @@ class DashboardAdminController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){ //If BookType is valid and submit :
             $manager->persist($book);
             $manager->flush(); // register the book in database
+            //$this->addFlash('success', 'Envoi OK');
             // $this->redirectToRoute('dashboard_admin_livres'); // Redirect to Book-Page
         }
 
