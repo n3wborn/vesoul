@@ -51,7 +51,7 @@ class VesoulEditionController extends AbstractController
         $allBooks = $repoBook->findAllBooksByAscName();
         
         $genras = $repoGenra->findAll();
-        $authors = $repoAuthor->findAll();
+        $authors = $repoAuthor->findAllAuthors();
         $maxAndMinYear = $repoBook->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
@@ -90,7 +90,7 @@ class VesoulEditionController extends AbstractController
         }
 
         $genras = $repoGenra->findAll();
-        $authors = $repoAuthor->findAll();
+        $authors = $repoAuthor->findAllAuthors();
         $maxAndMinYear = $repoBook->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];

@@ -20,7 +20,7 @@ class AuthorRepository extends ServiceEntityRepository
     }
 
 
-    public function findAll() : array
+    public function findAllAuthors()
     {
         $qb = $this->createQueryBuilder('a')
         ->select('a.id','a.firstname', 'a.lastname')
