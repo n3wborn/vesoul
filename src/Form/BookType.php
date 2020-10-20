@@ -41,15 +41,16 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
-            ->add('author', textType::class, [
-                'label' => 'Auteur du livre',
+            // TODO: à modifier
+/*            ->add('author', NumberType::class, [
+                'label' => 'ID auteur',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
                     'class' => 'my-1 col-7'
                 ]
-            ])
+            ])*/
             ->add('price', NumberType::class, [
                 'label' => 'Prix du livre',
                 'label_attr' => [
