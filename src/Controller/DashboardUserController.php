@@ -27,6 +27,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class DashboardUserController extends AbstractController
 {
+    private $manager;
+
+    public function __construct(ObjectManager $manager)
+    {
+
+        $this->manager = $manager;
+    }
+
 
     /**
      * @Route("/accueil", name="dashboard_user_home")
@@ -49,7 +57,7 @@ class DashboardUserController extends AbstractController
      * @Route("/informations", name="dashboard_user_informations")
      * 
      */
-    public function showInformations(SessionInterface $session, Request $request, ObjectManager $manager, AuthenticationUtils $authenticationUtils, UserPasswordEncoderInterface $encoder)
+    public function showInformations(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder)
     {
         $commande = $session->get('commande');
 
@@ -63,31 +71,23 @@ class DashboardUserController extends AbstractController
         $form->handleRequest($request);
 
 
-            
-        
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
+            $hash = $encoder->encodePassword($user, $user->getPassword()); // Chiffrer le mot de passe de l'user
 
-               
-                
-                $em = $this->getDoctrine()->getManager();
+            $username_mail = $user->getUsername();
+            $tel = $user->getTel();
 
-                $hash = $encoder->encodePassword($user, $user->getPassword()); // Chiffrer le mot de passe de l'user
-                
-                $username_mail = $user->getUsername();
-                $tel = $user->getTel();
-                
-                $user->setPassword($hash) // Enregistrer le mot de passee chiffré en BDD
-                     ->setUsername($username_mail)
-                     ->setTel($tel);
-                
-                $em->persist($user);
-                $em->flush();
+            $user->setPassword($hash) // Enregistrer le mot de passee chiffré en BDD
+                 ->setUsername($username_mail)
+                 ->setTel($tel);
 
-                $this->addFlash('notice', 'Votre mot de passe à bien été changé !');
+            $this->manager->persist($user);
+            $this->manager->flush();
 
-                return $this->redirectToRoute('security_user_login');
+            $this->addFlash('notice', 'Votre mot de passe à bien été changé !');
+
+            return $this->redirectToRoute('security_user_login');
             } else {
                 $form->addError(new FormError('Ancien mot de passe incorrect'));
 

@@ -86,11 +86,11 @@ class DashboardAdminController extends AbstractController
      * @Route("/livres/delete/{id}", name="admin_delete_book")
      * Delete book in database (by Benaor)
      */
-    public function removeBook(Book $book, Image $image, ObjectManager $manager, RouterInterface $router)
+    public function removeBook(Book $book, Image $image, RouterInterface $router)
     {
-        $manager->remove($book);
-        $manager->remove($image);
-        $manager->flush();
+        $this->manager->remove($book);
+        $this->manager->remove($image);
+        $this->manager->flush();
         return $this->redirectToRoute('dashboard_admin_livres');
     }
 
@@ -105,15 +105,15 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
      */
-    public function reditBooks(Book $book, Request $request, ObjectManager $manager, RouterInterface $router)
+    public function reditBooks(Book $book, Request $request, RouterInterface $router)
     {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $manager->persist($book);
-            $manager->flush();
+            $this->manager->persist($book);
+            $this->manager->flush();
             // return new RedirectResponse($router->generate('handle_tools'));
             return $this->redirectToRoute('dashboard_admin_livres');
         }
