@@ -31,21 +31,20 @@ class DashboardAdminController extends AbstractController
 
         $this->manager = $manager;
     }
-    //Onglet Accueil
 
+
+    //Onglet Accueil
     /**
      * @Route("/accueil", name="dashboard_admin_home")
      * Dashboard admin Home
      */
     public function home()
     {
-        return $this->render('dashboard-admin/home.html.twig', [
-            'title' => 'Accueil',
-        ]);
+        return $this->render('dashboard-admin/home.html.twig');
     }
 
-    // Onglet livres
 
+    // Onglet livres
     /**
      * @Route("/livres", name="dashboard_admin_livres")
      * Display all books in database (by Benaor)
@@ -57,6 +56,7 @@ class DashboardAdminController extends AbstractController
             'books' => $repo->findAll()
         ]);
     }
+
 
     /**
      * @Route("/livres/new", name="admin_add_book")
@@ -82,6 +82,7 @@ class DashboardAdminController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/livres/delete/{id}", name="admin_delete_book")
      * Delete book in database (by Benaor)
@@ -93,13 +94,6 @@ class DashboardAdminController extends AbstractController
         $this->manager->flush();
         return $this->redirectToRoute('dashboard_admin_livres');
     }
-
-
-
-
-
-
-
 
 
     /**

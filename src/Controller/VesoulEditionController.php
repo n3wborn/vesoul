@@ -38,8 +38,6 @@ class VesoulEditionController extends AbstractController
      */
     public function home(Request $request, SessionInterface $session, BookRepository $repoBook, GenraRepository $repoGenra, AuthorRepository $repoAuthor)
     {
-        
-
         if($session->get('panier')) {
 
             $panier = $session->get('panier');
@@ -55,20 +53,16 @@ class VesoulEditionController extends AbstractController
         $maxAndMinYear = $repoBook->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
-        
-        
+
         return $this->render('vesoul-edition/home.html.twig', [
             'genras' => $genras,
             'authors' => $authors,
             'minyear' => $minYear,
             'maxyear' => $maxYear
-
         ]);
     } 
-    
-    
-     
-   
+
+
 
      /**
      * @Route("/home/search/bytitle/{searchValue}", name="search-bytitle")
@@ -102,11 +96,9 @@ class VesoulEditionController extends AbstractController
             'maxyear' => $maxYear,
             'books'   => $books,
             'searchValue' => $searchValue
-
         ]);
-        
-
     }
+
 
      /**
      * @Route("/home/search/ajax/{searchValue}", name="search-autocomplete")
@@ -134,10 +126,10 @@ class VesoulEditionController extends AbstractController
             $response->setStatusCode(Response::HTTP_NO_CONTENT);
 
         }
-        
 
         return $response;
     }
+
 
     /**
      * @Route("/home/load", name="load-home")
@@ -154,20 +146,12 @@ class VesoulEditionController extends AbstractController
         $title = $request->get('title');
 
         $max_per_page = 9;
-
         $total_books = $repoBook->countBooks($new, $genre, $author, $yearmin, $yearmax, $title);
         $pages = ceil($total_books / $max_per_page);
-
-        
-        
         $offset = ($page - 1) * $max_per_page;
-
-        
-
         $books = $repoBook->findPageOfListBook($offset, $orderBy, $new, $genre, $author, $yearmin, $yearmax, $title);
+
         $response = new Response();
-       
-        
         $response->setCharset('utf-8');
         $response->headers->set('Content-Type', 'text/html');
         $response->headers->set('X-TotalBooks', $total_books );
@@ -180,8 +164,6 @@ class VesoulEditionController extends AbstractController
                 'books' => $books
             ]
         );
-        
-        
     }
 
 
@@ -208,11 +190,10 @@ class VesoulEditionController extends AbstractController
         return $json;
     }
 
+
     /**
-     * 
-     * 
-    * @Route("/descName", name="sortByDescName")
-    */
+     * @Route("/descName", name="sortByDescName")
+     */
     public function sortByDescName(BookRepository $repo) : JsonResponse
     {
         $books = $repo->findAllBooksByDescName();
@@ -229,8 +210,8 @@ class VesoulEditionController extends AbstractController
         $json = new JsonResponse($data, 200);
 
         return $json;
-       
     }
+
 
     /**
     * @Route("/ascYear", name="sortByAscYear")
@@ -249,9 +230,9 @@ class VesoulEditionController extends AbstractController
         }
 
         $json = new JsonResponse($data, 200);
-
         return $json;
     }
+
 
     /**
     * @Route("/descYear", name="sortByDescYear")
@@ -270,9 +251,9 @@ class VesoulEditionController extends AbstractController
         }
 
         $json = new JsonResponse($data, 200);
-
         return $json;
     }
+
 
     /**
      * @Route("/panier/add/{id}", name="addItem")
@@ -286,37 +267,29 @@ class VesoulEditionController extends AbstractController
         $stock = $book->getStock();
         $images = $book->getImages();
         $image = $images[0]->getUrl(); // Juste la couverture du livre.
+        $panier = $session->get('panier');
 
+        if (array_key_exists($id, $panier)) {
 
-        
-
-            
-            $panier = $session->get('panier'); 
-              
-            if (array_key_exists($id, $panier)) {
-
-                $quantityInPanier = $panier[$id]['quantity'];
-                if ( ($stock - $quantityInPanier - 1 ) > 0) { 
-                    $panier[$id]['quantity']++;
-                }
-
-            } else {
-                
-                $panier[$id] = [
-                    'id' => $id,
-                    'title'=> $title,
-                    'firstname'=> $author->getFirstname(),
-                    'lastname'=> $author->getLastname(),
-                    'quantity'=> 1,
-                    'price'=> $price,
-                    'image' => $image               
-                ];   
+            $quantityInPanier = $panier[$id]['quantity'];
+            if ( ($stock - $quantityInPanier - 1 ) > 0) {
+                $panier[$id]['quantity']++;
             }
-
-            
-            $session->set('panier', $panier);            
-            return $this->redirectToRoute('panier');
+        } else {
+            $panier[$id] = [
+                'id' => $id,
+                'title'=> $title,
+                'firstname'=> $author->getFirstname(),
+                'lastname'=> $author->getLastname(),
+                'quantity'=> 1,
+                'price'=> $price,
+                'image' => $image
+            ];
+        }
+        $session->set('panier', $panier);
+        return $this->redirectToRoute('panier');
     }
+
 
     /**
      * @Route("/panier/ajax/add/{id}", name="ajaxaddItem")
@@ -360,6 +333,7 @@ class VesoulEditionController extends AbstractController
         }
     }
 
+
     /**
      * @Route("/panier/ajax/reduce/{id}", name="reduceAjaxItem")
      */
@@ -381,6 +355,7 @@ class VesoulEditionController extends AbstractController
         return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
     }
 
+
     /**
      * @Route("/panier/reduce/{id}", name="reduceItem")
      */
@@ -388,7 +363,6 @@ class VesoulEditionController extends AbstractController
     {   
         
         $id = $book->getId();
-        
         $panier = $session->get('panier');
        
         if (array_key_exists($id, $panier) && ($panier[$id]['quantity'] - 1 ) >= 1) {
@@ -402,6 +376,7 @@ class VesoulEditionController extends AbstractController
         return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
     }
 
+
     /**
      * @Route("/panier/ajax/delete/{id}", name="deleteAjaxItem")
      */
@@ -409,18 +384,16 @@ class VesoulEditionController extends AbstractController
     {
         $id = $book->getId();
         $panier = $session->get('panier');
-        
-       
+
         if (array_key_exists($id, $panier)){
             unset($panier[$id]);
             $session->set('panier', $panier);
             return new Response("OK", Response::HTTP_OK);
         }
-        
 
         return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
-        
     }
+
 
     /**
      * @Route("/panier/delete/{id}", name="deleteItem")
@@ -429,17 +402,13 @@ class VesoulEditionController extends AbstractController
     {
         $id = $book->getId();
         $panier = $session->get('panier');
-        
-        
 
         unset($panier[$id]);
         $session->set('panier', $panier);
 
-        
-
         return $this->redirectToRoute('panier');
-        
     }
+
 
     /**
      * @Route("/product/{id}", name="product")
@@ -452,6 +421,7 @@ class VesoulEditionController extends AbstractController
             'book' => $book
         ]);
     }
+
 
     /**
      * @Route("/panier", name="panier")
@@ -467,7 +437,6 @@ class VesoulEditionController extends AbstractController
             ]);
         }
 
-
         foreach ($panier as $elem) {
             $this->totalCost += $elem['price'] * $elem['quantity'];                
         }
@@ -476,6 +445,7 @@ class VesoulEditionController extends AbstractController
             'total' => $this->totalCost
         ]);
     }
+
 
     /**
      * @Route("/commande", name="commande")
@@ -490,22 +460,20 @@ class VesoulEditionController extends AbstractController
         if( $panier === null){
             return $this->redirectToRoute('panier');
         }
-           
-        
-        
+
         if( $user === null ){
             
             $commande['confirmation'] = true;
             $session->set('commande', $commande);
             return $this->redirectToRoute('security_user_login');
         }
-        
 
         return $this->render('vesoul-edition/commande.html.twig',
         [
             'user' => $user
         ]);
     }
+
 
     /**
      * @Route("/confirmation", name="commander")
@@ -516,6 +484,4 @@ class VesoulEditionController extends AbstractController
             'controller_name' => 'FrontController',
         ]);
     }
-
-   
 }

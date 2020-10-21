@@ -137,13 +137,9 @@ class DashboardUserController extends AbstractController
 
         }
 
-        
-
-
 
         if($form_edit->isSubmitted()) {
             
-           
 
             $address->setCity(strtoupper($address->getCity()))
             ->setCountry(strtoupper($address->getCountry()))
@@ -158,15 +154,12 @@ class DashboardUserController extends AbstractController
 
         }
 
-       
-
         $adresses = $repo->findAddressByUserId($id);
        
         return $this->render('dashboard-user/compte-adresses.html.twig', [
             'adresses' => $adresses,
             'form' => $form->createView(),
             'form_edit' => $form_edit->createView()
-            
         ]);
     }
 
