@@ -104,6 +104,16 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
+            ->add('height', NumberType::class, [
+                // int 11
+                'label' => 'Hauteur',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
+                ],
+                'attr' => [
+                    'class' => 'my-1 col-7'
+                ]
+            ])
             ->add('year', NumberType::class, [
                 // int 11
                 'label' => 'Année de sortie du livre',
