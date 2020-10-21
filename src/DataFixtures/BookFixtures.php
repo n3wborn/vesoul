@@ -42,6 +42,7 @@ class BookFixtures extends Fixture
             ->setYear($faker->numberBetween($min = 1940, $max = 2019))
             ->setLength($faker->randomElement($array = array (15,25,40)))
             ->setWidth($faker->randomElement($array = array (15,25,40)))
+            ->setHeight($faker->randomElement($array = array (15,25,40)))
             ->setNew($faker->numberBetween($min = 0, $max = 1))
             ->addImage($image)
             ->addGenra($genra);

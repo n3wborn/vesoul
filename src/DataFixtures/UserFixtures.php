@@ -19,27 +19,27 @@ class UserFixtures extends Fixture
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder) 
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
     public function load(ObjectManager $objectManager)
-    {   
-        
+    {
+
         $faker = \Faker\Factory::create('fr_FR');
         // ==== Images ==========================================================
         $image1 = new Image();
-    
+
         $image1->setUrl("/build/images/livre1.jpg");
         $objectManager->persist($image1);
         // -------------------------------------
         $image2 = new Image();
-        
+
         $image2->setUrl("/build/images/livre2.jpg");
         $objectManager->persist($image2);
         // ------------------------------------
         $image3 = new Image();
-        
+
         $image3->setUrl("/build/images/livre3.jpg");
         $objectManager->persist($image3);
         // ===== Categories ===============================================
@@ -54,10 +54,10 @@ class UserFixtures extends Fixture
         $genra3 = new Genra();
         $genra3->setName('Humour');
         $objectManager->persist($genra3);
-         
+
         // ===== Books =====================================================
         $book1 = new Book();
-        
+
         $book1->setDescription("Un beau livre, bien propre, en papier. Il raconte un belle histoire, passionante, dense et bien documentée.")
         ->setPrice(24)
         ->setIsbn("6486158165")
@@ -65,6 +65,7 @@ class UserFixtures extends Fixture
         ->setTitle("Le titre du livre")
         ->setYear(2002)
         ->setLength(15)
+        ->setHeight(40)
         ->setWidth(10)
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image1)
@@ -72,7 +73,7 @@ class UserFixtures extends Fixture
         $objectManager->persist($book1);
         // ---------------------------------------------
         $book2 = new Book();
-        
+
         $book2->setDescription("Le meilleur livre du monde à lire absolument. Ce livre changera votre vision du monde et votre compréhension de vous même.")
         ->setPrice(18)
         ->setIsbn("87521463258")
@@ -80,6 +81,7 @@ class UserFixtures extends Fixture
         ->setTitle("Le meilleur livre du monde")
         ->setYear(2007)
         ->setLength(30)
+        ->setHeight(35)
         ->setWidth(21)
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image2)
@@ -87,7 +89,7 @@ class UserFixtures extends Fixture
         $objectManager->persist($book2);
         // ----------------------------------------------
         $book3 = new Book();
-        
+
         $book3->setDescription("C'est l'histoire d'un pingouin qui vie au pole nord et qui aime nager et manger du poisson")
         ->setPrice(15)
         ->setIsbn("44215889753")
@@ -96,20 +98,21 @@ class UserFixtures extends Fixture
         ->setYear(1978)
         ->setLength(18)
         ->setWidth(12)
+        ->setHeight(50)
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image3)
         ->addGenra($genra3);
         $objectManager->persist($book3);
         // ===== Authors ========================================================
         $author1 = new Author();
-        
+
         $author1->setFirstname("Alain")
         ->setLastname("Jean")
         ->addBook($book1);
         $objectManager->persist($author1);
         // ---------------------------------
         $author2 = new Author();
-        
+
         $author2->setFirstname("Bernard")
         ->setLastname("Pinot")
         ->addBook($book2)
@@ -117,7 +120,7 @@ class UserFixtures extends Fixture
         $objectManager->persist($author2);
         // ===== Commands ======================================================
         $command1 = new Command();
-        
+
         $command1->setDate(new \DateTimeImmutable())
         ->setNumber("8657185758")
         ->setQuantity(2)
@@ -128,9 +131,9 @@ class UserFixtures extends Fixture
         $objectManager->persist($command1);
         // ------------------------------------------
         $command2 = new Command();
-        
+
         // $objectManager->flush();
-        
+
         $command2->setDate(new \DateTimeImmutable())
         ->setNumber("8917186412")
         ->setQuantity(3)
@@ -139,7 +142,7 @@ class UserFixtures extends Fixture
         ->addBook($book1)
         ->addBook($book2)
         ->addBook($book3);
-        
+
         $objectManager->persist($command2);
         // ------------------------------------------
         $command3 = new Command();
@@ -151,7 +154,7 @@ class UserFixtures extends Fixture
         ->addBook($book1)
         ->addBook($book2)
         ->addBook($book3);
-        
+
         $objectManager->persist($command3);
         // ===== Adresses ======================================================
         $address1 = new Address();
@@ -167,11 +170,11 @@ class UserFixtures extends Fixture
         ->setLastname("Pierre")
         ->addCommandFacturation($command3)
         ->addCommandLivraison($command3);
-        
+
         $objectManager->persist($address1);
         // -----------------------------------------
         $address2 = new Address();
-        
+
         $address2->setNumber("7")
         ->setStreet("rue du chien")
         ->setCity("besançon")
@@ -197,12 +200,12 @@ class UserFixtures extends Fixture
         ->setLastname("Dujardin")
         ->addCommandFacturation($command2)
         ->addCommandLivraison($command1);
-        
+
         $objectManager->persist($address3);
-        
+
          // ===== User ======================================================
          $user = new User();
-        
+
          $hash = $this->passwordEncoder->encodePassword($user, "online@2017");
          $user->setFirstname("Lucas")
          ->setLastname("Robin")
@@ -219,9 +222,9 @@ class UserFixtures extends Fixture
          ->addAddress($address1)
          ->addAddress($address2)
          ->addAddress($address3);
- 
+
          $objectManager->persist($user);
- 
+
          $objectManager->flush();
     }
 }
