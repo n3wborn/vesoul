@@ -56,17 +56,18 @@ class DashboardAdminController extends AbstractController
      * @Route("/livres/new", name="admin_add_book")
      * Add a book in database (by Benaor)
      */
-    public function addBook(Request $request, ObjectManager $manager)
+    public function addBook(Request $request)
     {
-        $book = new Book(); // Create the book 
+        $book = new Book(); // Create the book
         $form = $this->createForm(BookType::class, $book); //Create the form
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){ //If BookType is valid and submit :
-            $manager->persist($book);
-            $manager->flush(); // register the book in database
-            //$this->addFlash('success', 'Envoi OK');
-            // $this->redirectToRoute('dashboard_admin_livres'); // Redirect to Book-Page
+            $this->manager->persist($book);
+            $this->manager->flush(); // register the book in database
+            $this->addFlash('success', 'Envoi OK');
+            // TODO: redirection vers quelle page une fois les données soumises ??
+            return $this->redirectToRoute('dashboard_admin_livres');
         }
 
         return $this->render('dashboard-admin/book-crud/add-book.html.twig', [

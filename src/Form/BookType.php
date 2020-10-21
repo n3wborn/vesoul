@@ -6,6 +6,7 @@ use App\Entity\Author;
 use App\Entity\Book;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -115,9 +116,9 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
-            ->add('new', NumberType::class, [
-                // tiny int
-                'label' => 'Inédit ? (0=non, 1=oui)',
+            ->add('new', CheckboxType::class, [
+                'label' => 'Nouveauté',
+                'required' => false,
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],

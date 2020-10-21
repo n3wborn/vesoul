@@ -81,7 +81,7 @@ class Book
     /**
      * @ORM\Column(type="boolean")
      */
-    private $new;
+    private $new = false;
 
     public function __construct()
     {

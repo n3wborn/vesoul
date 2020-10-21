@@ -11,8 +11,14 @@
 
     <div class="container">
 
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success my-3">
+				{{ message }}
+			</div>
+		{% endfor %}
+
         <h5 class="text-center">Ajouter un livre</h5>
-        
+
 		{{ form_start(form) }}  
 
 			{{ form_label(form.title) }}
