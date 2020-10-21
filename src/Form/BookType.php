@@ -44,14 +44,12 @@ class BookType extends AbstractType
                     'class' => 'my-1 col-7'
                 ]
             ])
-            // TODO: à modifier
             ->add('author',  EntityType::class, [
                 'label' => 'ID auteur',
                 'class' => Author::class,
                 'choice_label' =>  function (Author $author) {
                     $first = $author->getFirstname();
                     $last = $author->getLastname();
-                    // peuple le select avec les auteurs existants
                     $choices = $first. ' ' .$last;
                     return $choices;
                 },
