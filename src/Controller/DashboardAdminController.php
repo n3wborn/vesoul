@@ -24,7 +24,13 @@ use App\Entity\Image;
  */
 class DashboardAdminController extends AbstractController
 {
+    private $manager;
 
+    public function __construct(ObjectManager $manager)
+    {
+
+        $this->manager = $manager;
+    }
     //Onglet Accueil
 
     /**
@@ -44,7 +50,7 @@ class DashboardAdminController extends AbstractController
      * @Route("/livres", name="dashboard_admin_livres")
      * Display all books in database (by Benaor)
      */
-    public function books(Request $request, BookRepository $repo, ObjectManager $manager)
+    public function books(BookRepository $repo)
     {
         return $this->render('dashboard-admin/books.html.twig', [
             'title' => 'Livres',
