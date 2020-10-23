@@ -9,7 +9,8 @@ use App\Entity\Author;
 use App\Entity\Address;
 use App\Entity\Command;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -19,9 +20,11 @@ class UserFixtures extends Fixture
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    private $entityManager;
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->entityManager = $entityManager;
     }
     public function load(ObjectManager $objectManager)
     {
@@ -31,29 +34,29 @@ class UserFixtures extends Fixture
         $image1 = new Image();
 
         $image1->setUrl("/build/images/livre1.jpg");
-        $objectManager->persist($image1);
+        $this->entityManager->persist($image1);
         // -------------------------------------
         $image2 = new Image();
 
         $image2->setUrl("/build/images/livre2.jpg");
-        $objectManager->persist($image2);
+        $this->entityManager->persist($image2);
         // ------------------------------------
         $image3 = new Image();
 
         $image3->setUrl("/build/images/livre3.jpg");
-        $objectManager->persist($image3);
+        $this->entityManager->persist($image3);
         // ===== Categories ===============================================
         $genra1 = new Genra();
         $genra1->setName('Histoire');
-        $objectManager->persist($genra1);
+        $this->entityManager->persist($genra1);
         //-----------------------------------
         $genra2 = new Genra();
         $genra2->setName('Politique');
-        $objectManager->persist($genra2);
+        $this->entityManager->persist($genra2);
         // ----------------------------------
         $genra3 = new Genra();
         $genra3->setName('Humour');
-        $objectManager->persist($genra3);
+        $this->entityManager->persist($genra3);
 
         // ===== Books =====================================================
         $book1 = new Book();
@@ -70,7 +73,7 @@ class UserFixtures extends Fixture
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image1)
         ->addGenra($genra1);
-        $objectManager->persist($book1);
+        $this->entityManager->persist($book1);
         // ---------------------------------------------
         $book2 = new Book();
 
@@ -86,7 +89,7 @@ class UserFixtures extends Fixture
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image2)
         ->addGenra($genra2);
-        $objectManager->persist($book2);
+        $this->entityManager->persist($book2);
         // ----------------------------------------------
         $book3 = new Book();
 
@@ -102,14 +105,14 @@ class UserFixtures extends Fixture
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image3)
         ->addGenra($genra3);
-        $objectManager->persist($book3);
+        $this->entityManager->persist($book3);
         // ===== Authors ========================================================
         $author1 = new Author();
 
         $author1->setFirstname("Alain")
         ->setLastname("Jean")
         ->addBook($book1);
-        $objectManager->persist($author1);
+        $this->entityManager->persist($author1);
         // ---------------------------------
         $author2 = new Author();
 
@@ -117,7 +120,7 @@ class UserFixtures extends Fixture
         ->setLastname("Pinot")
         ->addBook($book2)
         ->addBook($book3);
-        $objectManager->persist($author2);
+        $this->entityManager->persist($author2);
         // ===== Commands ======================================================
         $command1 = new Command();
 
@@ -128,11 +131,11 @@ class UserFixtures extends Fixture
         ->setState("en cours")
         ->addBook($book2)
         ->addBook($book1);
-        $objectManager->persist($command1);
+        $this->entityManager->persist($command1);
         // ------------------------------------------
         $command2 = new Command();
 
-        // $objectManager->flush();
+        // $entityManager->flush();
 
         $command2->setDate(new \DateTimeImmutable())
         ->setNumber("8917186412")
@@ -143,7 +146,7 @@ class UserFixtures extends Fixture
         ->addBook($book2)
         ->addBook($book3);
 
-        $objectManager->persist($command2);
+        $this->entityManager->persist($command2);
         // ------------------------------------------
         $command3 = new Command();
         $command3->setDate(new \DateTimeImmutable())
@@ -155,7 +158,7 @@ class UserFixtures extends Fixture
         ->addBook($book2)
         ->addBook($book3);
 
-        $objectManager->persist($command3);
+        $this->entityManager->persist($command3);
         // ===== Adresses ======================================================
         $address1 = new Address();
         $address1->setNumber("2")
@@ -171,7 +174,7 @@ class UserFixtures extends Fixture
         ->addCommandFacturation($command3)
         ->addCommandLivraison($command3);
 
-        $objectManager->persist($address1);
+        $this->entityManager->persist($address1);
         // -----------------------------------------
         $address2 = new Address();
 
@@ -186,7 +189,7 @@ class UserFixtures extends Fixture
         ->setLastname("Pierre")
         ->addCommandFacturation($command1)
         ->addCommandLivraison($command2);
-        $objectManager->persist($address2);
+        $this->entityManager->persist($address2);
         // ----------------------------------------
         $address3 = new Address();
         $address3->setNumber("3")
@@ -201,7 +204,7 @@ class UserFixtures extends Fixture
         ->addCommandFacturation($command2)
         ->addCommandLivraison($command1);
 
-        $objectManager->persist($address3);
+        $this->entityManager->persist($address3);
 
          // ===== User ======================================================
          $user = new User();
@@ -223,8 +226,8 @@ class UserFixtures extends Fixture
          ->addAddress($address2)
          ->addAddress($address3);
 
-         $objectManager->persist($user);
+        $this->entityManager->persist($user);
 
-         $objectManager->flush();
+        $this->entityManager->flush();
     }
 }

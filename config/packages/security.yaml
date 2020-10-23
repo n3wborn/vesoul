@@ -2,14 +2,13 @@ security:
     encoders:
         App\Entity\Admin: bcrypt
         App\Entity\User: bcrypt
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         database_admin:
             entity: { class: App\Entity\Admin, property: username }
         database_user:
             entity: { class: App\Entity\User, property: username }
-
+        users_in_memory: { memory: null }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -26,7 +25,7 @@ security:
             logout:
                 path: security_admin_logout
                 target: security_admin_login
-            
+
         user_secured_area:
             anonymous: ~
             pattern: ^/
@@ -39,14 +38,16 @@ security:
             logout:
                 path: security_user_logout
                 target: security_user_login
-        
+
+        main:
+            anonymous: lazy
+            provider: users_in_memory
+
             # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
 
-            # http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: true
-            # https://symfony.com/doc/current/security/form_login_setup.html
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

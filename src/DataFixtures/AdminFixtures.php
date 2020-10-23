@@ -3,7 +3,8 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use App\Entity\Admin;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -14,6 +15,11 @@ class AdminFixtures extends Fixture
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
+
+    /**
+     * AdminFixtures constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder) 
     {

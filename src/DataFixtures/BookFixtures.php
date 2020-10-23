@@ -2,9 +2,7 @@
 
 namespace App\DataFixtures;
 
-
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use App\Entity\Book;
 use App\Entity\User;
@@ -13,6 +11,7 @@ use App\Entity\Image;
 use App\Entity\Author;
 use App\Entity\Address;
 use App\Entity\Command;
+use Doctrine\Persistence\ObjectManager;
 
 class BookFixtures extends Fixture
 {

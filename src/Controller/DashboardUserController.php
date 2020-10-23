@@ -13,7 +13,7 @@ use App\Repository\UserRepository;
 use App\Form\EditInformationsType;
 use App\Form\EditAddressesType;
 use App\Form\AddAddressesType;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\Address;
@@ -27,11 +27,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class DashboardUserController extends AbstractController
 {
+    /**
+     * @var EntityManagerInterface
+     */
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-
         $this->manager = $manager;
     }
 
@@ -101,16 +103,11 @@ class DashboardUserController extends AbstractController
     /**
      * @Route("/adresses", name="dashboard_user_addresses")
      */
-    public function showAdresses(AddressRepository $repo, Address $address = null, Request $request, ObjectManager $manager = null)
+    public function showAdresses(AddressRepository $repo, Request $request)
     {
 
         $user = $this->getUser();
-
-        $id = $user->getId();
-
-        if(!$address) {
-            $address = new Address();
-        }
+        $address = new Address();
 
         $form = $this->createForm(AddAddressesType::class, $address);
         $form_edit = $this->createForm(EditAddressesType::class, $address);
@@ -119,42 +116,38 @@ class DashboardUserController extends AbstractController
 
        
         
-        if($form->isSubmitted()) {
-            
-           
-            $address->get;
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $address->setCity(strtoupper($address->getCity()))
             ->setCountry(strtoupper($address->getCountry()))
             ->setFirstname(ucfirst($address->getFirstname()))
             ->setLastname(ucfirst($address->getLastname()));
-            
+
             $address->addUser($user);
-            $manager->persist($address);
-            $manager->flush();
+            $this->manager->persist($address);
+            $this->manager->flush();
 
             return $this->redirectToRoute('dashboard_user_addresses');
 
         }
 
 
-        if($form_edit->isSubmitted()) {
+        if($form_edit->isSubmitted() && $form->isValid()) {
             
-
             $address->setCity(strtoupper($address->getCity()))
             ->setCountry(strtoupper($address->getCountry()))
             ->setFirstname(ucfirst($address->getFirstname()))
             ->setLastname(ucfirst($address->getLastname()));
             
             $address->addUser($user);
-            $manager->persist($address);
-            $manager->flush();
+            $this->manager->persist($address);
+            $this->manager->flush();
 
             return $this->redirectToRoute('dashboard_user_addresses');
 
         }
 
-        $adresses = $repo->findAddressByUserId($id);
+        $adresses = $repo->findBy(['users' => $user]);
        
         return $this->render('dashboard-user/compte-adresses.html.twig', [
             'adresses' => $adresses,
@@ -207,20 +200,17 @@ class DashboardUserController extends AbstractController
     /**
      * @Route("/adresses/{id}/delete", name="dashboard_user_addresses_delete")
      */
-    public function delete($id, Address $address = null, Request $request, ObjectManager $manager)
+    public function delete($id, Address $address = null, Request $request)
     {
         
         // $repo = $this->getDoctrine()->getRepository(Address::class);
         // $address = $repo->find($id);
-        
-        
         // $manager->remove($address);
         // $manager->flush();
-        
-        //     // dump($address);
-        //     // die();
+        // dump($address);
+        // die();
 
-            return $this->redirectToRoute('dashboard_user_addresses');
+        return $this->redirectToRoute('dashboard_user_addresses');
 
     }
 
@@ -231,32 +221,19 @@ class DashboardUserController extends AbstractController
     public function showCommandes(CommandRepository $repo_commande, AddressRepository $repo_adresse)
     {
         $user = $this->getUser();
-
         $id = $user->getId();
 
         $commandes = $repo_commande->findCommandByUserId($id);
         
         // $address = $this->getId();
-
-
         // $test = $repo_commande->findCommandById(2);
-
         // $addresses = $repo_adresse->findAddressByUserId($id);
 
-        // dump($commandes);
-        // dump($addresses);
-        // dump($commandes_livraison);
-        // dump($commandes_facturation);
-
-        // die();
-        
         return $this->render('dashboard-user/compte-commandes.html.twig', [
             'commandes' => $commandes
             // 'addresses' => $addresses
         ]);
     }
-
-
 
 }
 

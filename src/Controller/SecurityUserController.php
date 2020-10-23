@@ -24,10 +24,6 @@ class SecurityUserController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        
-        
-
-        
 
         return $this->render('security-user/connexionSecurityUser.html.twig', [
             'title' => "Connexion utilisateur",
@@ -42,7 +38,6 @@ class SecurityUserController extends AbstractController
     */
     public function logout() 
     {
-        
     }
     
     /**

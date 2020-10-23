@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping\OrderBy;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Book|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,7 +19,7 @@ class BookRepository extends ServiceEntityRepository
     public const LIMIT = 9;
 
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
     }

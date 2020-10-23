@@ -9,7 +9,8 @@ use App\Form\AdminType;
 use App\Repository\BookRepository;
 use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,17 +19,22 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Command;
 use App\Entity\Image;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * @Route("/admin")
  */
 class DashboardAdminController extends AbstractController
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
+
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-
         $this->manager = $manager;
     }
 
