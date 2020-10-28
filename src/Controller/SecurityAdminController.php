@@ -34,6 +34,7 @@ class SecurityAdminController extends AbstractController
     */
     public function logout() 
     {
+        // TODO
     }
     
 

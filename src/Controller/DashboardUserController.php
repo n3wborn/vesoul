@@ -27,23 +27,26 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class DashboardUserController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
+    private SessionInterface $session;
+    private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager,
+                                SessionInterface $session,
+                                UserPasswordEncoderInterface $encoder)
     {
         $this->manager = $manager;
+        $this->session = $session;
+        $this->encoder = $encoder;
     }
 
 
     /**
      * @Route("/accueil", name="dashboard_user_home")
      */
-    public function home(SessionInterface $session)
+    public function home()
     {
-        $commande = $session->get('commande');
+        $commande = $this->session->get('commande');
 
         if( isset( $commande['confirmation']) && $commande['confirmation']=== true){
             return $this->redirectToRoute('commande');
@@ -57,26 +60,22 @@ class DashboardUserController extends AbstractController
 
     /**
      * @Route("/informations", name="dashboard_user_informations")
-     * 
      */
-    public function showInformations(SessionInterface $session, Request $request, UserPasswordEncoderInterface $encoder)
+    public function showInformations(Request $request)
     {
-        $commande = $session->get('commande');
+        $commande = $this->session->get('commande');
 
         if( isset( $commande['confirmation']) && $commande['confirmation']=== true){
             return $this->redirectToRoute('commande');
         }
         
         $user = $this->getUser();
-
         $form = $this->createForm(EditInformationsType::class, $user);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $hash = $encoder->encodePassword($user, $user->getPassword()); // Chiffrer le mot de passe de l'user
-
+            $hash = $this->encoder->encodePassword($user, $user->getPassword()); // Chiffrer le mot de passe de l'user
             $username_mail = $user->getUsername();
             $tel = $user->getTel();
 
@@ -92,8 +91,8 @@ class DashboardUserController extends AbstractController
             return $this->redirectToRoute('security_user_login');
             } else {
                 $form->addError(new FormError('Ancien mot de passe incorrect'));
-
             }
+
         return $this->render('dashboard-user/mon-compte.html.twig', [
             'user' => $user,
             'form' => $form->createView()
@@ -113,15 +112,13 @@ class DashboardUserController extends AbstractController
         $form_edit = $this->createForm(EditAddressesType::class, $address);
         $form->handleRequest($request);
         $form_edit->handleRequest($request);
-
-       
         
         if ($form->isSubmitted() && $form->isValid()) {
 
             $address->setCity(strtoupper($address->getCity()))
-            ->setCountry(strtoupper($address->getCountry()))
-            ->setFirstname(ucfirst($address->getFirstname()))
-            ->setLastname(ucfirst($address->getLastname()));
+                    ->setCountry(strtoupper($address->getCountry()))
+                    ->setFirstname(ucfirst($address->getFirstname()))
+                    ->setLastname(ucfirst($address->getLastname()));
 
             $address->addUser($user);
             $this->manager->persist($address);
@@ -135,9 +132,9 @@ class DashboardUserController extends AbstractController
         if($form_edit->isSubmitted() && $form->isValid()) {
             
             $address->setCity(strtoupper($address->getCity()))
-            ->setCountry(strtoupper($address->getCountry()))
-            ->setFirstname(ucfirst($address->getFirstname()))
-            ->setLastname(ucfirst($address->getLastname()));
+                    ->setCountry(strtoupper($address->getCountry()))
+                    ->setFirstname(ucfirst($address->getFirstname()))
+                    ->setLastname(ucfirst($address->getLastname()));
             
             $address->addUser($user);
             $this->manager->persist($address);
@@ -161,7 +158,7 @@ class DashboardUserController extends AbstractController
     /**
      * @Route("/adresses/{id}/edit", name="dashboard_user_addresses_edit")
      */
-    public function EditAddresses(AddressRepository $repo, Address $address = null, Request $request, ObjectManager $manager = null)
+    public function EditAddresses(AddressRepository $repo, Address $address = null, Request $request)
     {
         die();
 

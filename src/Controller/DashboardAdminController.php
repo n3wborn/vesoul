@@ -10,8 +10,8 @@ use App\Repository\BookRepository;
 use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,27 +19,26 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Command;
 use App\Entity\Image;
-use Doctrine\Persistence\ObjectManager;
+
 
 /**
  * @Route("/admin")
  */
 class DashboardAdminController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private BookRepository $repoBook;
+    private AdminRepository $adminRepo;
 
-    /**
-     * @var EntityManagerInterface
-     */
-
-    private $manager;
-
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, BookRepository $repoBook, AdminRepository $adminRepo)
     {
         $this->manager = $manager;
+        $this->repoBook = $repoBook;
+        $this->adminRepo = $adminRepo;
     }
 
 
-    //Onglet Accueil
+
     /**
      * @Route("/accueil", name="dashboard_admin_home")
      * Dashboard admin Home
@@ -50,23 +49,24 @@ class DashboardAdminController extends AbstractController
     }
 
 
-    // Onglet livres
+
     /**
      * @Route("/livres", name="dashboard_admin_livres")
-     * Display all books in database (by Benaor)
      */
-    public function books(BookRepository $repo)
+    public function books()
     {
         return $this->render('dashboard-admin/books.html.twig', [
             'title' => 'Livres',
-            'books' => $repo->findAll()
+            'books' => $this->repoBook->findAll()
         ]);
     }
 
 
+
     /**
      * @Route("/livres/new", name="admin_add_book")
-     * Add a book in database (by Benaor)
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function addBook(Request $request)
     {
@@ -89,30 +89,38 @@ class DashboardAdminController extends AbstractController
     }
 
 
+
     /**
      * @Route("/livres/delete/{id}", name="admin_delete_book")
-     * Delete book in database (by Benaor)
+     * @param Book $book
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeBook(Book $book, Image $image, RouterInterface $router)
+    public function removeBook(Book $book)
     {
         $this->manager->remove($book);
+        // TODO: Virer cette bête là
         $this->manager->remove($image);
         $this->manager->flush();
         return $this->redirectToRoute('dashboard_admin_livres');
     }
 
 
+
     /**
      * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
+     * @param Book $book
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function reditBooks(Book $book, Request $request, RouterInterface $router)
+    public function reditBooks(Book $book, Request $request)
     {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->manager->persist($book);
+            // TODO: Verifier si persist est necessaire
+            // $this->manager->persist($book);
             $this->manager->flush();
             // return new RedirectResponse($router->generate('handle_tools'));
             return $this->redirectToRoute('dashboard_admin_livres');
@@ -121,43 +129,10 @@ class DashboardAdminController extends AbstractController
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Onglet Commandes 
-
     /**
      * @Route("/commandes", name="dashboard_admin_commandes")
+     * @param CommandRepository $repo
+     * @return Response
      */
     public function commandes(CommandRepository $repo)
     {
@@ -183,8 +158,14 @@ class DashboardAdminController extends AbstractController
         ]);
     }
 
+
+
     /**
      * @Route("/commandes/imprimer/{id}", name="dashboard_admin_commandes_imprime")
+     * @param Command $command
+     * @param AdminRepository $adminRepo
+     * @param CommandRepository $repo
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function printBill(Command $command, AdminRepository $adminRepo, CommandRepository $repo)
     {
@@ -298,29 +279,32 @@ class DashboardAdminController extends AbstractController
     }
 
 
-
     /**
      * @Route("/boutique", name="dashboard_admin_boutique")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function info(Request $request, AdminRepository $repo, ObjectManager $manager)
+    public function info(Request $request)
     {
 
         $toggle = false;
         if ($request->get('id') != null) {
             $toggle = $request->get('id');
-            $info = $repo->findBy(['id' => $request->get('id')]);
-            $info = $this->getDoctrine()->getRepository(Admin::class)->find($request->get('id'));
+            $info = $this->adminRepo->findBy(['id' => $request->get('id')]);
+            $info = $this->getDoctrine()
+                        ->getRepository(Admin::class)
+                        ->find($request->get('id'));
         } else {
             $info = new Admin();
         }
 
         $form = $this->createForm(AdminType::class, $info);
         $form->handleRequest($request);
-        $allInfo = $repo->findAll();
+        $allInfo = $this->adminRepo->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($info);
-            $manager->flush();
+            $this->manager->persist($info);
+            $this->manager->flush();
             return $this->redirectToRoute('dashboard_admin_boutique');
         } else {
             return $this->render('dashboard-admin/info.html.twig', [
@@ -332,6 +316,8 @@ class DashboardAdminController extends AbstractController
         }
     }
 
+
+
     /**
      * @Route("/mentions", name="dashboard_admin_mentions")
      */
@@ -342,12 +328,14 @@ class DashboardAdminController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/bill/{id}", name="test_facture")
+     * @param Command $command
+     * @return Response
      */
     public function testFacture(Command $command)
     {
-
 
         // dump($command);
         $commandNumero = $command->getId();
