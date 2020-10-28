@@ -5,6 +5,8 @@
         "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "^7.4",
+        "doctrine/doctrine-bundle": "^2.0",
         "dompdf/dompdf": "^0.8.3",
         "fzaninotto/faker": "^1.8",
         "sensio/framework-extra-bundle": "^5.2",
@@ -20,8 +22,7 @@
         "symfony/twig-bundle": "4.4.*",
         "symfony/validator": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.5",
-        "symfony/yaml": "4.4.*",
-        "doctrine/doctrine-bundle": "^2.0"
+        "symfony/yaml": "4.4.*"
     },
     "config": {
         "preferred-install": {
