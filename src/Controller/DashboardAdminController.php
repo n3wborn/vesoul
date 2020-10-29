@@ -10,6 +10,7 @@ use App\Repository\BookRepository;
 use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -66,7 +67,7 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/livres/new", name="admin_add_book")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function addBook(Request $request)
     {
@@ -93,7 +94,7 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/livres/delete/{id}", name="admin_delete_book")
      * @param Book $book
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function removeBook(Book $book)
     {
@@ -110,7 +111,7 @@ class DashboardAdminController extends AbstractController
      * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
      * @param Book $book
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function reditBooks(Book $book, Request $request)
     {
@@ -163,14 +164,13 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/commandes/imprimer/{id}", name="dashboard_admin_commandes_imprime")
      * @param Command $command
-     * @param AdminRepository $adminRepo
      * @param CommandRepository $repo
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function printBill(Command $command, AdminRepository $adminRepo, CommandRepository $repo)
+    public function printBill(Command $command, CommandRepository $repo)
     {
         // Information de la boutique
-        $admin = $adminRepo->findOneById(2);
+        $admin = $this->adminRepo->find(2);      // TODO: Virer cette horreur
         $boutiqueNom = $admin->getCompany();
         $boutiqueTelephone = $admin->getTel();
         $boutiqueEmail = $admin->getEmail();
@@ -194,11 +194,8 @@ class DashboardAdminController extends AbstractController
             $prixTotal = $prixTotal + $value->getPrice();
             array_push($books, $book);
             $book = [];
-
-            // dump($bookTitle, $bookPrice);
         }
-        // dump($books);
-        // die;
+
         // Adresse de facturation
         $billNumber = $command->getFacturation()->getNumber();
         $billType = $command->getFacturation()->getType();
@@ -282,18 +279,17 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/boutique", name="dashboard_admin_boutique")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function info(Request $request)
     {
-
         $toggle = false;
         if ($request->get('id') != null) {
             $toggle = $request->get('id');
             $info = $this->adminRepo->findBy(['id' => $request->get('id')]);
             $info = $this->getDoctrine()
-                        ->getRepository(Admin::class)
-                        ->find($request->get('id'));
+                ->getRepository(Admin::class)
+                ->find($request->get('id'));
         } else {
             $info = new Admin();
         }
@@ -365,7 +361,6 @@ class DashboardAdminController extends AbstractController
         $billFirstname = $command->getFacturation()->getFirstname();
         $billLastname = $command->getFacturation()->getLastname();
 
-        // dump($billFirstname, $billLastname, $billNumber, $billType, $billStreet, $billCity, $billCp, $billCountry, $billAdditional);
         // Adresse de facturation 
         $shipNumber = $command->getLivraison()->getNumber();
         $shipType = $command->getLivraison()->getType();
@@ -376,8 +371,6 @@ class DashboardAdminController extends AbstractController
         $shipAdditional = $command->getLivraison()->getAdditional();
         $shipFirstname = $command->getLivraison()->getFirstname();
         $shipLastname = $command->getLivraison()->getLastname();
-
-        // dump($shipFirstname, $shipLastname, $shipNumber, $shipType, $shipStreet, $shipCity, $shipCp, $shipCountry, $shipAdditional);
 
         return $this->render('bill/facture.html.twig', [
             'commandNumero' => $commandNumero,
