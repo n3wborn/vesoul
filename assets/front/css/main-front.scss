@@ -110,7 +110,7 @@ $font-main: 'Work Sans', sans-serif;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-      /* Create a custom radio button */
+    /* Create a custom radio button */
     .checkmark {
       position: absolute;
       top: 0;
@@ -119,12 +119,11 @@ $font-main: 'Work Sans', sans-serif;
       width: 25px;
       background-color: #eee;
       border-radius: 50%;
-    }
-      /* Create the indicator (the dot/circle - hidden when not checked) */
-    .checkmark:after {
-      content: "";
-      position: absolute;
-      display: none;
+      &:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
     }
   }
   

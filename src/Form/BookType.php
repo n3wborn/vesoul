@@ -7,6 +7,7 @@ use App\Entity\Book;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -26,26 +27,26 @@ class BookType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 // varchar 150
-                'label' => 'Titre du livre',
+                'label' => 'Titre',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('isbn', TextType::class, [
                 // varchar 100
-                'label' => 'Code ISBN du livre',
+                'label' => 'ISBN',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('author',  EntityType::class, [
-                'label' => 'ID auteur',
+                'label' => 'Auteur',
                 'class' => Author::class,
                 'choice_label' =>  function (Author $author) {
                     $first = $author->getFirstname();
@@ -61,27 +62,27 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('price', NumberType::class, [
                 // double
-                'label' => 'Prix du livre',
+                'label' => 'Prix',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('description', TextareaType::class, [
                 // longtext
-                'label' => 'Description du livre',
+                'label' => 'Description',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('length', NumberType::class, [
@@ -91,7 +92,7 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('width', NumberType::class, [
@@ -101,7 +102,7 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('height', NumberType::class, [
@@ -111,17 +112,17 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('year', NumberType::class, [
                 // int 11
-                'label' => 'Année de sortie du livre',
+                'label' => 'Année de sortie',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('new', CheckboxType::class, [
@@ -131,7 +132,7 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('stock', NumberType::class, [
@@ -141,18 +142,28 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
-
-/*            ->add('image', FileType::class, [
+            ->add('genras', ChoiceType::class, [
+                'label' => 'Catégorie',
+                'label_attr' => [
+                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                ],
+                'attr' => [
+                    'class' => 'mt-1 mb-3 form-control'
+                ]
+                // 'choices' => $this->getChoices()
+            ])
+           /*
+             ->add('image', FileType::class, [
                 'label' => 'images',
                 'label_attr' => [
                     'class' => 'font-weight-bold py-1 m-0 col-4'
                 ],
                 'attr' => [
                     'placeholder' => 'Sélectionnez un fichier',
-                    'class' => 'my-1 col-7'
+                    'class' => 'mt-1 mb-3 col-7'
                 ],
                 'mapped' => false,
                 'required' => false,
@@ -176,23 +187,13 @@ class BookType extends AbstractType
             //         'class' => 'font-weight-bold py-1 m-0 col-4'
             //     ],
             //     'attr' => [
-            //         'class' => 'my-1 col-7'
+            //         'class' => 'mt-1 mb-3 col-7'
             //     ]
-            // ])
-            // ->add('genras', ChoiceType::class, [
-            //     'label' => 'Catégories du livre',
-            //     'label_attr' => [
-            //         'class' => 'font-weight-bold py-1 m-0 col-4'
-            //     ],
-            //     'attr' => [
-            //         'class' => 'my-1 col-7'
-            //     ]
-            //     // 'choices' => $this->getChoices()
             // ])
             ->add('submit', SubmitType::class, [
                 'label' => 'enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-secondary text-light'
+                    'class' => 'btn btn-secondary text-light my-2'
                 ]
             ]);
     }
