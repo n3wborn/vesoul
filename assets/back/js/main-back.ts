@@ -20,38 +20,11 @@ closeBtn.addEventListener("click", function () {
 
 });
 
-let buttonMenu = document.querySelectorAll(".button-menu");
-let urlPath: string = window.location.pathname;
+// cible les boutons menus et "active" celui de la page courante
+const navBtn = document.getElementsByClassName('button-menu');
 
-let lastUrl: string = (urlPath.split("/")).slice(-1).pop();
-
-if (lastUrl == "accueil") {
-    for (let i: number; i < buttonMenu.length; i++) {
-        buttonMenu[i].classList.remove("button-active");
+for (let el of navBtn) {
+    if (el.getAttribute('href') === window.location.pathname) {
+        el.classList.add("button-active");
     }
-    buttonMenu[0].classList.add("button-active");
-}
-if (lastUrl == "commandes") {
-    for (let i: number; i < buttonMenu.length; i++) {
-        buttonMenu[i].classList.remove("button-active");
-    }
-    buttonMenu[1].classList.add("button-active");
-}
-if (lastUrl == "livres") {
-    for (let i: number; i < buttonMenu.length; i++) {
-        buttonMenu[i].classList.remove("button-active");
-    }
-    buttonMenu[2].classList.add("button-active");
-}
-if (lastUrl == "boutique") {
-    for (let i: number; i < buttonMenu.length; i++) {
-        buttonMenu[i].classList.remove("button-active");
-    }
-    buttonMenu[3].classList.add("button-active");
-}
-if (lastUrl == "mentions") {
-    for (let i: number; i < buttonMenu.length; i++) {
-        buttonMenu[i].classList.remove("button-active");
-    }
-    buttonMenu[4].classList.add("button-active");
 }
