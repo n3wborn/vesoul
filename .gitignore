@@ -19,3 +19,5 @@ yarn-error.log
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 .idea/
+### images uploads ###
+public/static/book/uploads
