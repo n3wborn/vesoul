@@ -145,6 +145,7 @@ class BookType extends AbstractType
                     'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
+            /*
             ->add('genras', ChoiceType::class, [
                 'label' => 'Catégorie',
                 'label_attr' => [
@@ -154,6 +155,13 @@ class BookType extends AbstractType
                     'class' => 'mt-1 mb-3 form-control'
                 ]
                 // 'choices' => $this->getChoices()
+            ])
+            */
+            ->add('images', FileType::class, [
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
             ])
            /*
              ->add('image', FileType::class, [

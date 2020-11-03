@@ -29,8 +29,10 @@
 			{{ form_label(form.author) }}
 			{{ form_widget(form.author) }}
 
+			{#
 			{{ form_label(form.genras) }}
 			{{ form_widget(form.genras) }}
+			#}
 
 			{{ form_label(form.description) }}
 			{{ form_widget(form.description) }}
@@ -60,9 +62,9 @@
 			{{ form_label(form.stock) }}
 			{{ form_widget(form.stock) }}
 
-			{#
-			{{ form_row(form.image) }}
-			#}
+
+			{{ form_row(form.images) }}
+
 
         	<div class="text-center pb-3">
 				{{ form_widget(form.submit) }}

@@ -59,7 +59,7 @@ class Book
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="book")
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="book", orphanRemoval=true, cascade={"persist"})
      */
     private $images;
 

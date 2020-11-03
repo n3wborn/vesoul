@@ -11,9 +11,9 @@ use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Dompdf\Dompdf;
@@ -63,24 +63,40 @@ class DashboardAdminController extends AbstractController
     }
 
 
-
     /**
      * @Route("/livres/new", name="admin_add_book")
-     * @param Request $request
-     * @return RedirectResponse|Response
      */
-    public function addBook(Request $request)
+    public function addBook(Request $request) : Response
     {
         $book = new Book(); // Create the book
         $form = $this->createForm(BookType::class, $book); //Create the form
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){ //If BookType is valid and submit :
-            $this->manager->persist($book);
-            $this->manager->flush(); // register the book in database
-            $this->addFlash('success', 'Envoi OK');
-            // TODO: redirection vers quelle page une fois les données soumises ??
-            return $this->redirectToRoute('dashboard_admin_livres');
+        if($form->isSubmitted() && $form->isValid()){
+            // get uploaded images
+            $images = $form->get('images')->getData();
+
+            // For each image uploaded
+            foreach($images as $image){
+                // give them uniq filenames
+                $file = md5(uniqid()) . '.' . $image->guessExtension();
+
+                // move it to images_directory (cf: parameters in services.yaml)
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $file
+                );
+
+                // We keep image name in db
+                $img = new Image();
+                $img->setName($file);
+                $book->addImage($img);
+            }
+
+            $this->manager->persist($book); // persist
+            $this->manager->flush();        // save in db
+            $this->addFlash('success', 'Envoi OK');     // show success message
+            return $this->redirectToRoute('admin_add_book');    // TODO: Where to redirect once done??
         }
 
         return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
