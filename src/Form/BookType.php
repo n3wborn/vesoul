@@ -29,10 +29,12 @@ class BookType extends AbstractType
                 // varchar 150
                 'label' => 'Titre',
                 'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                    'class' => 'font-weight-bold'
                 ],
                 'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
+                    'class' => 'form-control',
+                    'autofocus' => true,
+                    'required' => true,
                 ]
             ])
             ->add('isbn', TextType::class, [
@@ -48,6 +50,7 @@ class BookType extends AbstractType
             ->add('author',  EntityType::class, [
                 'label' => 'Auteur',
                 'class' => Author::class,
+                'required' => true,
                 'choice_label' =>  function (Author $author) {
                     $first = $author->getFirstname();
                     $last = $author->getLastname();
@@ -59,10 +62,10 @@ class BookType extends AbstractType
                         ->orderBy('a.firstname','ASC');
                 },
                 'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                    'class' => 'font-weight-bold'
                 ],
                 'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
+                    'class' => 'form-control'
                 ]
             ])
             ->add('price', NumberType::class, [
@@ -145,49 +148,36 @@ class BookType extends AbstractType
                     'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
-            /*
+
             ->add('genras', ChoiceType::class, [
+                'required' => true,
                 'label' => 'Catégorie',
                 'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                    'class' => 'font-weight-bold'
                 ],
                 'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
+                    'class' => 'form-control'
                 ]
                 // 'choices' => $this->getChoices()
             ])
-            */
             ->add('images', FileType::class, [
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
-                'required' => false
-            ])
-           /*
-             ->add('image', FileType::class, [
-                'label' => 'images',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'placeholder' => 'Sélectionnez un fichier',
-                    'class' => 'mt-1 mb-3 col-7'
-                ],
-                'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '512m',
+                        'maxSize' => '2M',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',
                             'image/jpg',
                         ],
-                        'mimeTypesMessage' => 'Fichier png/jpg/jpeg inférieur à 512Mo',
+                        'mimeTypesMessage' => 'Fichiers png/jpg/jpeg inférieurs à 2Mo',
                     ])
-                ],
+                ]
             ])
-            */
+
             // ->add('commands', ChoiceType::class, [
             //     'choices' => [],
             //     'label' => 'Commandes',
@@ -198,6 +188,7 @@ class BookType extends AbstractType
             //         'class' => 'mt-1 mb-3 col-7'
             //     ]
             // ])
+
             ->add('submit', SubmitType::class, [
                 'label' => 'enregistrer',
                 'attr' => [
