@@ -4,10 +4,12 @@ namespace App\Form;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Genra;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -26,7 +28,6 @@ class BookType extends AbstractType
 
         $builder
             ->add('title', TextType::class, [
-                // varchar 150
                 'label' => 'Titre',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -34,23 +35,11 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'autofocus' => true,
-                    'required' => true,
-                ]
-            ])
-            ->add('isbn', TextType::class, [
-                // varchar 100
-                'label' => 'ISBN',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
                 ]
             ])
             ->add('author',  EntityType::class, [
                 'label' => 'Auteur',
                 'class' => Author::class,
-                'required' => true,
                 'choice_label' =>  function (Author $author) {
                     $first = $author->getFirstname();
                     $last = $author->getLastname();
@@ -68,103 +57,116 @@ class BookType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('price', NumberType::class, [
-                // double
-                'label' => 'Prix',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-            ->add('description', TextareaType::class, [
-                // longtext
-                'label' => 'Description',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-            ->add('length', NumberType::class, [
-                // int 11
-                'label' => 'Nombre de pages',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-            ->add('width', NumberType::class, [
-                // int 11
-                'label' => 'Largeur',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-            ->add('height', NumberType::class, [
-                // int 11
-                'label' => 'Hauteur',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4 align-top'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-            ->add('year', NumberType::class, [
-                // int 11
-                'label' => 'Année de sortie',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-            ->add('new', CheckboxType::class, [
-                'label' => 'Nouveauté',
+            ->add('genras', EntityType::class, [
                 'required' => false,
+                'label' => 'Catégorie',
+                'class' => Genra::class,
+                'choice_label' =>  function(Genra $genras) {
+                    return $genras->getName();
+                },
+                'query_builder' => function(EntityRepository $genras) {
+                    return $genras->createQueryBuilder('g')
+                        ->orderBy('g.name', 'ASC')
+                        ->distinct();
+                },
                 'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
+                    'class' => 'font-weight-bold'
                 ],
                 'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
+                    'class' => 'form-control',
                 ]
             ])
             ->add('stock', NumberType::class, [
-                // int 11
                 'label' => 'Quantité',
-                'label_attr' => [
-                    'class' => 'font-weight-bold py-1 m-0 col-4'
-                ],
-                'attr' => [
-                    'class' => 'mt-1 mb-3 form-control'
-                ]
-            ])
-
-            ->add('genras', ChoiceType::class, [
-                'required' => true,
-                'label' => 'Catégorie',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
                 ],
                 'attr' => [
                     'class' => 'form-control'
                 ]
-                // 'choices' => $this->getChoices()
+            ])
+            ->add('price', NumberType::class, [
+                'label' => 'Prix',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('isbn', TextType::class, [
+                'label' => 'ISBN',
+                'label_attr' => [
+                    'class' => 'font-weight-bold',
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('length', NumberType::class, [
+                'required' => false,
+                'label' => 'Nombre de pages',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('year', NumberType::class, [
+                'required' => false,
+                'label' => 'Année de sortie',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('new', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Nouveauté',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('height', NumberType::class, [
+                'required' => false,
+                'label' => 'Hauteur',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('width', NumberType::class, [
+                'required' => false,
+                'label' => 'Largeur',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'label_attr' => [
+                    'class' => 'font-weight-bold'
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                ]
             ])
             ->add('images', FileType::class, [
+                'required' => false,
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
-                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '2M',
@@ -190,9 +192,9 @@ class BookType extends AbstractType
             // ])
 
             ->add('submit', SubmitType::class, [
-                'label' => 'enregistrer',
+                'label' => 'Enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-secondary text-light my-2'
+                    'class' => 'btn btn-secondary text-light m-2'
                 ]
             ]);
     }
