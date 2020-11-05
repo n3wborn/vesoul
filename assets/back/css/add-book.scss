@@ -1,5 +1,10 @@
 /* Fix Description textarea height to ~= 3 input type text */
 #book_description {
-  height: 198px;
+  height: 210px;
 }
 
+/* give submit/cancel buttons the same min-width */
+.btn,
+.btn-secondary {
+  min-width: 105px;
+}
