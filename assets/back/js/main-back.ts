@@ -21,9 +21,9 @@ closeBtn.addEventListener("click", function () {
 });
 
 // cible les boutons menus et "active" celui de la page courante
-const navBtn = document.getElementsByClassName('button-menu');
+const navBtn:HTMLCollectionOf<Element> = document.getElementsByClassName('button-menu');
 
-for (let el of navBtn) {
+for (let el of Array.from(navBtn)) {
     if (window.location.pathname.startsWith(el.getAttribute('href'))) {
         el.classList.add("button-active");
     }
