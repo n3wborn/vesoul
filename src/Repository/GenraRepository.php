@@ -14,16 +14,17 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class GenraRepository extends ServiceEntityRepository
 {
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Genra::class);
     }
 
-    public function findAll() : array
+    public function findAllGenra() : array
     {
         $qb = $this->createQueryBuilder('g')
             ->select('g.name')
             ->groupBy('g.name')
+            ->distinct()
             ->getQuery();
 
         return $qb->execute();
