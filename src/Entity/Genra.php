@@ -14,8 +14,9 @@ class Genra
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
@@ -25,7 +26,7 @@ class Genra
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Book", mappedBy="genras")
      */
-    private ArrayCollection $books;
+    private $books;
 
     public function __construct()
     {
