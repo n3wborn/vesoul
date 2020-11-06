@@ -5,28 +5,24 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker\Factory;
 use App\Entity\Book;
-use App\Entity\User;
 use App\Entity\Genra;
 use App\Entity\Image;
 use App\Entity\Author;
-use App\Entity\Address;
-use App\Entity\Command;
 use Doctrine\Persistence\ObjectManager;
 
 class BookFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $faker = \Faker\Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
 
-            for ($i = 0; $i < 100; $i++) {
-                
+        for ($i = 0; $i < 100; $i++) {
+
             $genra = new Genra();
-            $image = new Image(); 
+            $image = new Image();
             $book = new Book();
             $author = new Author();
 
-            //$image->setUrl($faker->imageUrl($width = 640, $height = 480));
             $image->setUrl('https://picsum.photos/640/480');
             $manager->persist($image);
 
