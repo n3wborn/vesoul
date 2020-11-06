@@ -134,8 +134,9 @@
                                 </div>
 
                                 {# Images #}
-                                <div class="form-group w-100">
-                                    {{ form_row(form.images) }}
+                                <div class="custom-file">
+                                    {{ form_label(form.images) }}
+                                    {{ form_widget(form.images) }}
                                 </div>
                             </div>
                         </div>
