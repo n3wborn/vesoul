@@ -164,7 +164,6 @@ class BookType extends AbstractType
             ])
             ->add('images', FileType::class, [
                 'required' => false,
-                'label' => 'Images',
                 'label_attr' => [
                     'class' => 'custom-file-label',
                 ],
