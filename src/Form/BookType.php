@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Entity\Genra;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
@@ -125,13 +126,18 @@ class BookType extends AbstractType
             ])
             ->add('new', CheckboxType::class, [
                 'required' => false,
-                'label' => 'Nouveauté',
-                'label_attr' => [
-                    'class' => 'font-weight-bold'
-                ],
+                'label' => false,
+                'data' => false,
+                'value' => 0,
                 'attr' => [
                     'class' => 'form-control',
                 ]
+            ])
+            ->add('newbtn', ButtonType::class, [
+                'label'=> 'Livre inédit ?',
+                'attr' => [
+                    'class' => 'btn btn-outline-secondary',
+                ],
             ])
             ->add('height', NumberType::class, [
                 'required' => false,

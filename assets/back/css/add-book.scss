@@ -8,6 +8,13 @@
 #book_cancel {
   min-width: 105px;
 }
+#book_newbtn {
+  width: 100%;
+}
+
+#book_new {
+  display: none;
+}
 
 /* Use fr lang for image "browse" button */
 .custom-file-label::after {

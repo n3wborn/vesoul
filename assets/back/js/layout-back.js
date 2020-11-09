@@ -7,4 +7,4 @@ require('../../../node_modules/slick-carousel/slick/slick-theme.css')
 require('../../../node_modules/slick-carousel/slick/slick.min.js')
 require('../css/main-back.scss');
 require('./main-back.ts');
-require('./carousel.js')
+require('./carousel.js');

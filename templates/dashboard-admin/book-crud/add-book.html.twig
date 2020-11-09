@@ -95,9 +95,12 @@
                                 </div>
 
                                 {# New #}
-                                <div class="form-group col-6">
-                                    {{ form_label(form.new) }}
+                                <div class="form-group col-6 d-flex justify-content-center align-items-end">
+                                    {# hidden checkbox #}
                                     {{ form_widget(form.new) }}
+
+                                    {# checkbox button #}
+                                    {{ form_widget(form.newbtn) }}
                                 </div>
                             </div>
 
