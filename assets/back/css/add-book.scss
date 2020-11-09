@@ -8,3 +8,8 @@
 #book_cancel {
   min-width: 105px;
 }
+
+/* Use fr lang for image "browse" button */
+.custom-file-label::after {
+  content: "Sélectionner";
+}

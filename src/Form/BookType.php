@@ -166,9 +166,10 @@ class BookType extends AbstractType
                 'required' => false,
                 'label_attr' => [
                     'class' => 'custom-file-label',
+                    'lang' => 'fr',
                 ],
                 'attr' => [
-                  'class' => 'custom-file-input'
+                    'class' => 'custom-file-input',
                 ],
                 'multiple' => true,
                 'mapped' => false,
