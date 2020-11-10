@@ -63,7 +63,7 @@ class VesoulEditionController extends AbstractController
         }
 
         $allBooks = $this->repoBook->findAllBooksByAscName();
-        $genras = $this->repoGenra->findAll();
+        $genras = $this->repoGenra->findAllGenra();
         $authors = $this->repoAuthor->findAllAuthors();
         $maxAndMinYear = $this->repoBook->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
