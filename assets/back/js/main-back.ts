@@ -1,13 +1,18 @@
 require('./adminLogin');
 
-// add_book checkbox / button
-const chkBox:HTMLElement = document.getElementById('book_new');
-const newBtn:HTMLElement = document.getElementById('book_newbtn');
-
-
 // Date actuelle en français
 var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 
+// target add_book checkbox
+const chkBox:HTMLElement = document.getElementById('book_new');
+const newBtn:HTMLElement = document.getElementById('book_newbtn');
+
+// If chkBox lives in, newBtn flip it's state from checked/unchecked
+if (chkBox) {
+    newBtn.addEventListener('click', function () {
+        toggleCheck(chkBox);
+    });
+}
 
 // Function to toggle checked state of a checkbox
 function toggleCheck(el) {
@@ -28,10 +33,6 @@ function innerChange(el, string) {
     return el.innerHTML = string;
 }
 
-// flip from true/false 1/0
-newBtn.addEventListener('click', function () {
-    toggleCheck(chkBox);
-});
 
 
 document.querySelector('.dateActuelle').textContent = `${new Date(Date.now()).toLocaleDateString('fr-FR', options)}`;
