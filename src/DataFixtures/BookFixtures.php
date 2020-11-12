@@ -9,25 +9,49 @@ use App\Entity\Genra;
 use App\Entity\Image;
 use App\Entity\Author;
 use Doctrine\Persistence\ObjectManager;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 
 class BookFixtures extends Fixture
 {
+    const GENRES = [
+        "Policier",
+        "SF",
+        "Humour",
+        "Bande déssinée",
+        "Histoire",
+        "Horreur",
+        "Guide pratique",
+        "Théâtre",
+        "Scolaire",
+        "Voyages"
+    ];
+
+
+
     public function load(ObjectManager $manager)
     {
+        $i = 0;
+        foreach( self::GENRES as $value ){
+            $genre = new Genra();
+            $genre->setName($value);
+            $manager->persist($genre);
+
+            $this->addReference( "genreReference_".$i , $genre);
+            $i++;
+        }
+
+        $manager->flush();
+
+
         $faker = Factory::create('fr_FR');
 
         for ($i = 0; $i < 100; $i++) {
-
-            $genra = new Genra();
             $image = new Image();
             $book = new Book();
             $author = new Author();
 
             $image->setUrl('https://picsum.photos/640/480');
             $manager->persist($image);
-
-            $genra->setName($faker->randomElement($array = array ('Science-Fiction','Roman','Histoire','Politique','Humour')));
-            $manager->persist($genra);
 
             $book->setDescription($faker->sentence($nbWords = 6, $variableNbWords = true))
             ->setPrice($faker->numberBetween($min = 10, $max = 40))
@@ -40,7 +64,7 @@ class BookFixtures extends Fixture
             ->setHeight($faker->randomElement($array = array (15,25,40)))
             ->setNew($faker->numberBetween($min = 0, $max = 1))
             ->addImage($image)
-            ->addGenra($genra);
+            ->addGenra($this->getReference("genreReference_".random_int(0, count(self::GENRES ) - 1 )));
 
             $manager->persist($book);
 
