@@ -99,7 +99,7 @@ class DashboardAdminController extends AbstractController
 
             $this->manager->persist($book); // persist
             $this->manager->flush();        // save in db
-            $this->addFlash('success', 'Envoi OK');     // show success message
+            $this->addFlash('success', 'Envoi OK');         // show success message
             return $this->redirectToRoute('admin_add_book');    // TODO: Where to redirect once done??
         }
 

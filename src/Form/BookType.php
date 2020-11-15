@@ -18,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -176,20 +178,22 @@ class BookType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'custom-file-input',
+                    'accept' => '.jpg, .jpeg, .png',
                 ],
                 'multiple' => true,
                 'mapped' => false,
                 'constraints' => [
-                    new File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => [
-                            'image/png',
-                            'image/jpeg',
-                            'image/jpg',
-                        ],
-                        'mimeTypesMessage' => 'Fichiers png/jpg/jpeg inférieurs à 2Mo',
+                    new Count(['max' => 3]),
+                    new All([
+                        new File([
+                            'maxSize' => '2048k',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png'
+                            ],
+                        ])
                     ])
-                ]
+                ],
             ])
 
             // ->add('commands', ChoiceType::class, [
