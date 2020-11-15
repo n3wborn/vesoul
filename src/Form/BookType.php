@@ -62,15 +62,15 @@ class BookType extends AbstractType
             ])
             ->add('genras', EntityType::class, [
                 'required' => false,
+                'multiple' => true,
                 'label' => 'Catégorie',
                 'class' => Genra::class,
-                'choice_label' =>  function(Genra $genras) {
-                    return $genras->getName();
+                'choice_label' =>  function (Genra $genra) {
+                    return $genra->getName();
                 },
-                'query_builder' => function(EntityRepository $genras) {
-                    return $genras->createQueryBuilder('g')
-                        ->orderBy('g.name', 'ASC')
-                        ->distinct();
+                'query_builder' => function(EntityRepository $genra) {
+                    return $genra->createQueryBuilder('g')
+                        ->orderBy('g.name','ASC');
                 },
                 'label_attr' => [
                     'class' => 'font-weight-bold'
