@@ -17,7 +17,7 @@ class BookFixtures extends Fixture
         "Policier",
         "SF",
         "Humour",
-        "Bande déssinée",
+        "Bande dessinée",
         "Histoire",
         "Horreur",
         "Guide pratique",
