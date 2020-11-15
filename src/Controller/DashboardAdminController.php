@@ -82,10 +82,14 @@ class DashboardAdminController extends AbstractController
                 $file = md5(uniqid()) . '.' . $image->guessExtension();
 
                 // move it to images_directory (cf: parameters in services.yaml)
-                $image->move(
-                    $this->getParameter('images_directory'),
-                    $file
-                );
+                try {
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+                } catch (FileException $e) {
+                    $e->getMessage();
+                }
 
                 // We keep image name in db
                 $img = new Image();
