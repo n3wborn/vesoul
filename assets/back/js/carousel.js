@@ -11,7 +11,7 @@ console.log(document.querySelectorAll('.elem').length)
 
 // TEST si moins de 4 elements, pas de carousel inférieur pour eviter les bugs
 let slide = 0;
-if(document.querySelector('.slick-track').childNodes.length == 0){
+if(document.querySelector('.slick-track').childNodes.length === 0){
     let divNoImg = document.createElement('div');
     let noImg = document.createElement('h2');
     noImg.textContent = "Pas d'image";
