@@ -57,7 +57,8 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold'
                 ],
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'selectpicker form-control',
+                    'data-style' => 'btn-outline-secondary'
                 ]
             ])
             ->add('genras', EntityType::class, [
@@ -76,7 +77,9 @@ class BookType extends AbstractType
                     'class' => 'font-weight-bold'
                 ],
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'selectpicker form-control',
+                    'data-style' => 'btn-outline-secondary',
+                    'title' => 'Choisissez ...'
                 ]
             ])
             ->add('stock', NumberType::class, [
