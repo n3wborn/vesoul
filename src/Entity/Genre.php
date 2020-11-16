@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GenraRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\GenreRepository")
  */
-class Genra
+class Genre
 {
     /**
      * @ORM\Id()
@@ -24,7 +24,7 @@ class Genra
     private ?string $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Book", mappedBy="genras")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Book", mappedBy="genres")
      */
     private $books;
 
@@ -62,7 +62,7 @@ class Genra
     {
         if (!$this->books->contains($book)) {
             $this->books[] = $book;
-            $book->addGenra($this);
+            $book->addGenre($this);
         }
 
         return $this;
@@ -72,7 +72,7 @@ class Genra
     {
         if ($this->books->contains($book)) {
             $this->books->removeElement($book);
-            $book->removeGenra($this);
+            $book->removeGenre($this);
         }
 
         return $this;

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 use App\Repository\CartRepository;
-use App\Repository\GenraRepository;
+use App\Repository\GenreRepository;
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\GroupBy;
@@ -27,20 +27,20 @@ class VesoulEditionController extends AbstractController
     private EntityManagerInterface $manager;
     private SessionInterface $session;
     private BookRepository $repoBook;
-    private GenraRepository $repoGenra;
+    private GenreRepository $repoGenre;
     private AuthorRepository $repoAuthor;
 
 
     public function __construct(EntityManagerInterface $manager,
                                 SessionInterface $session,
                                 BookRepository $repoBook,
-                                GenraRepository $repoGenra,
+                                GenreRepository $repoGenre,
                                 AuthorRepository $repoAuthor)
     {
         $this->manager = $manager;
         $this->session = $session;
         $this->repoBook = $repoBook;
-        $this->repoGenra = $repoGenra;
+        $this->repoGenre = $repoGenre;
         $this->repoAuthor = $repoAuthor;
     }
 
@@ -63,14 +63,14 @@ class VesoulEditionController extends AbstractController
         }
 
         $allBooks = $this->repoBook->findAllBooksByAscName();
-        $genras = $this->repoGenra->findAllGenra();
+        $genres = $this->repoGenre->findAllGenre();
         $authors = $this->repoAuthor->findAllAuthors();
         $maxAndMinYear = $this->repoBook->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
 
         return $this->render('vesoul-edition/home.html.twig', [
-            'genras' => $genras,
+            'genres' => $genres,
             'authors' => $authors,
             'minyear' => $minYear,
             'maxyear' => $maxYear
@@ -95,14 +95,14 @@ class VesoulEditionController extends AbstractController
             $this->session->set('panier', []);
         }
 
-        $genras = $this->repoGenra->findAll();
+        $genres = $this->repoGenre->findAll();
         $authors = $this->repoAuthor->findAllAuthors();
         $maxAndMinYear = $this->repoBook->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
         
         return $this->render('vesoul-edition/home.html.twig', [
-            'genras' => $genras,
+            'genres' => $genres,
             'authors' => $authors,
             'minyear' => $minYear,
             'maxyear' => $maxYear,

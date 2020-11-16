@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker\Factory;
 use App\Entity\Book;
-use App\Entity\Genra;
+use App\Entity\Genre;
 use App\Entity\Image;
 use App\Entity\Author;
 use Doctrine\Persistence\ObjectManager;
@@ -32,7 +32,7 @@ class BookFixtures extends Fixture
     {
         $i = 0;
         foreach( self::GENRES as $value ){
-            $genre = new Genra();
+            $genre = new Genre();
             $genre->setName($value);
             $manager->persist($genre);
 
@@ -64,7 +64,7 @@ class BookFixtures extends Fixture
             ->setHeight($faker->randomElement($array = array (15,25,40)))
             ->setNew($faker->numberBetween($min = 0, $max = 1))
             ->addImage($image)
-            ->addGenra($this->getReference("genreReference_".random_int(0, count(self::GENRES ) - 1 )));
+            ->addGenre($this->getReference("genreReference_".random_int(0, count(self::GENRES ) - 1 )));
 
             $manager->persist($book);
 

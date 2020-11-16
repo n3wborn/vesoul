@@ -4,10 +4,10 @@
 const bookCollection = document.querySelector('#book-collection');
 const checkNews = document.querySelector('#news');
 const filterButtons = document.querySelectorAll('.expand-button');
-const genra = document.querySelector('#genra-list');
+const genre = document.querySelector('#genre-list');
 const author = document.querySelector('#author-list');
-const checksFilter = document.querySelectorAll('#genra-list .form-check-input, #author-list .form-check-input ');
-const genraButton = document.querySelector('#expand-genra');
+const checksFilter = document.querySelectorAll('#genre-list .form-check-input, #author-list .form-check-input ');
+const genreButton = document.querySelector('#expand-genre');
 const authorButton = document.querySelector('#expand-author');
 const slider = document.querySelector('#year-slider');
 const yearButton = document.querySelector('#expand-year');
@@ -42,10 +42,10 @@ let orderBy = 'ascName';
 //Objets de la page home ================================================
 
 class filters {
-    constructor(news, price, genra, author){
+    constructor(news, price, genre, author){
         this.news = false;
         this.price = [];
-        this.genra = [];
+        this.genre = [];
         this.author = [];
     }
     //Getter
@@ -93,9 +93,9 @@ window.addEventListener('load', function(){
             let target = '';
 
             switch(activeButton){
-                case 'expand-genra' :
-                    button = genraButton;
-                    target = genra;
+                case 'expand-genre' :
+                    button = genreButton;
+                    target = genre;
                     break;
                 case 'expand-year' :
                     button = yearButton;

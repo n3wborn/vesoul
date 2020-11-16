@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Author;
 use App\Entity\Book;
-use App\Entity\Genra;
+use App\Entity\Genre;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -61,16 +61,16 @@ class BookType extends AbstractType
                     'data-style' => 'btn-outline-secondary'
                 ]
             ])
-            ->add('genras', EntityType::class, [
+            ->add('genres', EntityType::class, [
                 'required' => false,
                 'multiple' => true,
                 'label' => 'Catégorie',
-                'class' => Genra::class,
-                'choice_label' =>  function (Genra $genra) {
-                    return $genra->getName();
+                'class' => Genre::class,
+                'choice_label' =>  function (Genre $genre) {
+                    return $genre->getName();
                 },
-                'query_builder' => function(EntityRepository $genra) {
-                    return $genra->createQueryBuilder('g')
+                'query_builder' => function(EntityRepository $genre) {
+                    return $genre->createQueryBuilder('g')
                         ->orderBy('g.name','ASC');
                 },
                 'label_attr' => [

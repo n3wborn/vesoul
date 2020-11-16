@@ -55,13 +55,13 @@
                     <div class="col-12 p-2">
                         <div class="m-0 p-0 pt-2 d-flex justify-content-between">
                             <h3 class="pl-2">Genre</h3>
-                            <button id="expand-genra" class="mr-2 p-0 m-0 expand-button active">+</button>
+                            <button id="expand-genre" class="mr-2 p-0 m-0 expand-button active">+</button>
                         </div>
-                        <ul id="genra-list" class="filter-section d-flex flex-column p-0 m-0 active">
-                            {% for genra in genras %}
+                        <ul id="genre-list" class="filter-section d-flex flex-column p-0 m-0 active">
+                            {% for genre in genres %}
                             <div class="d-flex px-3 p-2">
-                                <label class="check-container" for="{{genra.name}}">{{genra.name}}
-                                    <input type="checkbox" class="form-check-input" data-type="genre" id="{{genra.name}}">
+                                <label class="check-container" for="{{genre.name}}">{{genre.name}}
+                                    <input type="checkbox" class="form-check-input" data-type="genre" id="{{genre.name}}">
                                     <span class="checkmark"></span>
                                    
                                 </label>

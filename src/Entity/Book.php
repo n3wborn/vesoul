@@ -49,9 +49,9 @@ class Book
     private $commands;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Genra", inversedBy="books")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Genre", inversedBy="books")
      */
-    private $genras;
+    private $genres;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="books")
@@ -91,7 +91,7 @@ class Book
     public function __construct()
     {
         $this->commands = new ArrayCollection();
-        $this->genras = new ArrayCollection();
+        $this->genres = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
 
@@ -189,26 +189,26 @@ class Book
     }
 
     /**
-     * @return Collection|Genra[]
+     * @return Collection|Genre[]
      */
-    public function getGenras(): Collection
+    public function getGenres(): Collection
     {
-        return $this->genras;
+        return $this->genres;
     }
 
-    public function addGenra(Genra $genra): self
+    public function addGenre(Genre $genre): self
     {
-        if (!$this->genras->contains($genra)) {
-            $this->genras[] = $genra;
+        if (!$this->genres->contains($genre)) {
+            $this->genres[] = $genre;
         }
 
         return $this;
     }
 
-    public function removeGenra(Genra $genra): self
+    public function removeGenre(Genre $genre): self
     {
-        if ($this->genras->contains($genra)) {
-            $this->genras->removeElement($genra);
+        if ($this->genres->contains($genre)) {
+            $this->genres->removeElement($genre);
         }
 
         return $this;

@@ -50,7 +50,7 @@ class BookRepository extends ServiceEntityRepository
 
         $query =  $this->createQueryBuilder('b')
                         ->select('count(b.id) as count')
-                        ->join('b.genras', 'g')
+                        ->join('b.genres', 'g')
                         ->join('b.author', 'a');
 
         if( $new === "true" ){
@@ -115,12 +115,12 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.id, author.firstname, author.lastname, image.url, genra.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.id, author.firstname, author.lastname, image.url, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
-            INNER jOIN book_genra ON book.id = book_genra.book_id
-            INNER JOIN genra ON book_genra.genra_id = genra.id
+            INNER jOIN book_genre ON book.id = book_genre.book_id
+            INNER JOIN genre ON book_genre.genre_id = genre.id
             ORDER BY book.title
         ';
         $stmt = $conn->prepare($sql);
@@ -135,12 +135,12 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genra.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
-            INNER jOIN book_genra ON book.id = book_genra.book_id
-            INNER JOIN genra ON book_genra.genra_id = genra.id
+            INNER jOIN book_genre ON book.id = book_genre.book_id
+            INNER JOIN genre ON book_genre.genre_id = genre.id
             ORDER BY book.title DESC
         ';
         $stmt = $conn->prepare($sql);
@@ -155,12 +155,12 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genra.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
-            INNER jOIN book_genra ON book.id = book_genra.book_id
-            INNER JOIN genra ON book_genra.genra_id = genra.id
+            INNER jOIN book_genre ON book.id = book_genre.book_id
+            INNER JOIN genre ON book_genre.genre_id = genre.id
             ORDER BY book.year
         ';
         $stmt = $conn->prepare($sql);
@@ -175,12 +175,12 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genra.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
-            INNER jOIN book_genra ON book.id = book_genra.book_id
-            INNER JOIN genra ON book_genra.genra_id = genra.id
+            INNER jOIN book_genre ON book.id = book_genre.book_id
+            INNER JOIN genre ON book_genre.genre_id = genre.id
             ORDER BY book.year DESC
         ';
         $stmt = $conn->prepare($sql);
@@ -195,11 +195,11 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.description, book.price, book.isbn, book.title, book.stock, book.year, book.length, book.width, author.id, author.firstname, author.lastname, genra.name AS genre, image.url
+            SELECT book.description, book.price, book.isbn, book.title, book.stock, book.year, book.length, book.width, author.id, author.firstname, author.lastname, genre.name AS genre, image.url
             FROM book
             INNER JOIN  author ON book.author_id = author.id
-            INNER jOIN book_genra ON book.id = book_genra.book_id
-            INNER JOIN genra ON book_genra.genra_id = genra.id
+            INNER jOIN book_genre ON book.id = book_genre.book_id
+            INNER JOIN genre ON book_genre.genre_id = genre.id
             INNER JOIN image ON book.id = image.book_id
             WHERE book.id = :book_id
         ';
@@ -269,7 +269,7 @@ class BookRepository extends ServiceEntityRepository
                         ->select('b','a','i')
                         ->join('b.author', 'a')
                         ->join('b.images', 'i')
-                        ->join('b.genras', 'g');
+                        ->join('b.genres', 'g');
 
         if( $new === "true" ){
             $query = $query->andWhere('b.new = :new');
@@ -342,7 +342,7 @@ class BookRepository extends ServiceEntityRepository
                         ->select('b','a','i')
                         ->join('b.author', 'a')
                         ->join('b.images', 'i')
-                        ->join('b.genras', 'g')
+                        ->join('b.genres', 'g')
                         ->andWhere(' b.title like :title ')
                         ->setParameter(':title', '%'.$title.'%')
                         ->orderBy('b.'.$fieldOrderBy, $howOrderBy)

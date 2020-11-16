@@ -3,7 +3,7 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\Book;
 use App\Entity\User;
-use App\Entity\Genra;
+use App\Entity\Genre;
 use App\Entity\Image;
 use App\Entity\Author;
 use App\Entity\Address;
@@ -46,17 +46,17 @@ class UserFixtures extends Fixture
         $image3->setUrl("/build/images/livre3.jpg");
         $this->entityManager->persist($image3);
         // ===== Categories ===============================================
-//        $genra1 = new Genra();
-//        $genra1->setName('Histoire');
-//        $this->entityManager->persist($genra1);
+//        $genre1 = new Genre();
+//        $genre1->setName('Histoire');
+//        $this->entityManager->persist($genre1);
         //-----------------------------------
-//        $genra2 = new Genra();
-//        $genra2->setName('Politique');
-//        $this->entityManager->persist($genra2);
+//        $genre2 = new Genre();
+//        $genre2->setName('Politique');
+//        $this->entityManager->persist($genre2);
         // ----------------------------------
-//        $genra3 = new Genra();
-//        $genra3->setName('Humour');
-//        $this->entityManager->persist($genra3);
+//        $genre3 = new Genre();
+//        $genre3->setName('Humour');
+//        $this->entityManager->persist($genre3);
 
         // ===== Books =====================================================
         $book1 = new Book();
@@ -72,7 +72,7 @@ class UserFixtures extends Fixture
         ->setWidth(10)
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image1)
-        ->addGenra($this->getReference("genreReference_".random_int(0, count(BookFixtures::GENRES) - 1 )));
+        ->addGenre($this->getReference("genreReference_".random_int(0, count(BookFixtures::GENRES) - 1 )));
         $this->entityManager->persist($book1);
         // ---------------------------------------------
         $book2 = new Book();
@@ -88,7 +88,7 @@ class UserFixtures extends Fixture
         ->setWidth(21)
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image2)
-        ->addGenra($this->getReference("genreReference_".random_int(0, count(BookFixtures::GENRES) - 1 )));
+        ->addGenre($this->getReference("genreReference_".random_int(0, count(BookFixtures::GENRES) - 1 )));
         $this->entityManager->persist($book2);
         // ----------------------------------------------
         $book3 = new Book();
@@ -104,7 +104,7 @@ class UserFixtures extends Fixture
         ->setHeight(50)
         ->setNew($faker->numberBetween($min = 0, $max = 1))
         ->addImage($image3)
-        ->addGenra($this->getReference("genreReference_".random_int(0, count(BookFixtures::GENRES) - 1 )));
+        ->addGenre($this->getReference("genreReference_".random_int(0, count(BookFixtures::GENRES) - 1 )));
         $this->entityManager->persist($book3);
         // ===== Authors ========================================================
         $author1 = new Author();
