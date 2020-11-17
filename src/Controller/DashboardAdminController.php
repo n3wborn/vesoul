@@ -20,6 +20,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Command;
 use App\Entity\Image;
+use App\Repository\ImageRepository;
 
 
 /**
@@ -30,12 +31,20 @@ class DashboardAdminController extends AbstractController
     private EntityManagerInterface $manager;
     private BookRepository $repoBook;
     private AdminRepository $adminRepo;
+    private ImageRepository $imageRepo;
 
-    public function __construct(EntityManagerInterface $manager, BookRepository $repoBook, AdminRepository $adminRepo)
+
+    public function __construct(
+        EntityManagerInterface $manager,
+        BookRepository $repoBook,
+        AdminRepository $adminRepo,
+        ImageRepository $imageRepo
+    )
     {
         $this->manager = $manager;
         $this->repoBook = $repoBook;
         $this->adminRepo = $adminRepo;
+        $this->imageRepo = $imageRepo;
     }
 
 
@@ -110,19 +119,38 @@ class DashboardAdminController extends AbstractController
     }
 
 
-
     /**
-     * @Route("/livres/delete/{id}", name="admin_delete_book")
+     * @Route("/livres/delete/{id}", name="admin_delete_book", methods={"POST"})
      * @param Book $book
-     * @return RedirectResponse
+     * @return Response
      */
-    public function removeBook(Book $book)
+    public function removeBook(Book $book): Response
     {
+        // TODO: check for csrf token
+        $bookID = $this->manager->getRepository(Book::class)->find($book);
+
+        if (!$bookID) {
+            return new Response("Internal Server Error", Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        // fetch image collection from this book
+        $images = $book->getImages();
+
+        // remove each one
+        foreach ($images as $image) {
+            $filename = $image->getName();
+            $file = $this->getParameter('images_directory') . '/' .$filename;
+
+            if (is_file($file)) {
+                unlink($file);
+            }
+       }
+
+        // and modify/persist all this in database
         $this->manager->remove($book);
-        // TODO: Virer cette bête là
-        $this->manager->remove($image);
         $this->manager->flush();
-        return $this->redirectToRoute('dashboard_admin_livres');
+
+        return new Response("Ok", Response::HTTP_OK);
     }
 
 

@@ -32,6 +32,8 @@ Encore
 
     .addEntry('front', ['./assets/front/js/layout-front.js'])
     .addEntry('admin', './assets/back/js/layout-back.js')
+    .addEntry('book-crud', ['./assets/back/js/book-crud.js'])
+
     .addPlugin(new CopyWebpackPlugin(
         {
             patterns: [

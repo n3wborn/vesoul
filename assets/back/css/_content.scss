@@ -441,3 +441,56 @@ main {
         }
     }
 }
+
+
+.alert {
+    padding: 20px;
+    transition: all .3s ease;
+
+    &:hover, &:focus {
+        transform: scale(1.04);
+        -webkit-box-shadow: 0 8px 20px #e8e8e8;
+        box-shadow: 0 8px 20px #e8e8e8;
+    }
+}
+
+.alert-wrap {
+    width: 80%;
+    margin: 50px auto 0;
+}
+
+.alert {
+    .close {
+        opacity: 0;
+        transition: opacity .3s ease;
+    }
+
+    &:hover .close, &:focus .close {
+        opacity: .2;
+    }
+
+    i {
+        min-width: 30px;
+        text-align: center;
+    }
+}
+
+.alert-success {
+    background: rgb(214, 233, 198);
+    background: linear-gradient(0deg, rgba(214, 233, 198, 1) 0%, rgba(198, 233, 229, 1) 100%);
+}
+
+.alert-info {
+    background: rgb(188, 232, 241);
+    background: linear-gradient(0deg, rgba(188, 232, 241, 1) 0%, rgba(188, 208, 241, 1) 100%);
+}
+
+.alert-warning {
+    background: rgb(250, 235, 204);
+    background: linear-gradient(0deg, rgba(250, 235, 204, 1) 0%, rgba(250, 227, 204, 1) 100%);
+}
+
+.alert-danger {
+    background: rgb(235, 204, 209);
+    background: linear-gradient(0deg, rgba(235, 204, 209, 1) 0%, rgba(235, 204, 221, 0.9276085434) 100%);
+}
