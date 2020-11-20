@@ -15,7 +15,7 @@ security:
             security: false
         admin_secured_area:
             anonymous: ~
-            pattern: ^/pannel-admin
+            pattern: ^/panel-admin
             provider: database_admin
             form_login:
                 check_path: security_admin_login
@@ -52,16 +52,16 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/pannel-admin/accueil, roles: ROLE_ADMIN }
-        - { path: ^/pannel-admin/commandes, roles: ROLE_ADMIN }
-        - { path: ^/pannel-admin/livres, roles: ROLE_ADMIN }
-        - { path: ^/pannel-admin/boutique, roles: ROLE_ADMIN }
-        - { path: ^/pannel-admin/mentions, roles: ROLE_ADMIN }
-        - { path: ^/pannel-client/accueil, roles: ROLE_USER }
-        - { path: ^/pannel-client/informations, roles: ROLE_USER }
-        - { path: ^/pannel-client/adresses, roles: ROLE_USER }
-        - { path: ^/pannel-client/ajouter-adresses, roles: ROLE_USER }
-        - { path: ^/pannel-client/commandes, roles: ROLE_USER }
+        - { path: ^/panel-admin/accueil, roles: ROLE_ADMIN }
+        - { path: ^/panel-admin/commandes, roles: ROLE_ADMIN }
+        - { path: ^/panel-admin/livres, roles: ROLE_ADMIN }
+        - { path: ^/panel-admin/boutique, roles: ROLE_ADMIN }
+        - { path: ^/panel-admin/mentions, roles: ROLE_ADMIN }
+        - { path: ^/panel-client/accueil, roles: ROLE_USER }
+        - { path: ^/panel-client/informations, roles: ROLE_USER }
+        - { path: ^/panel-client/adresses, roles: ROLE_USER }
+        - { path: ^/panel-client/ajouter-adresses, roles: ROLE_USER }
+        - { path: ^/panel-client/commandes, roles: ROLE_USER }
     
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER

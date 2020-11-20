@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/pannel-client")
+ * @Route("/panel-client")
  */
 class SecurityUserController extends AbstractController
 {

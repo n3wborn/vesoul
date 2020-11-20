@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
- * @Route("/pannel-client")
+ * @Route("/panel-client")
  */
 class DashboardUserController extends AbstractController
 {
