@@ -16,6 +16,13 @@ function hideModal(el){
     $('.modal-backdrop').remove();
 }
 
+// Auto close alerts
+const closeAlerts = () => {
+    setTimeout(function() {
+        $(".alert").alert('close');
+    }, 1000);
+}
+
 
 // During seconds, show the first hidden (d-none) element
 // having an alert-success class
@@ -76,5 +83,5 @@ cancelBtn.addEventListener('click', function (){
 // Once DOM is loaded, we do our job
 document.addEventListener("DOMContentLoaded", () => {
     checkDelLinks();
-    //checkEditLinks()
+    closeAlerts();
 });
