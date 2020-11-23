@@ -73,10 +73,8 @@ cancelBtn.addEventListener('click', function (){
 
 
 
-
 // Once DOM is loaded, we do our job
 document.addEventListener("DOMContentLoaded", () => {
     checkDelLinks();
     //checkEditLinks()
-    //checkDetailsLinks()
 });
