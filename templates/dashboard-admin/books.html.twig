@@ -3,6 +3,16 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block body %}
+
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+			{{ message }}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	{% endfor %}
+
 	<div class="titre d-flex">
 		<div class="col-4 d-flex justify-content-start align-items-center pl-0">
 			<p class="p-3 m-0 font-weight-bold">Gestion des livres</p>
@@ -43,7 +53,8 @@
 					<td class="options col-2 d-flex align-items-center justify-content-around">
 
 						{# bouton modifier les détails #}
-						<a href="#" type="button" class="btn btn-primary mx-1" data-toggle="modal" data-target="#lightboxEdit">
+						<a href="{{ path('admin_edit_book', {'id' : book.id }) }}"
+						   type="button" class="btn btn-primary mx-1">
 							<i title="Modifier" class="fas fa-pen text-light"></i>
 						</a>
 
