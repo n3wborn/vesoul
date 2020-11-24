@@ -11,14 +11,7 @@
 
             <div class="container">
 
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endfor %}
+                {{ include('dashboard-admin/flash_messages.html.twig') }}
 
                 <h3 class="text-center font-weight-bold my-3">Ajouter un livre</h3>
 

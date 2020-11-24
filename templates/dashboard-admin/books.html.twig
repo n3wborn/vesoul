@@ -4,14 +4,7 @@
 
 {% block body %}
 
-	{% for message in app.flashes('success') %}
-		<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-			{{ message }}
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-	{% endfor %}
+	{{ include('dashboard-admin/flash_messages.html.twig') }}
 
 	<div class="titre d-flex">
 		<div class="col-4 d-flex justify-content-start align-items-center pl-0">
