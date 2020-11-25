@@ -43,40 +43,46 @@ async function sendDeleteOrder(url) {
 
 // Check for product to delete
 function checkDelLinks() {
-    for (let delLink of delLinks) {
-        delLink.addEventListener('click', function(e){
-            e.preventDefault()
-            this.classList.toggle('readyToDelete')
-        })
+    if (delLinks !== null) {
+        for (let delLink of delLinks) {
+            delLink.addEventListener('click', function(e){
+                e.preventDefault()
+                this.classList.toggle('readyToDelete')
+            })
+        }
     }
 }
 
 
 // Delete Modal -> Confirmed
 // Send "delete" order, close modal and hide product (ie: hide until next page reload)
-confirmBtn.addEventListener('click', function() {
-    const elementsToDelete = document.getElementsByClassName('readyToDelete')
+if (confirmBtn !== null) {
+    confirmBtn.addEventListener('click', function() {
+        const elementsToDelete = document.getElementsByClassName('readyToDelete')
 
-    for (let elementToDelete of elementsToDelete) {
-        url = elementToDelete.getAttribute('href')
-        sendDeleteOrder(url)
-        hideModal(delModal)
-        elementToDelete.closest('tr').style.display = "none"
-        //showSuccess(2500)
-    }
-})
+        for (let elementToDelete of elementsToDelete) {
+            url = elementToDelete.getAttribute('href')
+            sendDeleteOrder(url)
+            hideModal(delModal)
+            elementToDelete.closest('tr').style.display = "none"
+            //showSuccess(2500)
+        }
+    })
+}
 
 
 
 // Delete Modal -> Canceled
 // Remove readyToDelete class and
-cancelBtn.addEventListener('click', function (){
-    const elementsToDelete = document.getElementsByClassName('readyToDelete')
+if (cancelBtn !== null) {
+    cancelBtn.addEventListener('click', function (){
+        const elementsToDelete = document.getElementsByClassName('readyToDelete')
 
-    for (let elementToDelete of elementsToDelete) {
-        elementToDelete.classList.toggle('readyToDelete')
-    }
-})
+        for (let elementToDelete of elementsToDelete) {
+            elementToDelete.classList.toggle('readyToDelete')
+        }
+    })
+}
 
 
 
