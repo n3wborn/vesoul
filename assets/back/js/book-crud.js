@@ -85,9 +85,29 @@ if (cancelBtn !== null) {
 }
 
 
+// function to update form input label with image names
+const updateInputLabel = () => {
+    let input = document.querySelector('.custom-file-input')
+
+    if(input !== null) {
+
+        input.addEventListener('change', () => {
+
+            // target and empty label
+            let label = document.querySelector('label.custom-file-label')
+            label.innerText = ''
+
+            // fill label with image(s) name(s)
+            for (let i = 0; i < input.files.length; i++) {
+                label.innerText += ` ${input.files[i].name}`
+            }
+        })
+    }
+}
 
 // Once DOM is loaded, we do our job
 document.addEventListener("DOMContentLoaded", () => {
     checkDelLinks();
     closeAlerts();
+    updateInputLabel();
 });
