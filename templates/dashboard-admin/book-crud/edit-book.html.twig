@@ -1,29 +1,185 @@
-{# lightbox modifier un livre #}
-<div class="modal fade" id="lightboxEdit" tabindex="-1" role="dialog" aria-labelledby="lightboxEdit" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Modifier TITRE DU LIVRE</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body row">
-                <div class="images d-flex flex-wrap">
-                    <fieldset>
-                        <label class="addImg mt-1 ml-1 d-flex justify-content-center align-items-center" for="img"><i
-                                class="p-1 fas fa-plus"></i></label>
-                        <input class="" name="img" id="img" type="file">
-                    </fieldset>
-                    <div class="elem">
-                        <img class="mt-1 ml-1" src="/build/images/livre1.jpg" width="100" height="170" alt="">
+
+{% extends 'dashboard-admin/base.html.twig' %}
+
+
+	{% block body %}
+
+        <div class="container-fluid">
+            <div class="container">
+
+                {{ include('dashboard-admin/flash_messages.html.twig') }}
+
+                <h3 class="text-center font-weight-bold my-3">Modifier le livre</h3>
+
+                <div class="justify-content-center align-items-center m-auto">
+
+                    {{ form_start(form, {'attr': {'class': 'container-fluid p-5'}}) }}
+
+
+                    {# First Line #}
+                    <div class="form-row">
+
+                        {# First Col #}
+                        <div class="col-6">
+
+
+                            {# Row Title #}
+                            <div class="form-group">
+                                {{ form_label(form.title) }}
+                                {{ form_widget(form.title) }}
+                            </div>
+
+
+                            {# Author / Cat #}
+                            <div class="form-row">
+
+                                {# Author #}
+                                <div class="form-group col-6">
+                                    {{ form_label(form.author) }}
+                                    {{ form_widget(form.author) }}
+                                </div>
+
+                                {# Cat #}
+                                <div class="form-group col-6">
+                                    {{ form_label(form.genres) }}
+                                    {{ form_widget(form.genres) }}
+                                </div>
+                            </div>
+
+
+                            {# Quantity / Price #}
+
+                            {# Quantity #}
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    {{ form_label(form.stock) }}
+                                    {{ form_widget(form.stock) }}
+                                </div>
+
+                                {# Price #}
+                                <div class="form-group col-6">
+                                    {{ form_label(form.price) }}
+                                    {{ form_widget(form.price) }}
+                                </div>
+                            </div>
+
+
+                            {# ISBN #}
+                            <div class="form-group">
+                                {{ form_label(form.isbn) }}
+                                {{ form_widget(form.isbn) }}
+                            </div>
+
+
+                            {# Length #}
+                            <div class="form-group">
+                                {{ form_label(form.length) }}
+                                {{ form_widget(form.length) }}
+                            </div>
+
+
+                            {# Year / New #}
+                            <div class="form-row">
+
+                                {# Year #}
+                                <div class="form-group col-6">
+                                    {{ form_label(form.year) }}
+                                    {{ form_widget(form.year) }}
+                                </div>
+
+                                {# New #}
+                                <div class="form-group col-6 d-flex justify-content-center align-items-end">
+                                    {# hidden checkbox #}
+                                    {{ form_widget(form.new) }}
+
+                                    {# checkbox button #}
+                                    {{ form_widget(form.newbtn) }}
+                                </div>
+                            </div>
+
+
+                            {# Height / Width #}
+                            <div class="form-row">
+
+                                {# Height #}
+                                <div class="form-group col-6">
+                                    {{ form_label(form.height) }}
+                                    {{ form_widget(form.height) }}
+                                </div>
+
+                                {# Width #}
+                                <div class="form-group col-6">
+                                    {{ form_label(form.width) }}
+                                    {{ form_widget(form.width) }}
+                                </div>
+                            </div>
+
+
+                            {# End First Col #}
+                        </div>
+
+
+                        {# Second Col #}
+                        <div class="col-6 d-flex f-col flex-wrap">
+
+                            {# Description #}
+                            <div class="form-group w-100 ">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                            </div>
+
+                            {# Images display #}
+                            <div id="img-display-container" class="w-100 d-flex">
+                                {% for image in images %}
+                                    <div class="img-thumbnail-container col-4 m-auto">
+                                        <img src="{{ asset('/uploads/'~image.name) }}" alt="book images" class="img-thumbnail rounded">
+                                    </div>
+                                    <a href="{{ path('book_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
+                                {% endfor %}
+                            </div>
+
+                            {# Images #}
+                            <div class="custom-file">
+                                {{ form_label(form.images) }}
+                                {{ form_widget(form.images) }}
+                            </div>
+                        </div>
+
                     </div>
+
+                    {# Second Line #}
+                    <div class="form-row">
+
+                        {# Submit #}
+                        <div class="text-center p-3 col-12">
+                            {{ form_widget(form.submit) }}
+
+                            {# Cancel ~> get back to admin/livres #}
+                            <a href="{{ path('dashboard_admin_livres') }}" id="book_cancel" type="button" class="btn btn-secondary text-light m-2">Annuler</a>
+                        </div>
+
+                        {# Token CSRF #}
+                        {{ form_widget(form._token) }}
+                    </div>
+
+                    {# Form end #}
+                    {{ form_end(form) }}
+
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="button" class="save btn btn-secondary" data-dismiss="modal">Enregistrer</button>
-            </div>
         </div>
-    </div>
-</div>
+
+    {% endblock %}
+
+
+
+
+{% block javascripts %}
+
+    {#	Add whats' globally needed #}
+    {{ parent() }}
+
+    {#	Add specific js  #}
+    {{ encore_entry_script_tags('book-crud') }}
+
+{% endblock %}
