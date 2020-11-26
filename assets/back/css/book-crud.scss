@@ -31,3 +31,28 @@
     }
   }
 }
+
+// Delete Modale
+#lightboxDelete {
+  .modal-dialog {
+    .modal-content {
+      .modal-body {
+        div {
+          .supprimer {
+            background-color: $color-supprimer;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+
+            &:hover {
+              cursor: pointer;
+              background-color: #B03229;
+            }
+          }
+        }
+      }
+    }
+  }
+}
