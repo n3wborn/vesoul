@@ -90,6 +90,7 @@ class DashboardAdminController extends AbstractController
             // get uploaded images
             $images = $form->get('images')->getData();
 
+            // TODO: allow 3 images only per book
             // For each image uploaded
             foreach($images as $image){
                 // give them uniq filenames
@@ -119,7 +120,7 @@ class DashboardAdminController extends AbstractController
 
         return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
             'title' => 'Ajouter un livre',
-            'form' => $form->createView() //Display the form
+            'form' => $form->createView()
         ]);
     }
 
@@ -166,25 +167,26 @@ class DashboardAdminController extends AbstractController
      */
     public function editBooks(Book $book, Request $request)
     {
+        // Instanciate e new BookType form
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
+        // find which book we're editing
         $img_collection = $this->imageRepo->findBy(['book' => $book]);
 
-        // garder un max de 3 images
-        // possibilité de supprimer image si besoin
-        // ajouter les nouvelles et les ajouter à l'objet
 
+        // if valid form submission
         if($form->isSubmitted() && $form->isValid()){
+
             // get uploaded images
             $images = $form->get('images')->getData();
 
             // For each image uploaded
             foreach($images as $image){
-                // give them uniq filenames
+                // rename with uniq id
                 $file = md5(uniqid()) . '.' . $image->guessExtension();
 
-                // move it to images_directory (cf: parameters in services.yaml)
+                // move to images_directory (cf: services.yaml parameters)
                 try {
                     $image->move(
                         $this->getParameter('images_directory'),
@@ -194,18 +196,21 @@ class DashboardAdminController extends AbstractController
                     $e->getMessage();
                 }
 
-                // We keep image name in db
+                // Instanciate a new Image with corresponding spec's and link it to book entity
                 $img = new Image();
                 $img->setName($file);
                 $book->addImage($img);
             }
 
-            $this->manager->persist($book); // persist
-            $this->manager->flush();        // save in db
+            // update book entity in db
+            $this->manager->persist($book);
+            $this->manager->flush();
+            // TODO: replace addFlash with Bootstrap toasts
             $this->addFlash('success', 'Modification effectuée OK');
             return $this->redirectToRoute('dashboard_admin_livres');
         }
 
+        // render the page
         return $this->render('dashboard-admin/book-crud/edit-book.html.twig', [
             'title' => 'Modifier un livre',
             'images' => $img_collection,
@@ -219,33 +224,31 @@ class DashboardAdminController extends AbstractController
      */
     public function deleteImage(Image $image, Request $request) {
 
+        // json decode the request
         $data = json_decode($request->getContent(), true);
 
-        // check token
+        // if csrf is ok...
         if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
 
-            // Note: url is temporary (cf: book fixtures picsum photos)
-            // Get image name and url
-            $name = $image->getName();
-            $url = $image->getUrl();
+            // get image filename
+            $file = $image->getName();
 
-            // check if file really exist and so, avoid warnings
-            // if getParameter return only the images_directory dir
-            if (is_file($name)) {
-                unlink($this->getParameter('images_directory').'/'.$name);
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($image);
-                $em->flush();
+            // remove file
+            unlink($this->getParameter('images_directory').'/'.$file);
 
-                // everything is all right
-                return new JsonResponse([
-                    'success' => 1,
-                    'name' => $name,
-                    'url' => $url
-                ]);
-            } else {
-                return new JsonResponse(['error' => 'Aucun fichier à supprimer'], 410);
-            }
+            // keep modifications in db
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+
+            // send success message
+            // Todo: add bootsrap toast
+            return new JsonResponse([
+                'success' => 1
+            ], 200);
+
+        // if csrf is not a valid one, send error message accordingly
+        // TODO: add bootstrap toast
         } else {
             return new JsonResponse(['error' => 'Token Invalide'], 400);
         }
