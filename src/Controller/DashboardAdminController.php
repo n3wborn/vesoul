@@ -6,11 +6,13 @@ use App\Entity\Book;
 use App\Entity\Admin;
 use App\Form\BookType;
 use App\Form\AdminType;
+use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
 use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,19 +34,22 @@ class DashboardAdminController extends AbstractController
     private BookRepository $repoBook;
     private AdminRepository $adminRepo;
     private ImageRepository $imageRepo;
+    private AuthorRepository $authorRepo;
 
 
     public function __construct(
         EntityManagerInterface $manager,
         BookRepository $repoBook,
         AdminRepository $adminRepo,
-        ImageRepository $imageRepo
+        ImageRepository $imageRepo,
+        AuthorRepository $authorRepo
     )
     {
         $this->manager = $manager;
         $this->repoBook = $repoBook;
         $this->adminRepo = $adminRepo;
         $this->imageRepo = $imageRepo;
+        $this->authorRepo= $authorRepo;
     }
 
 
@@ -126,7 +131,6 @@ class DashboardAdminController extends AbstractController
      */
     public function removeBook(Book $book): Response
     {
-        // TODO: check for csrf token
         $bookID = $this->manager->getRepository(Book::class)->find($book);
 
         if (!$bookID) {
@@ -154,28 +158,98 @@ class DashboardAdminController extends AbstractController
     }
 
 
-
     /**
-     * @Route("/livres/redit/{id} ", name="dashboard_admin_redit_book")
+     * @Route("/livres/edit/{id} ", name="admin_edit_book")
      * @param Book $book
      * @param Request $request
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      */
-    public function reditBooks(Book $book, Request $request)
+    public function editBooks(Book $book, Request $request)
     {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $img_collection = $this->imageRepo->findBy(['book' => $book]);
 
-            // TODO: Verifier si persist est necessaire
-            // $this->manager->persist($book);
-            $this->manager->flush();
-            // return new RedirectResponse($router->generate('handle_tools'));
+        // garder un max de 3 images
+        // possibilité de supprimer image si besoin
+        // ajouter les nouvelles et les ajouter à l'objet
+
+        if($form->isSubmitted() && $form->isValid()){
+            // get uploaded images
+            $images = $form->get('images')->getData();
+
+            // For each image uploaded
+            foreach($images as $image){
+                // give them uniq filenames
+                $file = md5(uniqid()) . '.' . $image->guessExtension();
+
+                // move it to images_directory (cf: parameters in services.yaml)
+                try {
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+                } catch (FileException $e) {
+                    $e->getMessage();
+                }
+
+                // We keep image name in db
+                $img = new Image();
+                $img->setName($file);
+                $book->addImage($img);
+            }
+
+            $this->manager->persist($book); // persist
+            $this->manager->flush();        // save in db
+            $this->addFlash('success', 'Modification effectuée OK');
             return $this->redirectToRoute('dashboard_admin_livres');
         }
+
+        return $this->render('dashboard-admin/book-crud/edit-book.html.twig', [
+            'title' => 'Modifier un livre',
+            'images' => $img_collection,
+            'form' => $form->createView() //Display the form
+        ]);
     }
 
+
+    /**
+     * @Route("/image/delete/{id}", name="book_delete_image", methods={"GET|DELETE"})   // GET needed for Symfo debug
+     */
+    public function deleteImage(Image $image, Request $request) {
+
+        $data = json_decode($request->getContent(), true);
+
+        // check token
+        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
+
+            // Note: url is temporary (cf: book fixtures picsum photos)
+            // Get image name and url
+            $name = $image->getName();
+            $url = $image->getUrl();
+
+            // check if file really exist and so, avoid warnings
+            // if getParameter return only the images_directory dir
+            if (is_file($name)) {
+                unlink($this->getParameter('images_directory').'/'.$name);
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($image);
+                $em->flush();
+
+                // everything is all right
+                return new JsonResponse([
+                    'success' => 1,
+                    'name' => $name,
+                    'url' => $url
+                ]);
+            } else {
+                return new JsonResponse(['error' => 'Aucun fichier à supprimer'], 410);
+            }
+        } else {
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
+    }
 
 
     /**
