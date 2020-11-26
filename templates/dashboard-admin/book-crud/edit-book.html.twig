@@ -129,16 +129,25 @@
                             </div>
 
                             {# Images display #}
-                            <div id="img-display-container" class="w-100 d-flex">
+                            <div id="img-display-container" class="w-100 d-flex justify-content-around">
+
+                                {# Only display "real" images, not fixtures (only having image.url) #}
                                 {% for image in images %}
-                                    <div class="img-thumbnail-container col-4 m-auto">
-                                        <img src="{{ asset('/uploads/'~image.name) }}" alt="book images" class="img-thumbnail rounded">
-                                    </div>
-                                    <a href="{{ path('book_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
+                                    {% if image.name %}
+                                        <div class="card card-img col-4 align-items-end justify-content-end border-1"
+                                             style="background-image: url({{ asset('/static/book/uploads/' ~ image.name) }});">
+                                            <a class="btn btn-outline-danger mb-3" role="button" aria-pressed="true"
+                                               href="{{ path('book_delete_image', {id: image.id}) }}"
+                                               data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
+
                             </div>
 
-                            {# Images #}
+                            {# Images Upload #}
                             <div class="custom-file">
                                 {{ form_label(form.images) }}
                                 {{ form_widget(form.images) }}

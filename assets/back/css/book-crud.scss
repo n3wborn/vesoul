@@ -25,10 +25,9 @@
   height: 155px;
   margin-bottom: 1rem;
 
-  div.img-thumbnail-container {
-    img.img-thumbnail {
-      //object-fit: contain;
-    }
+  .card {
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 }
 
