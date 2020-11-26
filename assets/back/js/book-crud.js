@@ -26,7 +26,7 @@ const closeAlerts = () => {
 
 // During seconds, show the first hidden (d-none) element
 // having an alert-success class
-function showSuccess(seconds = 2000){
+const showSuccess = (seconds = 2000) => {
     console.log('show success message')
     setTimeout( function() {
     console.log('hide success message')
