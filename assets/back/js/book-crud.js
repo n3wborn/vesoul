@@ -3,10 +3,33 @@ const delLinks = document.getElementsByClassName('delete-link')
 const delModal = document.getElementById('delete-modal')
 const confirmBtn = document.getElementById('confirm-delete')
 const cancelBtn = document.getElementById('cancel-delete')
-
+const chkBox = document.getElementById('book_new')
+const newBtn = document.getElementById('book_newbtn')
 
 
 // FUNCTIONS
+
+// Toggle checked state of a checkbox
+function toggleCheck(el) {
+    if (el.checked === false) {
+        el.checked = true;
+        el.value = 1;
+        newBtn.classList.replace('btn-outline-secondary', 'btn-success')
+        return innerChange(newBtn, 'Nouveauté !');
+    } else {
+        el.checked = false;
+        el.value = 0;
+        newBtn.classList.replace('btn-success', 'btn-outline-secondary') // be sure to have good color
+        return innerChange(newBtn, 'Livre déjà édité');
+    }
+}
+
+
+// Replace el element "innerHTML" value with string value
+function innerChange(el, string) {
+    el.innerHTML = '';
+    return el.innerHTML = string;
+}
 
 
 // jQuery stuff to hide Bootstrap modal
@@ -15,6 +38,7 @@ function hideModal(el){
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 }
+
 
 // Auto close alerts
 const closeAlerts = () => {
@@ -54,38 +78,7 @@ function checkDelLinks() {
 }
 
 
-// Delete Modal -> Confirmed
-// Send "delete" order, close modal and hide product (ie: hide until next page reload)
-if (confirmBtn !== null) {
-    confirmBtn.addEventListener('click', function() {
-        const elementsToDelete = document.getElementsByClassName('readyToDelete')
-
-        for (let elementToDelete of elementsToDelete) {
-            url = elementToDelete.getAttribute('href')
-            sendDeleteOrder(url)
-            hideModal(delModal)
-            elementToDelete.closest('tr').style.display = "none"
-            //showSuccess(2500)
-        }
-    })
-}
-
-
-
-// Delete Modal -> Canceled
-// Remove readyToDelete class and
-if (cancelBtn !== null) {
-    cancelBtn.addEventListener('click', function (){
-        const elementsToDelete = document.getElementsByClassName('readyToDelete')
-
-        for (let elementToDelete of elementsToDelete) {
-            elementToDelete.classList.toggle('readyToDelete')
-        }
-    })
-}
-
-
-// function to update form input label with image names
+// Update form input label with image names
 const updateInputLabel = () => {
     let input = document.querySelector('.custom-file-input')
 
@@ -106,7 +99,7 @@ const updateInputLabel = () => {
 }
 
 
-// check if book images need to be deleted
+// Check if images need to be deleted
 const checkImgDelLinks = () => {
     let links = document.querySelectorAll("[data-delete]")
 
@@ -133,6 +126,49 @@ const checkImgDelLinks = () => {
             })
         }
     }
+}
+
+
+
+// LOGIC
+
+// If chkBox lives in, newBtn flip it's state from checked/unchecked
+if (chkBox !== null) {
+    newBtn.addEventListener('click', function () {
+        toggleCheck(chkBox);
+    })
+}
+
+
+// if a book deletion is confirmed :
+// Send "delete" order, close modal and hide product (ie: hide until next page reload)
+if (confirmBtn !== null) {
+    confirmBtn.addEventListener('click', function() {
+        const elementsToDelete = document.getElementsByClassName('readyToDelete')
+
+        for (let elementToDelete of elementsToDelete) {
+            url = elementToDelete.getAttribute('href')
+            sendDeleteOrder(url)
+            hideModal(delModal)
+            elementToDelete.closest('tr').style.display = "none"
+            // TODO: show Bootstrap Toast to show success message
+            //showSuccess(2500)
+        }
+    })
+}
+
+
+
+// If book deletion is canceled :
+// Remove readyToDelete class
+if (cancelBtn !== null) {
+    cancelBtn.addEventListener('click', function (){
+        const elementsToDelete = document.getElementsByClassName('readyToDelete')
+
+        for (let elementToDelete of elementsToDelete) {
+            elementToDelete.classList.toggle('readyToDelete')
+        }
+    })
 }
 
 
