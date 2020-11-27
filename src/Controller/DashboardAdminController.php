@@ -10,6 +10,7 @@ use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
 use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,9 +71,13 @@ class DashboardAdminController extends AbstractController
      */
     public function books()
     {
+        $criteria = Criteria::create()
+            ->orderBy(['year' => 'DESC'])
+        ;
+
         return $this->render('dashboard-admin/books.html.twig', [
             'title' => 'Livres',
-            'books' => $this->repoBook->findAll()
+            'books' => $this->repoBook->matching($criteria)
         ]);
     }
 
