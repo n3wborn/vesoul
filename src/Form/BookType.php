@@ -139,7 +139,7 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('newbtn', ButtonType::class, [
-                'label'=> 'Livre inédit ?',
+                'label'=> 'Nouveauté ?',
                 'attr' => [
                     'class' => 'btn btn-outline-secondary',
                 ],

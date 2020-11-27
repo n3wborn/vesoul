@@ -19,10 +19,12 @@ function toggleCheck(el) {
     if (el.checked === false) {
         el.checked = true;
         el.value = 1;
-        return innerChange(newBtn, 'Livre inédit !');
+        newBtn.classList.replace('btn-outline-secondary', 'btn-success')
+        return innerChange(newBtn, 'Nouveauté !');
     } else {
         el.checked = false;
         el.value = 0;
+        newBtn.classList.replace('btn-success', 'btn-outline-secondary') // be sure to have good color
         return innerChange(newBtn, 'Livre déjà édité');
     }
 }
