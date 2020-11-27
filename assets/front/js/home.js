@@ -36,7 +36,7 @@ const filter = {
 let totalPages = 0;
 let page = 1;
 let ticking = false;
-let orderBy = 'ascName';
+let orderBy = 'descYear';
 //=======================================================================
 
 //Objets de la page home ================================================
