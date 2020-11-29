@@ -30,19 +30,38 @@
                             </div>
 
 
-                            {# Author / Cat #}
-                            <div class="form-row">
-
-                                {# Author #}
-                                <div class="form-group col-6">
+                            {# Author #}
+                            <div class="form-row align-items-end mb-3">
+                                <div class="form-group col-8 mb-0">
                                     {{ form_label(form.author) }}
                                     {{ form_widget(form.author) }}
                                 </div>
 
-                                {# Cat #}
-                                <div class="form-group col-6">
+                                {# Add new author #}
+                                <div class="col-4">
+                                    <a href="{{ path('admin_add_auteur') }}" type="button" class="btn btn-outline-dark w-100"
+                                       data-addauthor data-token="{{ csrf_token('addauthor') }}">
+                                        Autre...
+                                        <i class="fa fa-plus text-light"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            {# Cat #}
+                            <div class="form-row align-items-end mb-3">
+                                <div class="form-group col-8 mb-0">
                                     {{ form_label(form.genres) }}
                                     {{ form_widget(form.genres) }}
+                                </div>
+
+                                {# Add new catgeory #}
+                                <div class="col-4">
+
+                                    <a href="#" type="button" class="btn btn-outline-dark w-100">
+                                        Autre...
+                                        <i class="fa fa-plus text-light"></i>
+                                    </a>
                                 </div>
                             </div>
 
