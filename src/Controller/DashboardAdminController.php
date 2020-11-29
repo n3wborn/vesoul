@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Admin;
 use App\Form\BookType;
@@ -108,6 +109,7 @@ class DashboardAdminController extends AbstractController
                         $file
                     );
                 } catch (FileException $e) {
+                    // TODO: handle catched error message
                     $e->getMessage();
                 }
 
@@ -183,6 +185,7 @@ class DashboardAdminController extends AbstractController
         // if valid form submission
         if($form->isSubmitted() && $form->isValid()){
 
+
             // get uploaded images
             $images = $form->get('images')->getData();
 
@@ -198,6 +201,7 @@ class DashboardAdminController extends AbstractController
                         $file
                     );
                 } catch (FileException $e) {
+                    // TODO: handle FileException error message
                     $e->getMessage();
                 }
 
@@ -256,6 +260,52 @@ class DashboardAdminController extends AbstractController
         // TODO: add bootstrap toast
         } else {
             return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
+    }
+
+    /**
+     * @Route("/author/new", name="admin_add_auteur", methods={"GET|POST"})
+     */
+    public function authorNew(Request $request): JsonResponse
+    {
+        // json decode the request
+        $data = json_decode($request->getContent(), true);
+
+        // if addauthor csrf is ok...
+        if($this->isCsrfTokenValid('addauthor', $data['_token'])){
+
+            // try to add an author in db
+            try {
+                $author = new Author();
+                $author->setLastname($data['lastname']);
+                $author->setFirstname($data['firstname']);
+
+                $this->manager->persist($author);
+                $this->manager->flush();
+
+                // and return success and infos
+                // (for the browser only Id is unknown, but why not ?!)
+                return new JsonResponse([
+                    'success' => 1,
+                    'firstname' => $author->getFirstname(),
+                    'lastname' => $author->getLastname(),
+                    'author_id' => $author->getId()
+                ], 200);
+
+            // say if something went wrong
+            } catch (\Exception $e) {
+                return new JsonResponse([
+                    'error' => $e
+                    , 400
+                ]);
+            }
+
+        // invalid token is a bad thing !
+        } else {
+            return new JsonResponse([
+                'error' => 'csrf token invalid'
+                , 400
+            ]);
         }
     }
 
