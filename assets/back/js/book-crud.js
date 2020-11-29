@@ -129,6 +129,71 @@ const checkImgDelLinks = () => {
 }
 
 
+// Check if a new author must be created
+// TODO: make this a bit less quick and dirty
+const checkAddAuthor = () => {
+    let links = document.querySelectorAll("[data-addauthor]")
+
+    if (links !== null) {
+
+        for(link of links){
+            link.addEventListener("click", function(e){
+                e.preventDefault()
+
+                // trigger modal
+                $('#new-author-modal').modal('show')
+
+                // if "submit"
+                $('#new-author-modal').on('click','#confirm-new-author', function (e) {
+
+                    // get user input
+                    let firstname = $('#firstname').val()
+                    let lastname =  $('#lastname').val()
+
+                    // fetch infos to server using json
+                    fetch('/admin/author/new', {
+                        method: 'POST',
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "_token": link.dataset.token,
+                            "firstname": firstname,
+                            "lastname": lastname,
+                        })
+                    }).then(
+                        response => response.json()
+                    ).then(
+                        data => {
+                            if(data.success) {
+                                // if server ok, remove previous select
+                                let selectElement = document.getElementById('book_author')
+                                selectElement.selectedIndex = -1
+
+                                // add and select new option
+                                let newOption = new Option(`${data.firstname} ${data.lastname}`, `${data.author_id}`, true, true);
+                                selectElement.add(newOption, undefined);
+
+                                // show result in selectpicker
+                                $('.selectpicker').selectpicker('refresh')
+
+                                //  and hide modal
+                                //hideModal(document.getElementById('#new-author-modal'))
+                                $('#new-author-modal').modal('toggle')
+
+                            } else {
+                                // if error show message
+                                alert(data.error)
+                            }
+                    }).catch(e => alert(e))
+                })
+
+            })
+        }
+    }
+}
+
 
 // LOGIC
 
@@ -178,4 +243,5 @@ document.addEventListener("DOMContentLoaded", () => {
     closeAlerts();
     updateInputLabel();
     checkImgDelLinks();
+    checkAddAuthor();
 });

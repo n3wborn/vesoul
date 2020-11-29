@@ -197,6 +197,42 @@
             </div>
         </div>
 
+
+
+
+        <!-- New Author Modal -->
+        <div class="modal fade" id="new-author-modal" tabindex="-1" role="dialog" aria-labelledby="new-author-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Nouvel auteur</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="h3 py-3 text-center">Veuillez rentrer les informations relatives au nouvel auteur</p>
+
+                        <form>
+                            <div class="form-group">
+                                <label for="firstname" class="col-form-label">Firstname:</label>
+                                <input type="text" class="form-control" id="firstname">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-form-label">Lastname:</label>
+                                <input type="text" class="form-control" id="lastname">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal" id="cancel-new-author">Annuler</button>
+                        <button type="button" class="btn btn-outline-success" id="confirm-new-author">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% endblock %}
 
 
