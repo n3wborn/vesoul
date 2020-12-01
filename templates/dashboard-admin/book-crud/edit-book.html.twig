@@ -58,7 +58,8 @@
                                 {# Add new catgeory #}
                                 <div class="col-4">
 
-                                    <a href="#" type="button" class="btn btn-outline-dark w-100">
+                                    <a href="{{ path('admin_add_genre') }}" type="button" class="btn btn-outline-dark w-100"
+                                       data-addgenre data-token="{{ csrf_token('addgenre') }}">
                                         Autre...
                                         <i class="fa fa-plus text-light"></i>
                                     </a>
@@ -228,6 +229,36 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-dismiss="modal" id="cancel-new-author">Annuler</button>
                         <button type="button" class="btn btn-outline-success" id="confirm-new-author">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- New Genre Modal -->
+        <div class="modal fade" id="new-genre-modal" tabindex="-1" role="dialog" aria-labelledby="new-genre-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Nouveau genre</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="h3 py-3 text-center">Veuillez indiquer le genre à créer</p>
+
+                        <form>
+                            <div class="form-group">
+                                <label for="genre" class="col-form-label">Genre:</label>
+                                <input type="text" class="form-control" id="genre">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal" id="cancel-new-genre">Annuler</button>
+                        <button type="button" class="btn btn-outline-success" id="confirm-new-genre">Enregistrer</button>
                     </div>
                 </div>
             </div>
