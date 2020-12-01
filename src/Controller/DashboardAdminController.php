@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Admin;
+use App\Entity\Genre;
 use App\Form\BookType;
 use App\Form\AdminType;
 use App\Repository\AuthorRepository;
@@ -301,6 +302,50 @@ class DashboardAdminController extends AbstractController
             }
 
         // invalid token is a bad thing !
+        } else {
+            return new JsonResponse([
+                'error' => 'csrf token invalid'
+                , 400
+            ]);
+        }
+    }
+
+
+    /**
+     * @Route("/genre/new", name="admin_add_genre", methods={"GET|POST"})
+     */
+    public function genreNew(Request $request): JsonResponse
+    {
+        // json decode the request
+        $data = json_decode($request->getContent(), true);
+
+        // if addgenre csrf token is ok...
+        if($this->isCsrfTokenValid('addgenre', $data['_token'])){
+
+            // try to add a genre in db
+            try {
+                $genre = new Genre();
+                $genre->setName($data['genre']);
+
+                $this->manager->persist($genre);
+                $this->manager->flush();
+
+                // and return success and infos (even if only id is really needed for js)
+                return new JsonResponse([
+                    'success' => 1,
+                    'genre' => $genre->getName(),
+                    'genre_id' => $genre->getId()
+                ], 200);
+
+                // say if something went wrong
+            } catch (\Exception $e) {
+                return new JsonResponse([
+                    'error' => $e
+                    , 400
+                ]);
+            }
+
+            // invalid token is a bad thing !
         } else {
             return new JsonResponse([
                 'error' => 'csrf token invalid'
