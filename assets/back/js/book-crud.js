@@ -186,9 +186,71 @@ const checkAddAuthor = () => {
                                 // if error show message
                                 alert(data.error)
                             }
-                    }).catch(e => alert(e))
+                    }).catch(
+                        e => alert(e)
+                    )
                 })
 
+            })
+        }
+    }
+}
+
+
+// Check if a new genre must be created
+// TODO: make this a bit less quick and dirty
+const checkAddGenre = () => {
+    let links = document.querySelectorAll("[data-addgenre]")
+
+    if (links !== null) {
+
+        for(link of links){
+            link.addEventListener("click", function(e){
+                e.preventDefault()
+
+                // trigger modal
+                $('#new-genre-modal').modal('show')
+
+                // if "submit"
+                $('#new-genre-modal').on('click','#confirm-new-genre', function (e) {
+
+                    // get user input
+                    let genre =  $('#genre').val()
+
+                    // fetch infos to server using json
+                    fetch('/admin/genre/new', {
+                        method: 'POST',
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            "_token": link.dataset.token,
+                            "genre": genre,
+                        })
+                    }).then(
+                        response => response.json()
+                    ).then(
+                        data => {
+                            if(data.success) {
+                                // if server ok, add and select new genre
+                                let selectElement = document.getElementById('book_genres')
+                                let newOption = new Option(`${data.genre}`, `${data.genre_id}`, true, true);
+                                selectElement.add(newOption, undefined);
+
+                                // show result in selectpicker
+                                // and hide modal
+                                $('.selectpicker').selectpicker('refresh')
+                                $('#new-genre-modal').modal('toggle')
+
+                            } else {
+                                // if error show message
+                                alert(data.error)
+                            }
+                    }).catch(
+                        e => alert(e)
+                    )
+                })
             })
         }
     }
@@ -244,4 +306,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateInputLabel();
     checkImgDelLinks();
     checkAddAuthor();
+    checkAddGenre();
 });
