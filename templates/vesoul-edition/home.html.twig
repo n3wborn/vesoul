@@ -111,8 +111,8 @@
                     <p class="m-0"><span id="totalPage" >{% if books is defined %}{% if books | length > 0 %}{{  books | length }}{% else %} 0 {% endif %}{% endif %}</span> Livre(s) trouvé(s) {% if books is defined %}<span class="search-result-phras"> Recherche :  <span class="search-keyword" >"{{ searchValue }}"{% endif %}</span></span></p>
                 </div>
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <label for="sort-select" class="m-0 p-2">Trier par : </label>
                     <select class="custom-select" name="sort-select" id="sort-select">
+                        <option value="" disabled selected>Trier par...</option>
                         <option value="ascName">Noms croissants</option>
                         <option value="descName">Noms décroissants</option>
                         <option value="ascYear">Années croissantes</option>
