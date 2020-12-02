@@ -18,7 +18,7 @@ const btnApplyFilter = document.querySelector("#applyFilter");
 const btnDesactivateFilter = document.querySelector("#desactivateFilter");
 const sliderYear = document.querySelectorAll('.range');
 const btnSearch = document.querySelector('.btn-search');
-const inptSarch = document.querySelector('.search-bar');
+const inputSearch = document.querySelector('.search-bar');
 const btnQuantity = document.querySelectorAll('.btn-quantity');
 const btnDelete = document.querySelectorAll('.delete-article');
 
@@ -128,11 +128,11 @@ window.addEventListener('load', function(){
     
 });
 
-if( itemList !== null){
-  // Ecoute de la selection du tri apres chargement de la page   
+if (itemList !== null){
+  // Ecoute de la selection du tri apres chargement de la page
   itemList.addEventListener('change', ()=>{
 
-    areaDescribeSearch = document.querySelector('.search-result-phras');
+    areaDescribeSearch = document.querySelector('.search-result-phrase');
 
     if( areaDescribeSearch !== null ){
       areaSearchKeyword = areaDescribeSearch.querySelector('.search-keyword');
@@ -276,15 +276,15 @@ if( btnDesactivateFilter !== null ){
 
 btnSearch.addEventListener('click', (evt) =>{
   
-  inptSarch.classList.remove('is-invalid');
+  inputSearch.classList.remove('is-invalid');
 
   //Si pas de saisie ou saisi
-  if( inptSarch.value.trim().length === 0 ){
-    inptSarch.classList.add('is-invalid');
+  if( inputSearch.value.trim().length === 0 ){
+    inputSearch.classList.add('is-invalid');
     return;
   }
 
-  searchValue = inptSarch.value.trim();
+  searchValue = inputSearch.value.trim();
   formSearch = document.querySelector('.form-search');
   formSearch.action = `/home/search/bytitle/${searchValue}`;
   formSearch.submit();
@@ -292,7 +292,7 @@ btnSearch.addEventListener('click', (evt) =>{
 
 });
 
-inptSarch.addEventListener('keypress', (evt) => {
+inputSearch.addEventListener('keypress', (evt) => {
   
   //Récup des éléments du script
   element = evt.currentTarget;
@@ -427,7 +427,7 @@ function resetFilter(){
   
   //Si on n'est sur la page search alors
   //on redirige la personne sur la page d'acceuil
-  areaDescribeSearch = document.querySelector('.search-result-phras');
+  areaDescribeSearch = document.querySelector('.search-result-phrase');
   if( areaDescribeSearch !== null ){
     window.location.replace("/");
     return;
@@ -461,8 +461,8 @@ function resetFilter(){
   filter.author = [];
 
   //réinitialisation de la case de formulaire
-  inptSarch.value = '';
-  inptSarch.classList.remove('is-invalid');
+  inputSearch.value = '';
+  inputSearch.classList.remove('is-invalid');
   
   
 
