@@ -63,11 +63,6 @@ class User implements UserInterface
     private $commands;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Address", inversedBy="users")
-     */
-    private $addresses;
-
-    /**
      * @ORM\Column(type="simple_array")
      */
     private $roles = [];
@@ -86,6 +81,11 @@ class User implements UserInterface
      * @ORM\Column(type="date", nullable=true)
      */
     private $birth;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="user")
+     */
+    private $addresses;
 
     
 
@@ -193,43 +193,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Address[]
-     */
-    public function getAddresses(): Collection
-    {
-        return $this->addresses;
-    }
-
-    public function addAddress(Address $address): self
-    {
-        if (!$this->addresses->contains($address)) {
-            $this->addresses[] = $address;
-        }
-
-        return $this;
-    }
-
-    public function removeAddress(Address $address): self
-    {
-        if ($this->addresses->contains($address)) {
-            $this->addresses->removeElement($address);
-        }
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
 
     public function getUsername(): ?string
     {
@@ -289,5 +252,35 @@ class User implements UserInterface
 
     public function __toString(){
         return $this->firstname;
+    }
+
+    /**
+     * @return Collection|Address[]
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses[] = $address;
+            $address->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
