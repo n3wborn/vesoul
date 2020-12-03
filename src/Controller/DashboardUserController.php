@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Form\ChangePasswordType;
+use App\Form\CommandType;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -52,16 +55,34 @@ class DashboardUserController extends AbstractController
     /**
      * @Route("/accueil", name="dashboard_user_home")
      */
-    public function home()
+    public function home(Request $request)
     {
-        $commande = $this->session->get('commande');
+        $user = $this->getUser();
 
-        if( isset( $commande['confirmation']) && $commande['confirmation']=== true){
-            return $this->redirectToRoute('commande');
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // TODO
+            return true;
         }
-        
+
+        $changePassword = $this->createForm(ChangePasswordType::class);
+        $changePassword->handleRequest($request);
+
+        if ($changePassword->isSubmitted() && $changePassword->isValid()) {
+            $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
+            $this->manager->flush();
+            $this->addFlash('success', 'Your password has been updated!');
+            return $this->redirectToRoute('dashboard_user_home');
+        }
+
+
         return $this->render('dashboard-user/mon-compte.html.twig', [
-            'title' => 'Mon compte'
+            'title' => 'Mon compte',
+            'user' => $user,
+            'form' => $form->createView(),
+            'form_password' => $changePassword->createView()
         ]);
     }
 
