@@ -3,45 +3,45 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Form\CommandType;
+use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
-use App\Repository\CartRepository;
 use App\Repository\GenreRepository;
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Expr\GroupBy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 
 class VesoulEditionController extends AbstractController
 {
-    private EntityManagerInterface $manager;
+    private EntityManagerInterface $em;
     private SessionInterface $session;
-    private BookRepository $repoBook;
-    private GenreRepository $repoGenre;
-    private AuthorRepository $repoAuthor;
+    private AuthorRepository $authorRepo;
+    private BookRepository $bookRepo;
+    private GenreRepository $genreRepo;
+    private AddressRepository $addressRepo;
 
 
-    public function __construct(EntityManagerInterface $manager,
-                                SessionInterface $session,
-                                BookRepository $repoBook,
-                                GenreRepository $repoGenre,
-                                AuthorRepository $repoAuthor)
+    public function __construct(
+        EntityManagerInterface $em,
+        SessionInterface $session,
+        BookRepository $bookRepo,
+        GenreRepository $genreRepo,
+        AuthorRepository $authorRepo,
+        AddressRepository $addressRepo
+    )
     {
-        $this->manager = $manager;
+        $this->em = $em;
         $this->session = $session;
-        $this->repoBook = $repoBook;
-        $this->repoGenre = $repoGenre;
-        $this->repoAuthor = $repoAuthor;
+        $this->bookRepo = $bookRepo;
+        $this->genreRepo = $genreRepo;
+        $this->authorRepo = $authorRepo;
+        $this->addressRepo = $addressRepo;
     }
 
 
@@ -62,10 +62,10 @@ class VesoulEditionController extends AbstractController
             $this->session->set('panier', []);
         }
 
-        $allBooks = $this->repoBook->findAllBooksByAscName();
-        $genres = $this->repoGenre->findAllGenre();
-        $authors = $this->repoAuthor->findAllAuthors();
-        $maxAndMinYear = $this->repoBook->maxAndMinYear();
+        $allBooks = $this->bookRepo->findAllBooksByAscName();
+        $genres = $this->genreRepo->findAllGenre();
+        $authors = $this->authorRepo->findAllAuthors();
+        $maxAndMinYear = $this->bookRepo->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
 
@@ -86,7 +86,7 @@ class VesoulEditionController extends AbstractController
         $books = [];
 
         if (strlen($searchValue) > 0 ) {
-            $books = $this->repoBook->searchByTitle($searchValue);
+            $books = $this->bookRepo->searchByTitle($searchValue);
         }
         
         if($this->session->get('panier')) {
@@ -95,9 +95,9 @@ class VesoulEditionController extends AbstractController
             $this->session->set('panier', []);
         }
 
-        $genres = $this->repoGenre->findAll();
-        $authors = $this->repoAuthor->findAllAuthors();
-        $maxAndMinYear = $this->repoBook->maxAndMinYear();
+        $genres = $this->genreRepo->findAll();
+        $authors = $this->authorRepo->findAllAuthors();
+        $maxAndMinYear = $this->bookRepo->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
         
@@ -120,7 +120,7 @@ class VesoulEditionController extends AbstractController
         $books = [];
         
         if( strlen( $searchValue ) >= 3 ){
-            $books = $this->repoBook->findTitle($searchValue);
+            $books = $this->bookRepo->findTitle($searchValue);
         }
         
         $response = new Response();
@@ -157,10 +157,10 @@ class VesoulEditionController extends AbstractController
         $title = $request->get('title');
 
         $max_per_page = 9;
-        $total_books = $this->repoBook->countBooks($new, $genre, $author, $yearmin, $yearmax, $title);
+        $total_books = $this->bookRepo->countBooks($new, $genre, $author, $yearmin, $yearmax, $title);
         $pages = ceil($total_books / $max_per_page);
         $offset = ($page - 1) * $max_per_page;
-        $books = $this->repoBook->findPageOfListBook($offset, $orderBy, $new, $genre, $author, $yearmin, $yearmax, $title);
+        $books = $this->bookRepo->findPageOfListBook($offset, $orderBy, $new, $genre, $author, $yearmin, $yearmax, $title);
 
         $response = new Response();
         $response->setCharset('utf-8');
@@ -180,11 +180,10 @@ class VesoulEditionController extends AbstractController
 
     /**
     * @Route("/ascName", name="sortByAscName")
-    * @param \App\Repository\BookRepository
     */
     public function sortByAscName() : JsonResponse
     {
-        $books = $this->repoBook->findAllBooksByAscName();
+        $books = $this->bookRepo->findAllBooksByAscName();
         $arrayBooks = [];
         $data = [];
         $i = 0;
@@ -204,7 +203,7 @@ class VesoulEditionController extends AbstractController
      */
     public function sortByDescName() : JsonResponse
     {
-        $books = $this->repoBook->findAllBooksByDescName();
+        $books = $this->bookRepo->findAllBooksByDescName();
         $arrayBooks = [];
         $data = [];
         $i = 0;
@@ -224,7 +223,7 @@ class VesoulEditionController extends AbstractController
     */
     public function sortByAscYear() : JsonResponse
     {
-        $books = $this->repoBook->findAllBooksByAscYear();
+        $books = $this->bookRepo->findAllBooksByAscYear();
         $arrayBooks = [];
         $data = [];
         $i = 0;
@@ -242,9 +241,9 @@ class VesoulEditionController extends AbstractController
     /**
     * @Route("/descYear", name="sortByDescYear")
     */
-    public function sortByDescYear(BookRepository $repo) : JsonResponse
+    public function sortByDescYear(BookRepository $bookRepo) : JsonResponse
     {
-        $books = $repo->findAllBooksByDescYear();
+        $books = $bookRepo->findAllBooksByDescYear();
         $arrayBooks = [];
         $data = [];
         $i = 0;
@@ -420,7 +419,7 @@ class VesoulEditionController extends AbstractController
      */
     public function showProduct($id)
     {
-        $book = $this->repoBook->findBook($id);
+        $book = $this->bookRepo->findBook($id);
 
         return $this->render('vesoul-edition/product.html.twig', [
             'book' => $book

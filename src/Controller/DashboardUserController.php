@@ -30,21 +30,21 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class DashboardUserController extends AbstractController
 {
-    private EntityManagerInterface $manager;
+    private EntityManagerInterface $em;
     private SessionInterface $session;
     private UserPasswordEncoderInterface $encoder;
     private AddressRepository $addressRepo;
     private UserRepository $userRepo;
 
     public function __construct(
-        EntityManagerInterface $manager,
+        EntityManagerInterface $em,
         SessionInterface $session,
         UserPasswordEncoderInterface $encoder,
         AddressRepository $addressRepo,
         UserRepository $userRepo
     )
     {
-        $this->manager = $manager;
+        $this->manager = $em;
         $this->session = $session;
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
@@ -208,8 +208,8 @@ class DashboardUserController extends AbstractController
         //     ->setLastname(ucfirst($address->getLastname()));
             
         //     $address->addUser($user);
-        //     $manager->persist($address);
-        //     $manager->flush();
+        //     $em->persist($address);
+        //     $em->flush();
 
         //     return $this->redirectToRoute('dashboard_user_addresses');
 
@@ -231,8 +231,8 @@ class DashboardUserController extends AbstractController
         
         // $repo = $this->getDoctrine()->getRepository(Address::class);
         // $address = $repo->find($id);
-        // $manager->remove($address);
-        // $manager->flush();
+        // $em->remove($address);
+        // $em->flush();
         // dump($address);
         // die();
 

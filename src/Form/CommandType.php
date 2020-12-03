@@ -28,13 +28,10 @@ class CommandType extends AbstractType
     {
         $user = $this->security->getUser();
 
-
-
         $builder
             ->add('livraison', EntityType::class, [
                 'class' => Command::class,
                 'choice_label' => function (Address $address){
-                    dd($address->getTitle());
                     return $address->getTitle();
                 },
                 'query_builder' => function (EntityRepository $repository) use ($user) {
