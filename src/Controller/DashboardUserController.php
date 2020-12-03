@@ -73,7 +73,7 @@ class DashboardUserController extends AbstractController
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
             $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
             $this->manager->flush();
-            $this->addFlash('success', 'Your password has been updated!');
+            $this->addFlash('success', 'Mot de passe mis à jour');
             return $this->redirectToRoute('dashboard_user_home');
         }
 
@@ -92,39 +92,41 @@ class DashboardUserController extends AbstractController
      */
     public function showInformations(Request $request)
     {
+
+        $user = $this->getUser();
+
+
+        // TODO: wtf this is doing here ?
         $commande = $this->session->get('commande');
 
-        if( isset( $commande['confirmation']) && $commande['confirmation']=== true){
+        if (isset( $commande['confirmation']) && $commande['confirmation'] === true){
             return $this->redirectToRoute('commande');
         }
-        
-        $user = $this->getUser();
-        $form = $this->createForm(EditInformationsType::class, $user);
+
+        // here, we SHOW and/or MAY CHANGE user infos
+        $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $hash = $this->encoder->encodePassword($user, $user->getPassword()); // Chiffrer le mot de passe de l'user
-            $username_mail = $user->getUsername();
-            $tel = $user->getTel();
-
-            $user->setPassword($hash) // Enregistrer le mot de passee chiffré en BDD
-                 ->setUsername($username_mail)
-                 ->setTel($tel);
-
-            $this->manager->persist($user);
             $this->manager->flush();
+            $this->addFlash('success', 'Infos mises à jour');
+            return $this->redirectToRoute('dashboard_user_informations');
+        }
 
-            $this->addFlash('notice', 'Votre mot de passe à bien été changé !');
+        $changePassword = $this->createForm(ChangePasswordType::class);
+        $changePassword->handleRequest($request);
 
-            return $this->redirectToRoute('security_user_login');
-            } else {
-                $form->addError(new FormError('Ancien mot de passe incorrect'));
-            }
+        if ($changePassword->isSubmitted() && $changePassword->isValid()) {
+            $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
+            $this->manager->flush();
+            $this->addFlash('success', 'Mot de passe mis à jour');
+            return $this->redirectToRoute('dashboard_user_informations');
+        }
 
         return $this->render('dashboard-user/mon-compte.html.twig', [
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'form_password' => $changePassword->createView()
         ]);
     }
 
