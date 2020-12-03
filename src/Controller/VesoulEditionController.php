@@ -454,26 +454,37 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/commande", name="commande")
      */
-    public function showCommande(Security $security)
+    public function showCommande(Security $security, Request $request)
     {
         $panier = $this->session->get('panier');
         $user = $security->getUser();
-        
-        // redirect to home if no cart
+
+        $form = $this->createForm(CommandType::class);
+        $form->handleRequest($request);
+
+        // if form is ok ~> go on
+        if ($form->isSubmitted() && $form->isValid()) {
+            // TODO: Handle "command ok" Logic
+            return $this->redirectToRoute('home');
+        }
+
+        // if no cart ~> go back home
         if( $panier === null ){
             return $this->redirectToRoute('home');
         }
 
+        // if user is unknown ~> propose connection
         if( $user === null ){
-            
             $commande['confirmation'] = true;
             $this->session->set('commande', $commande);
             return $this->redirectToRoute('security_user_login');
         }
 
-        return $this->render('vesoul-edition/commande.html.twig',
-        [
-            'user' => $user
+        // render commande template
+        return $this->render('vesoul-edition/commande.html.twig', [
+            'user' => $user,
+            'panier' => $panier,
+            'form' => $form->createView(),
         ]);
     }
 
