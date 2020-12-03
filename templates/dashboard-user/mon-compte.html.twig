@@ -21,7 +21,6 @@
         </nav>
 
         <div id="infos-compte" class="col-9 d-flex justify-content-center">
-
             <div class="wrapper-infos d-flex flex-column ml-3 justify-content-center">
 
                 <div class="title-wrapper">
@@ -30,59 +29,63 @@
                     </div>
                 </div>
 
-                <div class="infos-content">
+                <div class="infos-content d-flex flex-column justify-content-center align-items-center">
 
-                {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'class': 'col-10'}}) }}
 
-                    <div class="d-flex flex-column">
-
-                        <div class="d-flex justify-content-between">
-
-                            {{ form_widget(form.username, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Adresse mail', 'id' : 'inputUser'}}) }}
-
-                            {{ form_widget(form.tel, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Téléphone', 'id' : 'inputPassword'}}) }}
-
+                        <div class="form-group my-3">
+                            {{ form_label(form.username) }}
+                            {{ form_widget(form.username, { value : user.username|default(null) }) }}
                         </div>
 
-                            {{ form_row(form.password, {'label' : false ,'attr' : {'class': 'form-control mb-3', 'placeholder' : 'Nouveau mot de passe', 'id' : 'inputPassword', 'value' : '', }}) }}
-
-                            {{ form_row(form.confirm_password, {'label' : false ,'attr' : {'class': 'form-control mb-3', 'placeholder' : 'Confirmation nouveau mot de passe', 'id' : 'inputNew'}}) }}
-                            
-                            {# {{ form_row(form.confirm_new_password, {'label' : false ,'attr' : {'class': 'form-control mb-3', 'placeholder' : 'Confirmation du nouveau mot de passe', 'id' : 'inputNewConfirm'}}) }} #}
-                            
-                    </div>
-
-                    <div class="d-flex justify-content-center align-items-end">
-
-                        <button class="btn-inscription btn btn-lg mt-2 mt-3" type="submit">Enregistrer les modifications</button>
-                            
-                    </div>
-
-                {{ form_end(form) }}
-
-                    {# <form action="{{ path('dashboard_user_informations_validation')}}" method="POST">
-                        <div class="d-flex flex-column">
-                            <div class="d-flex justify-content-between">
-                                <input class="col-5" name="mail_info" type="email" placeholder="Adresse mail">
-                                <input class="col-5" name="tel_info" type="text" placeholder="Téléphone">
-                            </div>
-        
-                            <input class="changing-pass" name="ancien_mdp_info" type="password" placeholder="Mot de passe">
-                            <input class="changing-pass" name="nouveau_mdp_info" type="password" placeholder="Nouveau mot de passe">
-                            <input class="changing-pass" name="confirm_nouveau_mdp_info" type="password" placeholder="Confirmer le nouveau mot de passe">
+                        <div class="form-group my-3">
+                            {{ form_label(form.gender) }}
+                            {{ form_widget(form.gender, { value : user.gender|default(0) }) }}
                         </div>
-                        <div class="d-flex justify-content-center align-items-end">
-                            <button class="btn">Enregistrer les modifications</button>
+
+                        <div class="form-group my-3">
+                            {{ form_label(form.firstname) }}
+                            {{ form_widget(form.firstname, { value : user.firstname|default(null) }) }}
                         </div>
-                    </form> #}
+
+                        <div class="form-group my-3">
+                            {{ form_label(form.lastname) }}
+                            {{ form_widget(form.lastname, { value : user.lastname|default(null) }) }}
+                        </div>
+
+                        <div class="form-group my-3">
+                            {{ form_label(form.tel) }}
+                            {{ form_widget(form.tel, { value : user.tel|default(null) }) }}
+                        </div>
+
+
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn-inscription btn btn-lg my-3" type="submit">Enregistrer les modifications</button>
+                        </div>
+
+                    {{ form_end(form) }}
+
+
+
+                    {{ form_start(form_password, {'attr': {'class': 'col-10'}}) }}
+
+                        <div class="form-group my-3">
+                            {{ form_row(form_password.currentPassword) }}
+                        </div>
+
+                        <div class="form-group my-3">
+                            {{ form_row(form_password.newPassword) }}
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn-inscription btn btn-lg my-3" type="submit">Changer le mot de passe</button>
+                        </div>
+
+                    {{ form_end(form_password) }}
 
                 </div>
-
             </div>
-
-
         </div>
-
     </div>
 
 
