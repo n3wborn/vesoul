@@ -5,45 +5,54 @@
 {% block content %}
 <div id="commande" class="p-3 m-0">
   <form class="row p-0 m-0" action="">
+
     <!-- ===> Partie Adresses =========================================== -->
     <div class="adresses m-0 p-3 col-4 d-flex flex-column">
       <div class="card p-3">
         <h2 class="mb-3">Adresses</h2>
+
         <!-- --- Adresse de livraison --- -->
         <div class="livraison m-0 p-0 d-flex flex-column">
           <h3 class="m-0 pb-3">Adresse de livraison</h3>
-          <select>
-            {% if user.addresses|length == 0 %}            
-              <option value="" selected>Ajouter une adresse</option>
-            {% endif %} 
-            {% if user.addresses|length > 0 %}
-              {% for address in user.addresses %}
-                {% if address.type == 'livraison' %}
-                  <option value="{{address.id}}" selected>{{address.title}}</option>
-                {% endif %}
-              {% endfor %}
-            {% endif %}           
-          </select>
-          
-            
-              <div class="destinataire m-0 py-2 d-flex align-items-center">
-                <i class="fas fa-user"></i>
-                <div class="d-flex flex-column pl-3">
-                  <p class="prenom m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].firstname}}{% endif %}</p>
-                  <p class="nom m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].lastname}}{% endif %}</p>
-                </div> 
-              </div>        
-              <div class="place m-0 py-2 d-flex align-items-center">
-                <i class="fas fa-map-marker-alt"></i>
-                <div class="d-flex flex-column pl-3">
-                  <p class="adress m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].street}}{% endif %}</p>
-                  <p class="complement m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].additional}}{% endif %}</p>
-                  <div class="d-flex m-0">
-                    <p class="cp m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].cp}}{% endif %}</p>
-                    <p class="ville m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].city}}{% endif %}</p>
-                  </div>                  
+
+          {{ form_start(form) }}
+          {{ form_row(form.livraison) }}
+          <button type="submit" class="btn btn-outline-success">Enregistrer</button>
+          {{ form_end(form) }}
+
+{#          <select class="custom-select">#}
+{#            {% if user.addresses|length == 0 %}            #}
+{#              <option value="" selected>Ajouter une adresse</option>#}
+{#            {% endif %}#}
+
+{#            {% if user.addresses|length > 0 %}#}
+{#              {% for address in user.addresses %}#}
+{#                {% if address.type == 'livraison' %}#}
+{#                  <option value="{{address.id}}" selected>{{address.title}}</option>#}
+{#                {% endif %}#}
+{#              {% endfor %}#}
+{#            {% endif %}           #}
+{#          </select>#}
+{#          #}
+
+            <div class="destinataire m-0 py-2 d-flex align-items-center">
+              <i class="fas fa-user"></i>
+              <div class="d-flex flex-column pl-3">
+                <p class="prenom m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].firstname}}{% endif %}</p>
+                <p class="nom m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].lastname}}{% endif %}</p>
+              </div>
+            </div>
+            <div class="place m-0 py-2 d-flex align-items-center">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="d-flex flex-column pl-3">
+                <p class="adress m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].street}}{% endif %}</p>
+                <p class="complement m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].additional}}{% endif %}</p>
+                <div class="d-flex m-0">
+                  <p class="cp m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].cp}}{% endif %}</p>
+                  <p class="ville m-0">{% if user.addresses|length > 0 %}{{ user.addresses[0].city}}{% endif %}</p>
                 </div>
               </div>
+            </div>
             
             <div class="m-0 py-2 d-flex align-items-center">
               <input type="checkbox" name="same-adress" value="yes">
@@ -51,22 +60,25 @@
               <button class="btn btn-light">Modifier</button>
             </div>
           </div>
+
         <!-- --- Adresse de facturation --- -->
         <div class="facturation m-0 p-0 d-flex flex-column">
+
           <h3 class="m-0 my-3">Adresse de facturation</h3>
-          <select>
+          <select class="custom-select">
             <option value="" selected>Mes adresses</option>
             <option value="domicile">Domicile</option>
             <option value="travail">Travail</option>
-            <option value="pierre">Pierre</option>
           </select>
+
           <div class="destinataire m-0 py-2 d-flex align-items-center">
             <i class="fas fa-user"></i>
             <div class="d-flex flex-column pl-3">
-              <p class="prenom m-0">Jean-Jean</p>
-              <p class="nom m-0">Dupont</p>
-            </div>
+              <p class="prenom m-0">{{ user.firstname|default('prénom') }}</p>
+              <p class="nom m-0">{{ user.lastname|default('nom') }}</p>
+           </div>
           </div>
+
           <div class="place m-0 py-2 d-flex align-items-center">
             <i class="fas fa-map-marker-alt"></i>
             <div class="d-flex flex-column pl-3">
@@ -79,79 +91,86 @@
               <p class="pays m-0">FRANCE</p>
             </div>
           </div>
+
           <div class="m-0 d-flex justify-content-end">
             <button class="btn btn-light">Modifier</button>
           </div>
+
         </div>
       </div>
     </div>
-    <!-- <=== Fin Adresse ============================================= -->
+
+
     <!-- ===> Partie Informations personnelles ======================== -->
     <div class="col-4 m-0 p-3">
-      <row class="info-perso m-0 p-0">
-        <div class="card m-0 p-3">
+      <div class="info-perso m-0 p-0">
+        <div class="card p-3">
           <h2 class="mb-3">Informations personnelles</h2>
-          <div class="m-0 pb-2 d-flex justify-content-between">
-            <div><input type="radio" name="civilite" value="mr" checked> M.</div>
-            <div><input type="radio" name="civilite" value="mme"> Mme.</div>
-            <div><input type="radio" name="civilite" value="mlle"> Mlle</div>
-          </div>
-          <div class="user m-0 py-2 d-flex align-items-center">
-              <i class="fas fa-user"></i>
-              <div class="d-flex flex-column pl-3">
-                <p class="prenom m-0">Jean-Jean</p>
-                <p class="nom m-0">Dupont</p>
-              </div>
+          <div class="ml-2">
+            <div class="d-flex p-2">
+              <input class="form-check-input"  type="radio" name="civilite-h" id="civilite-h" value="mr" checked>
+              <label class="form-check-label" for="civilite-h">Mr</label>
             </div>
+            <div class="d-flex p-2">
+              <input class="form-check-input" type="radio" name="civilite-f" id="civilite-f" value="mme">
+              <label class="form-check-label" for="civilite-h">Mme</label>
+            </div>
+          </div>
+
+          <div class="user m-0 py-2 d-flex align-items-center">
+            <i class="fas fa-user"></i>
+            <div class="d-flex flex-column pl-3">
+              <p class="prenom m-0">{{ user.firstname|default('prénom') }}</p>
+              <p class="nom m-0">{{ user.lastname|default('nom') }}</p>
+            </div>
+          </div>
+
           <div class="d-flex align-items-center">
             <i class="fas fa-envelope"></i>
-            <p class="mail m-0 pl-3 py-2">jeanjean.dupont@yahoo.fr</p>
+            <p class="mail m-0 pl-3 py-2">{{ user.username|default('adresse mail') }}</p>
           </div>
+
           <div class="d-flex align-items-center">
             <i class="fas fa-phone"></i>
-            <p class="phone m-0 pl-3 py-2">06 12 34 56 78</p>
+            <p class="phone m-0 pl-3 py-2">{{ user.tel|default('téléphone') }}</p>
           </div>
+
           <div class="d-flex justify-content-end">
             <button class="btn btn-light">Modifier</button>
           </div>
         </div>
-      </row>
-      <!-- <=== Fin Informations Personnelles =========================== -->
+
+      </div>
+
+
       <!-- ===> Partie Livraison ======================================== -->
-      <row class="livraison m-0 p-3">
+      <div class="livraison my-3 p-0">
         <div class="card m-0 p-3 d-flex flex-column">
           <h2 class="mb-3">Livraison</h2>
+
           <div class="m-0 py-2 d-flex justify-content-between align-items-center">
             <div class="d-flex">
               <input type="radio" name="civilite" value="mr" checked>
               <div class="m-0 pl-3 d-flex flex-column">
                 <p class="m-0">Livraison Vesoul-Edition</p>
-                <p class="m-0 details">Partout en Franch-Comté</p>
               </div>
             </div>
             <p class="m-0 price">Gratuite</p>
           </div>
-          <div class="m-0 py-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex">
-              <input type="radio" name="civilite" value="mr" checked>
-              <div class="m-0 pl-3 d-flex flex-column">
-                <p class="m-0">Colissimo</p>
-                <p class="m-0 details">En France métropolitaine</p>
-              </div>
-            </div>
-            <p class="m-0 price">8,60 €</p>
-          </div>
+
           <textarea class="mt-2" name="delivery-instructions" placeholder="Si vous avez un message pour le livreur, laissez le ici. Merci"></textarea>
+
         </div>
-      </row>
+      </div>
     </div>
-    <!-- <=== Fin Livraison ============================================= -->
+
+
     <!-- ===> Partie Récapitulatif ====================================== -->
     <div class="recap m-0 p-3 col-4">
       <div class="card m-0 p-3">
         <h2 class="mb-3">Récapitulatif</h2>
+
         <div class="items mt-3">
-          {% set panier = app.session.get('panier') %}
           {% set total = 0 %}
           {% for item in panier %}
             <div class="item d-flex justify-content-between">
@@ -162,10 +181,12 @@
             {%  set total =  (item.quantity * item.price) %}
           {% endfor %}          
         </div>
+
         <div class="ss-total py-2 mt-3 d-flex justify-content-between">
           <p class="w-75 m-0">Sous-Total</p>
           <p class="w-25 text-right m-0">{{ total|number_format(2, ',') }} €</p>
         </div>
+
         <div class="livraison py-2 d-flex justify-content-between">
           <p class="w-75 m-0">Livraison</p>
           <p class="w-25 text-right m-0">Gratuite</p>
@@ -175,10 +196,13 @@
           <p class="w-75 m-0">Total</p>
           <p class="w-25 text-right m-0">{{ total|number_format(2, ',') }} €</p>
         </row>
+
         <button type="submit" class="mt-3 btn btn-info w-100">Commander</button>
       </div>
+
     </div>
-    <!-- <=== Fin récapitulatif ======================================== -->
+
+
   </form>
 </div>
 {% endblock %}
