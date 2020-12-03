@@ -460,10 +460,9 @@ class VesoulEditionController extends AbstractController
         $panier = $this->session->get('panier');
         $user = $security->getUser();
         
-        //Si le panier est vide alors pas de commande
-        //Prévenir que la personn
-        if( $panier === null){
-            return $this->redirectToRoute('panier');
+        // redirect to home if no cart
+        if( $panier === null ){
+            return $this->redirectToRoute('home');
         }
 
         if( $user === null ){
