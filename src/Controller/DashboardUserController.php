@@ -3,24 +3,17 @@
 namespace App\Controller;
 
 use App\Form\ChangePasswordType;
-use App\Form\CommandType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Repository\AddressRepository;
 use App\Repository\CommandRepository;
-use App\Repository\BookRepository;
-use App\Repository\AuthorRepository;
 use App\Repository\UserRepository;
-use App\Form\EditInformationsType;
 use App\Form\EditAddressesType;
 use App\Form\AddAddressesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use App\Entity\Address;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -44,7 +37,7 @@ class DashboardUserController extends AbstractController
         UserRepository $userRepo
     )
     {
-        $this->manager = $em;
+        $this->em = $em;
         $this->session = $session;
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
@@ -72,7 +65,7 @@ class DashboardUserController extends AbstractController
 
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
             $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
-            $this->manager->flush();
+            $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
             return $this->redirectToRoute('dashboard_user_home');
         }
@@ -108,7 +101,7 @@ class DashboardUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->flush();
+            $this->em->flush();
             $this->addFlash('success', 'Infos mises à jour');
             return $this->redirectToRoute('dashboard_user_informations');
         }
@@ -118,7 +111,7 @@ class DashboardUserController extends AbstractController
 
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
             $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
-            $this->manager->flush();
+            $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
             return $this->redirectToRoute('dashboard_user_informations');
         }
@@ -152,8 +145,8 @@ class DashboardUserController extends AbstractController
                     ->setLastname(ucfirst($address->getLastname()));
 
             $address->addUser($user);
-            $this->manager->persist($address);
-            $this->manager->flush();
+            $this->em->persist($address);
+            $this->em->flush();
 
             return $this->redirectToRoute('dashboard_user_addresses');
 
@@ -168,8 +161,8 @@ class DashboardUserController extends AbstractController
                     ->setLastname(ucfirst($address->getLastname()));
             
             $address->addUser($user);
-            $this->manager->persist($address);
-            $this->manager->flush();
+            $this->em->persist($address);
+            $this->em->flush();
 
             return $this->redirectToRoute('dashboard_user_addresses');
 
