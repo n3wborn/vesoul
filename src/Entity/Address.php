@@ -53,10 +53,7 @@ class Address
      */
     private $additional;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="addresses")
-     */
-    private $users;
+
 
     /**
      * @ORM\Column(type="string", length=45)
@@ -83,9 +80,13 @@ class Address
      */
     private $command_livraison;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addresses")
+     */
+    private $user;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->command_facturation = new ArrayCollection();
         $this->command_livraison = new ArrayCollection();
     }
@@ -175,34 +176,6 @@ class Address
     public function setAdditional(?string $additional): self
     {
         $this->additional = $additional;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeAddress($this);
-        }
 
         return $this;
     }
@@ -301,6 +274,18 @@ class Address
                 $commandLivraison->setLivraison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
