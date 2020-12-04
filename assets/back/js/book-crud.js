@@ -132,12 +132,12 @@ const checkImgDelLinks = () => {
 // Check if a new author must be created
 // TODO: make this a bit less quick and dirty
 const checkAddAuthor = () => {
-    let links = document.querySelectorAll("[data-addauthor]")
+    let linksAuthor = document.querySelectorAll("[data-addauthor]")
 
-    if (links !== null) {
+    if (linksAuthor !== null) {
 
-        for(link of links){
-            link.addEventListener("click", function(e){
+        for (let linkAuthor of linksAuthor){
+            linkAuthor.addEventListener("click", function(e){
                 e.preventDefault()
 
                 // trigger modal
@@ -151,44 +151,44 @@ const checkAddAuthor = () => {
                     let lastname =  $('#lastname').val()
 
                     // fetch infos to server using json
-                    fetch('/admin/author/new', {
+                    fetch(linkAuthor.getAttribute('href'), {
                         method: 'POST',
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            "_token": link.dataset.token,
+                            "_token": linkAuthor.dataset.token,
                             "firstname": firstname,
                             "lastname": lastname,
                         })
-                    }).then(
-                        response => response.json()
-                    ).then(
+                    })
+                    .then( response => response.json() )
+                    .then(
                         data => {
-                            if(data.success) {
-                                // if server ok, remove previous select
-                                let selectElement = document.getElementById('book_author')
-                                selectElement.selectedIndex = -1
 
-                                // add and select new option
-                                let newOption = new Option(`${data.firstname} ${data.lastname}`, `${data.author_id}`, true, true);
-                                selectElement.add(newOption, undefined);
+                        if(data.success) {
 
-                                // show result in selectpicker
-                                $('.selectpicker').selectpicker('refresh')
+                            // if server ok, remove previous select
+                            let selectElement = document.getElementById('book_author')
+                            selectElement.selectedIndex = -1
 
-                                //  and hide modal
-                                //hideModal(document.getElementById('#new-author-modal'))
-                                $('#new-author-modal').modal('toggle')
+                            // add and select new option
+                            let newOption = new Option(`${data.firstname} ${data.lastname}`, `${data.author_id}`, true, true);
+                            selectElement.add(newOption, undefined);
 
-                            } else {
-                                // if error show message
-                                alert(data.error)
-                            }
-                    }).catch(
-                        e => alert(e)
-                    )
+                            // show result in selectpicker
+                            // and hide modal
+                            $('.selectpicker').selectpicker('refresh')
+                            $('#new-author-modal').modal('toggle')
+
+                        // else, if data are no good...
+                        } else  {
+                            alert(data.error)
+                        }
+                    })
+                    // if fetch fail, tell us
+                    .catch(e => alert(e))
                 })
 
             })
@@ -200,12 +200,12 @@ const checkAddAuthor = () => {
 // Check if a new genre must be created
 // TODO: make this a bit less quick and dirty
 const checkAddGenre = () => {
-    let links = document.querySelectorAll("[data-addgenre]")
+    let linksGenre = document.querySelectorAll("[data-addgenre]")
 
-    if (links !== null) {
+    if (linksGenre !== null) {
 
-        for(link of links){
-            link.addEventListener("click", function(e){
+        for(let linkGenre of linksGenre){
+            linkGenre.addEventListener("click", function(e){
                 e.preventDefault()
 
                 // trigger modal
@@ -218,21 +218,24 @@ const checkAddGenre = () => {
                     let genre =  $('#genre').val()
 
                     // fetch infos to server using json
-                    fetch('/admin/genre/new', {
+                    fetch(linkGenre.href, {
                         method: 'POST',
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            "_token": link.dataset.token,
+                            "_token": linkGenre.dataset.token,
                             "genre": genre,
                         })
-                    }).then(
-                        response => response.json()
-                    ).then(
+                    })
+                    .then( response => response.json() )
+                    .then(
+
                         data => {
+
                             if(data.success) {
+
                                 // if server ok, add and select new genre
                                 let selectElement = document.getElementById('book_genres')
                                 let newOption = new Option(`${data.genre}`, `${data.genre_id}`, true, true);
@@ -244,12 +247,10 @@ const checkAddGenre = () => {
                                 $('#new-genre-modal').modal('toggle')
 
                             } else {
-                                // if error show message
                                 alert(data.error)
                             }
-                    }).catch(
-                        e => alert(e)
-                    )
+                    })
+                    .catch(e => alert(e))
                 })
             })
         }

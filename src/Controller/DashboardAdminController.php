@@ -265,7 +265,7 @@ class DashboardAdminController extends AbstractController
     }
 
     /**
-     * @Route("/author/new", name="admin_add_auteur", methods={"GET|POST"})
+     * @Route("/author/new", name="admin_add_auteur", methods={"POST"})
      */
     public function authorNew(Request $request): JsonResponse
     {
@@ -273,6 +273,7 @@ class DashboardAdminController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // if addauthor csrf is ok...
+
         if($this->isCsrfTokenValid('addauthor', $data['_token'])){
 
             // try to add an author in db
@@ -312,7 +313,7 @@ class DashboardAdminController extends AbstractController
 
 
     /**
-     * @Route("/genre/new", name="admin_add_genre", methods={"GET|POST"})
+     * @Route("/genre/new", name="admin_add_genre", methods={"POST"})
      */
     public function genreNew(Request $request): JsonResponse
     {
