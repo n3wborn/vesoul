@@ -112,21 +112,32 @@ class SecurityUserController extends AbstractController
     }
 
 
-
     /**
      * @Route("/test/mail", name="mail_test")
+     * @param Swift_Mailer $mailer
      */
-    public function sendMail()
+    public function sendMail(Swift_Mailer $mailer)
     {
+
+        $emailAddress = $this->getUser()->getUsername();
+
         // TODO: changer setTO et setFrom
-        $mail = (new Swift_Message("Bonjour"))
-            ->setFrom('lucas.rob1@live.fr')
-            ->setTo('lucas.r@codeur.online')
-            ->setBody("<h1>Ceci est un message de test.</h1>", 'text/html');
+        $message = (new Swift_Message("Bienvenue"))
+            ->setFrom('testmail@exemple.com')
+            ->setTo($emailAddress)
+            ->setBody(
+                $this->renderView(
+                'email/confirm.html.twig',
+                    [
+                        // TODO: send first and lastname
+                    ]
+                ), 'text/html'
+            )
+        ;
 
-        $this->mailer->send($mail);
+        $mailer->send($message);
 
-        return $this->redirectToRoute('security_user_login');
+        return $this->redirectToRoute('dashboard_user_informations');
     }
 
 
