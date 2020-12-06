@@ -22,19 +22,18 @@ class RegisterType extends AbstractType
                 'expanded' => true,
                 'label' => 'Civilités'
             ])
-            ->add('firstname')      
+            ->add('firstname')
             ->add('lastname')
             ->add('password', PasswordType::class)
             ->add('confirm_password', PasswordType::class)
-            ->add('username', EmailType::class) 
+            ->add('username', EmailType::class)
             ->add('tel')
-            ->add('newsletter')
             ->add('birth', DateType::class, [
                 'html5' => false,
                 'widget' => 'single_text',
                 'format' => 'dd-mm-yyyy',
-                
-            ])  
+
+            ])
         ;
     }
 

@@ -73,11 +73,6 @@ class User implements UserInterface
     private $tel;
 
     /**
-     * @ORM\Column(type="boolean", options={"default":true})
-     */
-    private $newsletter;
-
-    /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $birth;
@@ -88,8 +83,6 @@ class User implements UserInterface
     private $addresses;
 
     
-
-
     public function __construct()
     {
         $this->commands = new ArrayCollection();
@@ -120,19 +113,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getNewsletter(): ?bool
-    {
-        return $this->newsletter;
-    }
 
-    public function setNewsletter(bool $newsletter): self
-    {
-        $this->newsletter = $newsletter;
-
-        return $this;
-    }
-
-    
     public function getLastname(): ?string
     {
         return $this->lastname;

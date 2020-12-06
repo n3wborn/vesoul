@@ -217,7 +217,6 @@ class UserFixtures extends Fixture
          ->setRoles(["ROLE_USER"])
          ->setPassword($hash)
          ->setGender('homme')
-         ->setNewsletter(true)
          ->setBirth(new \DateTime())
          ->addCommand($command1)
          ->addCommand($command2)

@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Swift_Mailer;
 use Swift_Message;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -27,11 +29,13 @@ class SecurityUserController extends AbstractController
     private EntityManagerInterface $manager;
 
 
-    public function __construct(AuthenticationUtils $authenticationUtils,
-                                SessionInterface $session,
-                                Swift_Mailer $mailer,
-                                UserPasswordEncoderInterface $encoder,
-                                EntityManagerInterface $manager)
+    public function __construct(
+        AuthenticationUtils $authenticationUtils,
+        SessionInterface $session,
+        Swift_Mailer $mailer,
+        UserPasswordEncoderInterface $encoder,
+        EntityManagerInterface $manager
+    )
     {
         $this->authenticationUtils = $authenticationUtils;
         $this->session = $session;
@@ -52,29 +56,35 @@ class SecurityUserController extends AbstractController
         $form = $this->createForm(RegisterType::class, $user)
             ->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            // Chiffre et sauvegarde le user password
+            $contact = $form->getData();
+
+            // if form is ok : hash user's password and save infos
             $hash = $this->encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash)->setRoles(['ROLE_USER']);
+
             $this->manager->persist($user);
             $this->manager->flush();
 
-            // Envoie un mail de confirmation
+            // Confirm subscription
+            $this->addFlash('success', "Félicitation ! Un email de confirmation vous a été envoyé");
+
+            // and confirm va email
             $mail = (new Swift_Message("Bienvenue sur Vesoul Edition !"))
                 ->setFrom($user->getUsername())
-                ->setTo('vesouledition@sfr.fr')
+                // TODO: Replace by site email
                 ->setBody(
                     $this->renderView(
                         'email/confirm.html.twig',
                         [
-                            'firstname' => $user->getFirstname(),
-                            // 'lastname' => $user->getLastname(),
-                            // 'email' => $user->getUsername()
+                            'email' => $user->getUsername(),
+                            'contact' => $contact
                         ]
                     ),'text/html'
                 );
 
+            // send email, then redirect
             $this->mailer->send($mail);
             return $this->redirectToRoute('security_user_login');
         }
