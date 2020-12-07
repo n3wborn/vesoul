@@ -85,37 +85,49 @@ class DashboardUserController extends AbstractController
      */
     public function showInformations(Request $request)
     {
-
+        // get current user
         $user = $this->getUser();
 
 
-        // TODO: wtf this is doing here ?
+        // remember if "commande" is confirmed
         $commande = $this->session->get('commande');
 
         if (isset( $commande['confirmation']) && $commande['confirmation'] === true){
             return $this->redirectToRoute('commande');
         }
 
-        // here, we SHOW and/or MAY CHANGE user infos
+        // SHOW and/or MAY CHANGE user infos
         $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
 
+        // if user submit infos  update are valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // persist them and show success message
             $this->em->flush();
+
             $this->addFlash('success', 'Infos mises à jour');
             return $this->redirectToRoute('dashboard_user_informations');
         }
 
+        // here, user can change his password
         $changePassword = $this->createForm(ChangePasswordType::class);
         $changePassword->handleRequest($request);
 
+        // if user password has been updated correctly
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
+
+            // persist password update in db and show success message
             $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
             $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
+
+            // and redirect to the same page (?)
             return $this->redirectToRoute('dashboard_user_informations');
         }
 
+
+        // render template
         return $this->render('dashboard-user/mon-compte.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
