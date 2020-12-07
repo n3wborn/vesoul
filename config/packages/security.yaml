@@ -1,7 +1,9 @@
 security:
+
     encoders:
         App\Entity\Admin: bcrypt
         App\Entity\User: bcrypt
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         database_admin:
@@ -9,10 +11,13 @@ security:
         database_user:
             entity: { class: App\Entity\User, property: username }
         users_in_memory: { memory: null }
+
     firewalls:
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         admin_secured_area:
             anonymous: ~
             pattern: ^/panel-admin

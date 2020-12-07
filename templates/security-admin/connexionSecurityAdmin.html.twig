@@ -3,24 +3,30 @@
 {% block body %}
 
 <main class="adminLogin container-fluid">
+
     <form action="{{ path('security_admin_login') }}" method="post" class="form-signin d-flex flex-column justify-content-around align-items-center">
 
         <h1 class="title-login pt-2 pt-sm-4 pt-md-5 pt-lg-5 pt-xl-5 text-center">Connexion administrateur</h1>
+
         <div class="d-flex flex-column align-items-center w-100 px-2 px-sm-3 px-md-5">
+
             {% if error %}
-            <div class="alert alert-danger">nom d'utilisateur ou mot de passe incorrect</div>
+                <div class="alert alert-danger">nom d'utilisateur ou mot de passe incorrect</div>
             {% endif %}
 
-            <input type="text" id="inputName" class="form-control w-100 w-sm-50 text-center" placeholder="Entrez votre nom d'utilisateur" value="{{ last_username }}"
-                name="_username" required autofocus>
+            <input type="text" id="inputName" class="form-control w-100 w-sm-50 text-center"
+                   placeholder="Entrez votre nom d'utilisateur" value="{{ last_username }}"
+                    name="_username" required autofocus>
 
-            <input type="password" id="inputPassword" class="form-control m-3 w-100 w-sm-50 text-center" placeholder="Entrez votre mot de passe" name="_password"
-                required>
+            <input type="password" id="inputPassword" class="form-control m-3 w-100 w-sm-50 text-center"
+                   placeholder="Entrez votre mot de passe" name="_password" required>
 
             <button class="btn btn-lg btn-block w-100 w-sm-50 btn-info" type="submit">Connexion</button>
+
         </div>
         <a class="w-100 pl-4 text-left" href=" {{ path('home')}} "><i class="pl-1 pl-sm-3 fas fa-door-open"></i> Retour au site</a>
     </form>
+
 </main>
 
 {% endblock %}
