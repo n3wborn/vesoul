@@ -19,7 +19,7 @@ class BookRepository extends ServiceEntityRepository
     public const LIMIT = 9;
 
 
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
     }

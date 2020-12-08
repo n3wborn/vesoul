@@ -14,7 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class AddressRepository extends ServiceEntityRepository
 {
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Address::class);
     }
@@ -39,7 +39,6 @@ class AddressRepository extends ServiceEntityRepository
     
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAll();
-        ;
     }
 
     public function findAddressByCommandId($value)
@@ -57,7 +56,6 @@ class AddressRepository extends ServiceEntityRepository
     
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAll();
-        ;
     }
         
     /*

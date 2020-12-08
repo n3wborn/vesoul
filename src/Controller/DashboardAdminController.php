@@ -14,6 +14,7 @@ use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -295,7 +296,7 @@ class DashboardAdminController extends AbstractController
                 ], 200);
 
             // say if something went wrong
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return new JsonResponse([
                     'error' => $e
                     , 400
@@ -339,7 +340,7 @@ class DashboardAdminController extends AbstractController
                 ], 200);
 
                 // say if something went wrong
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return new JsonResponse([
                     'error' => $e
                     , 400

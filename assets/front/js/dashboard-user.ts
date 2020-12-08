@@ -1,4 +1,3 @@
-let url:string = 'http://localhost:8080/panel-client/adresses';
 let buttonEdit:NodeListOf<Element> = document.querySelectorAll('.edit-address');
 let modalAddress:NodeListOf<Element> = document.querySelectorAll('.modal-address');
 let addressId:Array<string> = [];
@@ -11,7 +10,7 @@ for (let i = 0; i < buttonEdit.length; i++) {
     console.log(id);
     
     buttonEdit[i].addEventListener('click', () => {
-        fetch('http://localhost:8080/panel-client/adresses/' + id + '/edit', {
+        fetch('/panel-client/adresses/' + id + '/edit', {
             method: 'POST',
         })
 
@@ -25,15 +24,3 @@ for (let i = 0; i < buttonEdit.length; i++) {
         .catch((err) => { if (err) throw err;})
     })
 }
-
-// fetch('http://localhost:8080/panel-client/adresses/', {
-//     method: 'POST',
-// })
-// .then(res => res.json())
-// .then(data => {
-
-//     console.log(data);
-//     target.innerHTML = data
-
-// })
-// .catch((err) => { if (err) throw err;})

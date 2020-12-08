@@ -1,5 +1,3 @@
-require('./adminLogin');
-
 // Date actuelle en français
 var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 

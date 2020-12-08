@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -219,12 +220,12 @@ class User implements UserInterface
         
     }
 
-    public function getBirth(): ?\DateTimeInterface
+    public function getBirth(): ?DateTimeInterface
     {
         return $this->birth;
     }
 
-    public function setBirth(?\DateTimeInterface $birth): self
+    public function setBirth(?DateTimeInterface $birth): self
     {
         $this->birth = $birth;
 

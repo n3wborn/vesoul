@@ -36,7 +36,6 @@ class CommandRepository extends ServiceEntityRepository
     
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAll();
-        ;
     }
 
     // public function findOneById($value)

@@ -1,5 +1,8 @@
 <?php
 namespace App\DataFixtures;
+
+use DateTime;
+use DateTimeImmutable;
 use Faker\Factory;
 use App\Entity\Book;
 use App\Entity\User;
@@ -29,7 +32,7 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $objectManager)
     {
 
-        $faker = \Faker\Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         // ==== Images ==========================================================
         $image1 = new Image();
 
@@ -45,18 +48,6 @@ class UserFixtures extends Fixture
 
         $image3->setUrl("/build/images/livre3.jpg");
         $this->entityManager->persist($image3);
-        // ===== Categories ===============================================
-//        $genre1 = new Genre();
-//        $genre1->setName('Histoire');
-//        $this->entityManager->persist($genre1);
-        //-----------------------------------
-//        $genre2 = new Genre();
-//        $genre2->setName('Politique');
-//        $this->entityManager->persist($genre2);
-        // ----------------------------------
-//        $genre3 = new Genre();
-//        $genre3->setName('Humour');
-//        $this->entityManager->persist($genre3);
 
         // ===== Books =====================================================
         $book1 = new Book();
@@ -124,7 +115,7 @@ class UserFixtures extends Fixture
         // ===== Commands ======================================================
         $command1 = new Command();
 
-        $command1->setDate(new \DateTimeImmutable())
+        $command1->setDate(new DateTimeImmutable())
         ->setNumber("8657185758")
         ->setQuantity(2)
         ->setTotalcost(44.0)
@@ -137,7 +128,7 @@ class UserFixtures extends Fixture
 
         // $entityManager->flush();
 
-        $command2->setDate(new \DateTimeImmutable())
+        $command2->setDate(new DateTimeImmutable())
         ->setNumber("8917186412")
         ->setQuantity(3)
         ->setTotalcost(22.0)
@@ -149,7 +140,7 @@ class UserFixtures extends Fixture
         $this->entityManager->persist($command2);
         // ------------------------------------------
         $command3 = new Command();
-        $command3->setDate(new \DateTimeImmutable())
+        $command3->setDate(new DateTimeImmutable())
         ->setNumber("8917186412")
         ->setQuantity(3)
         ->setTotalcost(22.0)
@@ -217,7 +208,7 @@ class UserFixtures extends Fixture
          ->setRoles(["ROLE_USER"])
          ->setPassword($hash)
          ->setGender('homme')
-         ->setBirth(new \DateTime())
+         ->setBirth(new DateTime())
          ->addCommand($command1)
          ->addCommand($command2)
          ->addCommand($command3)

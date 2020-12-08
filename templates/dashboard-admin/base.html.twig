@@ -7,20 +7,31 @@
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <title>{% block title %}Vesoul Edition Dashboard{% endblock %}</title>
+
     {% block stylesheets %}
-    {{ encore_entry_link_tags("admin")}}
+
+        {{ encore_entry_link_tags("admin")}}
+
     {% endblock %}
+
 </head>
+
 
 <body class="d-flex">
 
-    {% include "dashboard-admin/admin-navbar.html.twig" %}
+        {% include "dashboard-admin/admin-navbar.html.twig" %}
 
-    {% block body %}{% endblock %}
-</main>
+        {% block body %}{% endblock %}
+
+    </main>
+
+
 
     {% block javascripts %}
-    {{ encore_entry_script_tags("admin")}}
+
+        {{ encore_entry_script_tags("admin")}}
+
     {% endblock %}
+
 </body>
 </html>

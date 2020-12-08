@@ -2,22 +2,27 @@
 <html lang="fr">
 
 <head>
-    <!-- Metadonnées de la page -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge, chrome=1">
     <meta name="application-name" content="Edition Vesoul">
-    <meta name="author" content="Lucas Robin, Antonin Landry, Jules Pageaux, Fabien Cazalet">
     <meta name="description" content="Site eCommerce de vente de livres par l'association Vesoul Edition">
     <meta name="keywords" content="Edition, Vesoul, livre, librairie, histoire">
-    <!-- Font Awesome JS -->
+
+    <!--
+        TODO : Why FA is doing here ?
+    -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
         crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
         crossorigin="anonymous"></script>
+
     {{ encore_entry_link_tags("front")}}
+
     <title>{% block title %}{% endblock %}</title>
+
 </head>
+
 
 <body>
     <div class="wrapper m-0 p-0 container-fluid">
@@ -26,6 +31,7 @@
                 <div class="col-3 d-flex align-items-center justify-content-center ">
                     <a class="brand" href="{{ path('home') }}">Vesoul Edition<span class="pl-1">.</span></a>
                 </div>
+
                 {# ======== Recherche ========#}
                 <form class="form-inline col-6 d-flex justify-content-center form-search">
                     <input class="form-control search-bar text-center m-0" type="search" placeholder="Rechercher votre livre !"
@@ -34,6 +40,7 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
+
                 {# ======== Connexion ========#}
                 <div class="col-3 d-flex align-items-center justify-content-center">
                     <div class="d-flex align-items-center justify-content-end">
@@ -55,19 +62,17 @@
                             </a>
                         </div>
                     </div>
-                    
-
                 </div>
             </nav>
-            {# -------------------- Barre de navigation ------------------- #}
-            <div class="container">
-                {# ======== Logo accueil ========#}
 
-            </div>
+            {# -------------------- Barre de navigation ------------------- #}
+            <div class="container"></div>
+
             {# ----------------- Bandeau d'informations ------------------ #}
             <div class="banner py-2">
                 <div class="container">
                     <div class="row">
+
                         {# ======== Livraison ========#}
                         <div class="col-4 d-flex justify-content-center align-items-center">
                             <i class="fas fa-truck m-3"></i>
@@ -76,6 +81,7 @@
                                 <p class="m-0">Partout dans le monde</p>
                             </div>
                         </div>
+
                         {# ======== Contacts ========#}
                         <div class="col-4 d-flex  justify-content-center align-items-center">
                             <i class="fas fa-phone m-3"></i>
@@ -84,6 +90,7 @@
                                 <p class="m-0">06 99 65 86 00</p>
                             </div>
                         </div>
+
                         {# ======== Paiement ========#}
                         <div class="col-4 d-flex justify-content-end align-items-center">
                             <i class="fas fa-money-check-alt m-3"></i>
@@ -97,18 +104,21 @@
             </div>
         </header>
 
+
         <main class="container">
 
             {{ include('bundles/TwigBundle/_flash_messages.html.twig') }}
 
-            {% block content %}
-            {% endblock %}
+            {% block content %}{% endblock %}
+
         </main>
+
 
           <footer>
             <div class="container py-5">
                 <hr>
                 <div class="row">
+
                     {# ======== Navigation ========#}
                     <div class="col-4 p-0">
                         <h3 class="w-100 text-left">Navigation</h3>
@@ -119,6 +129,7 @@
                             <a href="#" class="text-left">Panier</a>
                         </ul>
                     </div>
+
                     {# ======== Mentions légales ========#}
                     <div class="col-4 p-0 d-flex flex-column justify-content-center align-items-center">
                         <h3 class="w-100 text-center footer-title-mention">Mentions legales</h3>
@@ -127,6 +138,7 @@
                             <a href="#" class="text-center">RGPD</a>
                         </ul>
                     </div>
+
                     {# ======== Contacts ========#}
                     <div class="col-4 p-0 d-flex flex-column align-items-center">
                         <h3 class="w-100 text-right">Contacts</h3>
@@ -152,12 +164,17 @@
         </footer>
 
     </div>
+
+
     {{ encore_entry_script_tags("front")}}
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
     {% if minyear is defined %}
 
-      <script>
+        <script>
 
             $( "#slider-range" ).slider({
             range: true,
@@ -181,11 +198,10 @@
                 return [$( "#slider-range" ).slider('option', 'min'), $( "#slider-range" ).slider('option', 'max')];
             }
 
+        </script>
+
+    {% endif %}
 
 
-    </script>
-{% endif %}
 </body>
-
-
 </html>

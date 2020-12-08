@@ -91,10 +91,8 @@
 
 {% block javascripts %}
 
-	{#	Add whats' globally needed #}
 	{{ parent() }}
 
-	{#	Add specific js  #}
 	{{ encore_entry_script_tags('book-crud') }}
 
 {% endblock %}

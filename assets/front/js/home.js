@@ -481,9 +481,7 @@ function resetFilter(){
 // Fonctions ============================================================
 
 // Fonction qui va chercher en Ajax le nouvel ordre des livres à afficher
-function fetchNewOrder(route, target){
-    
-    let url = 'http://localhost:8080'.concat(route);
+function fetchNewOrder(url, target){
 
     fetch(url, {
         method: 'POST',

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -75,12 +76,12 @@ public function getId(): ?int
 return $this->id;
 }
 
-public function getDate(): ?\DateTimeImmutable
+public function getDate(): ?DateTimeImmutable
 {
 return $this->date;
 }
 
-public function setDate(\DateTimeImmutable $date): self
+public function setDate(DateTimeImmutable $date): self
 {
 $this->date = $date;
 
