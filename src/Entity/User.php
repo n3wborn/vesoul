@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(
  *    fields={"username"},
- *    message="Le nom d'utilisateur que vous avez indiqué est déjà utilisé !"
+ *    message="Utilisateur déjà utilisé"
  * )
  */
 class User implements UserInterface
