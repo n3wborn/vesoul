@@ -477,7 +477,7 @@ class VesoulEditionController extends AbstractController
         if( $user === null ){
             $commande['confirmation'] = true;
             $this->session->set('commande', $commande);
-            return $this->redirectToRoute('security_user_login');
+            return $this->redirectToRoute('login');
         }
 
         // render commande template

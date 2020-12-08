@@ -103,10 +103,10 @@ class SecurityController extends AbstractController
 
             // send email, then redirect
             $this->mailer->send($mail);
-            return $this->redirectToRoute('security_user_login');
+            return $this->redirectToRoute('login');
         }
 
-        return $this->render('dashboard-user/inscription.html.twig', [
+        return $this->render('security/inscription.html.twig', [
             'form' => $form->createView()
         ]);
     }
