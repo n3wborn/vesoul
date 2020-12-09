@@ -6,7 +6,6 @@ use DateTimeImmutable;
 use Faker\Factory;
 use App\Entity\Book;
 use App\Entity\User;
-use App\Entity\Genre;
 use App\Entity\Image;
 use App\Entity\Author;
 use App\Entity\Address;
@@ -14,21 +13,26 @@ use App\Entity\Command;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class UserFixtures extends Fixture
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
-    private $entityManager;
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager)
+
+    private UserPasswordEncoderInterface $passwordEncoder;
+    private EntityManagerInterface $entityManager;
+
+
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        EntityManagerInterface $entityManager
+    )
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->entityManager = $entityManager;
     }
+
+
     public function load(ObjectManager $objectManager)
     {
 
@@ -214,10 +218,51 @@ class UserFixtures extends Fixture
          ->addCommand($command3)
          ->addAddress($address1)
          ->addAddress($address2)
-         ->addAddress($address3);
+         ->addAddress($address3)
+         ;
 
         $this->entityManager->persist($user);
-
         $this->entityManager->flush();
+
+
+
+        // ===== Admin ======================================================
+
+
+        $adminAddress = new Address();
+
+        $adminAddress->setNumber("")
+            ->setStreet("Boite Postale 1038")
+            ->setCp("70001")
+            ->setCity("Vesoul Cedex")
+            ->setCountry("France")
+            ->setTitle("VesoulEdition")
+            ->setFirstname("Christian")
+            ->setLastname("Petit")
+        ;
+
+        $this->entityManager->persist($adminAddress);
+        $this->entityManager->flush();
+
+
+        $admin = new User();
+        $hash = $this->passwordEncoder->encodePassword($admin, "online@2017");
+
+        $admin->setUsername("vesouledition@sfr.fr")
+            ->setFirstname("Christian")
+            ->setLastname("Petit")
+            ->setTel("0699658600")
+            ->setRoles(["ROLE_ADMIN"])
+            ->setPassword($hash)
+            ->setGender('homme')
+            ->setBirth(new DateTime())
+            ->addAddress($adminAddress)
+        ;
+
+        $this->entityManager->persist($admin);
+        $this->entityManager->flush();
+
+        // ======================================================
+
     }
 }
