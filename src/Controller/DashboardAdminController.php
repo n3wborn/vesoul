@@ -4,13 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Entity\Book;
-use App\Entity\Admin;
 use App\Entity\Genre;
 use App\Form\BookType;
-use App\Form\AdminType;
 use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
-use App\Repository\AdminRepository;
 use App\Repository\CommandRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +33,6 @@ class DashboardAdminController extends AbstractController
 {
     private EntityManagerInterface $manager;
     private BookRepository $repoBook;
-    private AdminRepository $adminRepo;
     private ImageRepository $imageRepo;
     private AuthorRepository $authorRepo;
 
@@ -44,14 +40,12 @@ class DashboardAdminController extends AbstractController
     public function __construct(
         EntityManagerInterface $manager,
         BookRepository $repoBook,
-        AdminRepository $adminRepo,
         ImageRepository $imageRepo,
         AuthorRepository $authorRepo
     )
     {
         $this->manager = $manager;
         $this->repoBook = $repoBook;
-        $this->adminRepo = $adminRepo;
         $this->imageRepo = $imageRepo;
         $this->authorRepo= $authorRepo;
     }
@@ -387,7 +381,6 @@ class DashboardAdminController extends AbstractController
     }
 
 
-
     /**
      * @Route("/commandes/imprimer/{id}", name="dashboard_admin_commandes_imprime")
      * @param Command $command
@@ -396,15 +389,6 @@ class DashboardAdminController extends AbstractController
      */
     public function printBill(Command $command, CommandRepository $repo)
     {
-        // Information de la boutique
-        $admin = $this->adminRepo->find(2);      // TODO: Virer cette horreur
-        $boutiqueNom = $admin->getCompany();
-        $boutiqueTelephone = $admin->getTel();
-        $boutiqueEmail = $admin->getEmail();
-        $boutiqueLibelleAdresse = $admin->getLibelle();
-        $boutiqueCp = $admin->getCp();
-        $boutiqueVille = $admin->getCity();
-        $boutiquePays = $admin->getCountry();
 
         // Information de la commande
         $commandNumero = $command->getId();
@@ -414,6 +398,7 @@ class DashboardAdminController extends AbstractController
         $book = [];
         $books = [];
         $prixTotal = 0;
+
         foreach ($command->getBooks() as $value) {
             array_push($book, $value->getIsbn());
             array_push($book, $value->getTitle());
@@ -454,13 +439,6 @@ class DashboardAdminController extends AbstractController
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bill/facture.html.twig', [
-            'boutiqueNom' => $boutiqueNom,
-            'boutiqueTelephone' => $boutiqueTelephone,
-            'boutiqueEmail' => $boutiqueEmail,
-            'boutiqueLibelleAdresse' => $boutiqueLibelleAdresse,
-            'boutiqueCp' => $boutiqueCp,
-            'boutiqueVille' => $boutiqueVille,
-            'boutiquePays' => $boutiquePays,
             'commandNumero' => $commandNumero,
             'commandDate' => $commandDate,
             'livres' => $books,
