@@ -1,16 +1,18 @@
 security:
 
     encoders:
-        App\Entity\Admin: bcrypt
         App\Entity\User: bcrypt
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        database_admin:
-            entity: { class: App\Entity\Admin, property: username }
-        database_user:
-            entity: { class: App\Entity\User, property: username }
-        users_in_memory: { memory: null }
+
+        from_database:
+            entity:
+                class: App\Entity\User
+                property: username
+
+        users_in_memory:
+            memory: null
 
     firewalls:
 
@@ -18,23 +20,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        admin_secured_area:
-            anonymous: ~
-            pattern: ^/panel-admin
-            provider: database_admin
-            form_login:
-                check_path: security_admin_login
-                login_path: security_admin_login
-                # csrf_token_generator: security.csrf.token_manager
-                default_target_path: dashboard_admin_home
-            logout:
-                path: security_admin_logout
-                target: security_admin_login
-
-        user_secured_area:
-            anonymous: ~
-            pattern: ^/
-            provider: database_user
+        main:
+            anonymous: lazy
+            provider: from_database
             form_login:
                 check_path: login
                 login_path: login
@@ -46,11 +34,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\UserAuthenticator
-
-        main:
-            anonymous: lazy
-            provider: users_in_memory
-
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
