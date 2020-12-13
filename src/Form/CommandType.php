@@ -17,20 +17,28 @@ class CommandType extends AbstractType
 {
     private Security $security;
     private EntityManagerInterface $entityManager;
+    private AddressRepository $repoAddrress;
 
-    public function __construct(Security $security, EntityManagerInterface $entityManager)
+    public function __construct(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        AddressRepository $repoAddress
+
+    )
     {
         $this->security = $security;
         $this->entityManager = $entityManager;
+        $this->repoAddrress = $repoAddress;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $user = $this->security->getUser();
+        $addresses = $this->repoAddrress->findUserAddresses($user);
 
         $builder
             ->add('livraison', EntityType::class, [
-                'class' => Command::class,
+                'class' => Address::class,
                 'choice_label' => function (Address $address){
                     return $address->getTitle();
                 },
@@ -39,8 +47,29 @@ class CommandType extends AbstractType
                         ->where('a.user = :user')
                         ->setParameter('user', $user)
                     ;
-                }
+                },
+                'attr' => [
+                    'class' => 'selectpicker custom-select',
+                    'data-style' => 'btn-outline-secondary'
+                ]
             ])
+            ->add('facturation', EntityType::class, [
+            'class' => Address::class,
+            'choice_label' => function (Address $address){
+                return $address->getTitle();
+            },
+            'query_builder' => function (EntityRepository $repository) use ($user) {
+                return $repository->createQueryBuilder('a')
+                    ->where('a.user = :user')
+                    ->setParameter('user', $user)
+                    ;
+            },
+            'attr' => [
+                'class' => 'selectpicker custom-select',
+                'data-style' => 'btn-outline-secondary'
+            ]
+            ])
+
         ;
     }
 
