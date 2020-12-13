@@ -458,6 +458,7 @@ class VesoulEditionController extends AbstractController
     {
         $panier = $this->session->get('panier');
         $user = $security->getUser();
+        $addresses = $this->addressRepo->findUserAddresses($user);
 
         $form = $this->createForm(CommandType::class);
         $form->handleRequest($request);
@@ -483,6 +484,7 @@ class VesoulEditionController extends AbstractController
         // render commande template
         return $this->render('vesoul-edition/commande.html.twig', [
             'user' => $user,
+            'addresses' => $addresses,
             'panier' => $panier,
             'form' => $form->createView(),
         ]);
