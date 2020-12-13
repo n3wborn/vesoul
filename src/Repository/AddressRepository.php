@@ -19,26 +19,18 @@ class AddressRepository extends ServiceEntityRepository
         parent::__construct($registry, Address::class);
     }
 
-    // /**
-    //  * @return Address[] Returns an array of Address objects
-    //  */
-
-    public function findAddressByUserId($value)
+    /**
+     * @param $user
+     * @return Address[] Returns an array of Address objects
+     */
+    public function findUserAddresses($user): array
     {
-        $conn = $this->getEntityManager()->getConnection();
-
-        $sql = '
-            SELECT address.id, address.title, address.firstname, address.lastname, address.number, address.type, address.street, address.city, address.cp, address.country, address.additional
-            FROM address
-            INNER JOIN user_address ON address.id = user_address.address_id
-            INNER JOIN user ON user.id = user_address.user_id
-            WHERE user.id = :value        
-            ';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['value' => $value]);
-    
-        // returns an array of arrays (i.e. a raw data set)
-        return $stmt->fetchAll();
+        return $this->createQueryBuilder('a')
+            ->Where('a.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     public function findAddressByCommandId($value)
@@ -57,6 +49,7 @@ class AddressRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAll();
     }
+
         
     /*
     public function findOneBySomeField($value): ?Address
