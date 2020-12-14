@@ -46,10 +46,11 @@
                     <div class="d-flex align-items-center justify-content-end">
                         {% if not app.user %}
                             <a class="m-0 pr-3" href="{{ path('login') }}">Mon espace</a>
+                            <i class="fas fa-user user-icon p-2 m-0"></i>
                         {% else %}
                             <a class="m-0 pr-3" href="{{ path('logout') }}">Deconnexion</a>
+                            <a class="m-0 pr-3" href="{{ path('dashboard_user_informations') }}"><i class="fas fa-user user-icon p-2 m-0"></i></a>
                         {% endif %}
-                        <i class="fas fa-user user-icon p-2 m-0"></i>
 
                         {# ======== Panier ========#}
                         <div class="d-flex align-items-center justify-content-center px-3">

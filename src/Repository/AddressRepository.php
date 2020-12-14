@@ -30,7 +30,7 @@ class AddressRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function findAddressByCommandId($value)
