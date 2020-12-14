@@ -19,23 +19,19 @@ class CommandRepository extends ServiceEntityRepository
         parent::__construct($registry, Command::class);
     }
 
-    // /**
-    //  * @return Order[] Returns an array of Order objects
-    //  */
-    public function findCommandByUserId($value)
-    {
-        $conn = $this->getEntityManager()->getConnection();
 
-        $sql = '
-            SELECT command.livraison_id, command.facturation_id, command.date, command.number, command.quantity, command.totalcost, command.state
-            FROM command
-            WHERE command.user_id = :value
-            ';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(['value' => $value]);
-    
-        // returns an array of arrays (i.e. a raw data set)
-        return $stmt->fetchAll();
+    /**
+     * @method findUserCommands
+     * @return Command[] Return an array of Command objects
+     */
+    public function findUserCommands($user) : array
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // public function findOneById($value)
