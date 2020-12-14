@@ -35,19 +35,21 @@ class DashboardAdminController extends AbstractController
     private BookRepository $repoBook;
     private ImageRepository $imageRepo;
     private AuthorRepository $authorRepo;
-
+    private CommandRepository $commandRepo;
 
     public function __construct(
         EntityManagerInterface $manager,
         BookRepository $repoBook,
         ImageRepository $imageRepo,
-        AuthorRepository $authorRepo
+        AuthorRepository $authorRepo,
+        CommandRepository $commandRepo
     )
     {
         $this->manager = $manager;
         $this->repoBook = $repoBook;
         $this->imageRepo = $imageRepo;
-        $this->authorRepo= $authorRepo;
+        $this->authorRepo = $authorRepo;
+        $this->commandRepo = $commandRepo;
     }
 
 
@@ -353,17 +355,18 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/commandes", name="dashboard_admin_commandes")
-     * @param CommandRepository $repo
-     * @return Response
      */
-    public function commandes(CommandRepository $repo)
+    public function commandes(): Response
     {
-        $allCommands = $repo->findAll();
+        $allCommands = $this->commandRepo->findAll();
         $enCours = 0;
         $expedie = 0;
         $total = 0;
+
         foreach ($allCommands as $value) {
+
             $total++;
+
             if ($value->getState() == "en cours") {
                 $enCours++;
             }
@@ -371,6 +374,7 @@ class DashboardAdminController extends AbstractController
                 $expedie++;
             }
         }
+
         return $this->render('dashboard-admin/commandes.html.twig', [
             'title' => 'Commandes',
             'commands' => $allCommands,
