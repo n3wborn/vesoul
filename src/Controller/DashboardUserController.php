@@ -197,7 +197,7 @@ class DashboardUserController extends AbstractController
 
         }
 
-        $adresses = $repo->findBy(['users' => $user]);
+        $adresses = $this->addressRepo->findBy(['users' => $user]);
        
         return $this->render('dashboard-user/compte-adresses.html.twig', [
             'adresses' => $adresses,

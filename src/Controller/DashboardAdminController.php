@@ -356,7 +356,7 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/commandes", name="dashboard_admin_commandes")
      */
-    public function commandes(): Response
+    public function commands(): Response
     {
         $allCommands = $this->commandRepo->findAll();
         $enCours = 0;
