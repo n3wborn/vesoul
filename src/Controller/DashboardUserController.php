@@ -28,13 +28,15 @@ class DashboardUserController extends AbstractController
     private UserPasswordEncoderInterface $encoder;
     private AddressRepository $addressRepo;
     private UserRepository $userRepo;
+    private CommandRepository $commandRepo;
 
     public function __construct(
         EntityManagerInterface $em,
         SessionInterface $session,
         UserPasswordEncoderInterface $encoder,
         AddressRepository $addressRepo,
-        UserRepository $userRepo
+        UserRepository $userRepo,
+        CommandRepository $commandRepo
     )
     {
         $this->em = $em;
@@ -42,6 +44,7 @@ class DashboardUserController extends AbstractController
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
         $this->userRepo = $userRepo;
+        $this->commandRepo = $commandRepo;
     }
 
 
