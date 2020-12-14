@@ -209,9 +209,13 @@ class DashboardUserController extends AbstractController
 
 
     /**
-     * @Route("/adresses/{id}/edit", name="dashboard_user_addresses_edit")
+     * Check if user owns address
+     * if yes, edit address and return Ok
+     * if not owned by user, return access denied, else return 404
+     *
+     * @Route("/adresses/edit/{address}", name="dashboard_user_addresses_edit")
      */
-    public function EditAddresses(AddressRepository $repo, Address $address = null, Request $request)
+    public function EditAddresses(Address $address, Request $request)
     {
         die();
 
@@ -251,7 +255,7 @@ class DashboardUserController extends AbstractController
      * Remove address if owned by current user
      * if not owned by user, return access denied, else return 404
      *
-     * @Route("/adresses/{address}/delete", name="dashboard_user_addresses_delete")
+     * @Route("/adresses/delete/{address}", name="dashboard_user_addresses_delete")
      */
     public function deleteAddress(Address $address): Response
     {
