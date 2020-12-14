@@ -102,7 +102,7 @@ class DashboardUserController extends AbstractController
         }
 
         // SHOW and/or MAY CHANGE user infos
-        $form = $this->createForm(UserType::class);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         // if user submit infos  update are valid
