@@ -159,7 +159,7 @@ class DashboardUserController extends AbstractController
                     ->setFirstname(ucfirst($address->getFirstname()))
                     ->setLastname(ucfirst($address->getLastname()));
 
-            $address->addUser($user);
+            $address->setUser($user);
             $this->em->persist($address);
             $this->em->flush();
 
@@ -174,8 +174,8 @@ class DashboardUserController extends AbstractController
                     ->setCountry(strtoupper($address->getCountry()))
                     ->setFirstname(ucfirst($address->getFirstname()))
                     ->setLastname(ucfirst($address->getLastname()));
-            
-            $address->addUser($user);
+
+            $address->setUser($user);
             $this->em->persist($address);
             $this->em->flush();
 
