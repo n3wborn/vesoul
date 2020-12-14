@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AddressRepository;
 use App\Repository\CommandRepository;
@@ -140,18 +142,30 @@ class DashboardUserController extends AbstractController
 
     /**
      * @Route("/adresses", name="dashboard_user_addresses")
+     *
+     * User addresses
+     * if user already have addresse(s) he must be able to edit or remove them
+     * In every cases, he must be able to create a new one
      */
-    public function showAdresses(AddressRepository $repo, Request $request)
+    public function showAdresses(Request $request)
     {
 
         $user = $this->getUser();
-        $address = new Address();
 
-        $form = $this->createForm(AddAddressesType::class, $address);
-        $form_edit = $this->createForm(EditAddressesType::class, $address);
+        // if user owns no address, create a new one !
+        if ($this->addressRepo->findUserAddresses($user)){
+            $address_new = new Address();
+        };
+
+
+        $form = $this->createForm(AddAddressesType::class, $address_new);
         $form->handleRequest($request);
+
+        // if user already owns an address, edit/add/remove
+        $form_edit = $this->createForm(EditAddressesType::class, $address);
         $form_edit->handleRequest($request);
-        
+
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $address->setCity(strtoupper($address->getCity()))
@@ -234,50 +248,44 @@ class DashboardUserController extends AbstractController
     
 
     /**
-     * @Route("/adresses/{id}/delete", name="dashboard_user_addresses_delete")
+     * Remove address if owned by current user
+     * if not owned by user, return access denied, else return 404
+     *
+     * @Route("/adresses/{address}/delete", name="dashboard_user_addresses_delete")
      */
-    public function delete($id, Address $address = null, Request $request)
+    public function deleteAddress(Address $address): Response
     {
-        
-        // $repo = $this->getDoctrine()->getRepository(Address::class);
-        // $address = $repo->find($id);
-        // $em->remove($address);
-        // $em->flush();
-        // dump($address);
-        // die();
+        $user = $this->getUser();
 
-        return $this->redirectToRoute('dashboard_user_addresses');
+        if ($address->getUser() === $user) {
 
+            $this->em->remove($address);
+            $this->em->flush();
+            return new Response("Ok", Response::HTTP_OK);
+
+        } else if (!$address->getUser() === $user) {
+            throw new AccessDeniedException(AccessDeniedException::class);
+
+        } else {
+            Return new Response("Not Found", Response::HTTP_NOT_FOUND);
+        }
     }
 
 
     /**
      * @Route("/commandes", name="dashboard_user_commands")
      */
-    public function showCommandes(CommandRepository $repo_commande, AddressRepository $repo_adresse)
+    public function showCommands(): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-
-        $commandes = $repo_commande->findCommandByUserId($id);
-        
-        // $address = $this->getId();
-        // $test = $repo_commande->findCommandById(2);
-        // $addresses = $repo_adresse->findAddressByUserId($id);
+        $addresses = $this->addressRepo->findUserAddresses($user);
+        $commands = $this->commandRepo->findUserCommands($user);
 
         return $this->render('dashboard-user/compte-commandes.html.twig', [
-            'commandes' => $commandes
-            // 'addresses' => $addresses
+            'user' => $user,
+            'commandes' => $commands,
+            'addresses' => $addresses,
         ]);
     }
 
 }
-
-/* 
-
-SELECT address.id, address.title, address.firstname, address.lastname, address.number, address.type, address.street, address.city, address.cp, address.country, address.additional
-			FROM address
-            INNER JOIN command ON address.id = command.livraison_id
-            WHERE command.id = 2
-
-*/
