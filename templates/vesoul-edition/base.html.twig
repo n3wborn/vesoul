@@ -45,9 +45,9 @@
                 <div class="col-3 d-flex align-items-center justify-content-center">
                     <div class="d-flex align-items-center justify-content-end">
                         {% if not app.user %}
-                        <a class="m-0 pr-3" href="{{ path('login') }}">Mon espace</a>
+                            <a class="m-0 pr-3" href="{{ path('login') }}">Mon espace</a>
                         {% else %}
-                        <a class="m-0 pr-3" href="{{ path('logout') }}">Deconnexion</a>
+                            <a class="m-0 pr-3" href="{{ path('logout') }}">Deconnexion</a>
                         {% endif %}
                         <i class="fas fa-user user-icon p-2 m-0"></i>
 
@@ -123,10 +123,10 @@
                     <div class="col-4 p-0">
                         <h3 class="w-100 text-left">Navigation</h3>
                         <ul class="d-flex flex-column p-0 m-0">
-                            <a href="#" class="text-left">Accueil</a>
-                            <a href="#" class="text-left">Mon compte</a>
-                            <a href="#" class="text-left">Inscription</a>
-                            <a href="#" class="text-left">Panier</a>
+                            <a href="{{ path('home') }}" class="text-left">Accueil</a>
+                            <a href="{{ path('dashboard_user_home') }}" class="text-left">Mon compte</a>
+                            <a href="{{ path('registration') }}" class="text-left">Inscription</a>
+                            <a href="{{ path('panier') }}" class="text-left">Panier</a>
                         </ul>
                     </div>
 
@@ -150,7 +150,7 @@
                                 </p>    
                             </li>
                             <li class="text-right">
-                                <a class="w-100 text-right" href="callto://+33699658600">06 99 65 86 00</a>
+                                <a class="w-100 text-right" href="tel:+33699658600">06 99 65 86 00</a>
                             </li>
                             <li class="text-right">
                                 <a class="w-100 text-right" href="mailto:vesouledition@sfr.fr">vesouledition@sfr.fr</a>
