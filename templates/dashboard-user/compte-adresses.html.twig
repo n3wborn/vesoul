@@ -24,71 +24,6 @@
 
         <div class="wrapper-adresses d-flex flex-wrap justify-content-center">
 
-
-            <!-- Modal ajouter adresse -->
-            <div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="add-title" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-head d-flex">
-                            <div class="col-8 offset-2 d-flex justify-content-center align-items-center">
-                                <h5 class="modal-title" id="cmd-title">Ajouter une adresse</h5>
-                            </div>
-                            <div class="col-1 offset-1 pt-2">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="modal-body d-flex flex-column pl-5 pr-5 pb-5 pt-5">
-
-                            {{ form_start(form) }}
-
-                                <div class="d-flex flex-column">
-
-                                    {{ form_row(form.title, {'label' : false ,'attr' : {'class': 'form-control mb-3', 'placeholder' : 'Libellé', 'id' : 'inputNew'}}) }}
-                                    {{ form_row(form.lastname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Prénom', 'id' : 'inputNew'}}) }}
-                                    {{ form_row(form.firstname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Nom', 'id' : 'inputNew'}}) }}
-
-                                    <div class="d-flex justify-content-between">
-
-                                        {{ form_widget(form.number, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Numéro', 'id' : 'inputUser'}}) }}
-                                        {{ form_widget(form.type, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Type', 'id' : 'inputPassword'}}) }}
-
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-
-                                        {{ form_widget(form.street, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Rue', 'id' : 'inputNew'}}) }}
-                                        {{ form_widget(form.city, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Ville', 'id' : 'inputNew'}}) }}
-
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-
-                                        {{ form_widget(form.cp, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'CP', 'id' : 'inputNew'}}) }}
-                                        {{ form_widget(form.country, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Pays', 'id' : 'inputNew'}}) }}
-
-                                    </div>
-
-                                    {{ form_row(form.additional, {'label' : false ,'attr' : {'class': 'form-control', 'placeholder' : 'Additionnel', 'id' : 'inputNew'}}) }}
-
-
-                                </div>
-                            </div>
-
-                            <div class="modal-footer d-flex justify-content-between pl-5 pr-5 pb-5">
-                                <button class="btn-add-address btn btn-info" type="submit">Enregistrer</button>
-                                {# <button type="button" class="d-flex btn btn-danger" data-dismiss="modal">FERMER</button> #}
-                            </div>
-                        </div>
-
-                    {{ form_end(form, {'render_rest': false}) }}
-
-                </div>
-            </div>
-
-
             <div class="title-wrapper">
                 <div class="title-compte">
                     <button class="btn add-address mr-2" data-toggle="modal" data-target="#add-modal">
@@ -204,5 +139,7 @@
         </div>
     </div>
 
+
+    {% include 'dashboard-user/_modal_new_address.html.twig' %}
 
 {% endblock %}

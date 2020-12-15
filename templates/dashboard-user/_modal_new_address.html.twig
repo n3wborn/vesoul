@@ -1,0 +1,61 @@
+<!-- Modal ajouter adresse -->
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="add-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-head d-flex align-items-center p-2">
+                <div class="col-8 offset-2 d-flex justify-content-center">
+                    <h5 class="h5 modal-title" id="cmd-title">Ajouter une adresse</h5>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="modal-body d-flex p-3">
+
+                {{ form_start(formNew) }}
+
+                <div class="d-flex flex-column">
+
+                    {{ form_row(formNew.title, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Libellé' }}) }}
+                    {{ form_row(formNew.lastname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Prénom' }}) }}
+                    {{ form_row(formNew.firstname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Nom' }}) }}
+
+                    <div class="d-flex justify-content-between">
+
+                        {{ form_widget(formNew.number, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Numéro' }}) }}
+                        {{ form_widget(formNew.type, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Type' }}) }}
+
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        {{ form_widget(formNew.street, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Rue' }}) }}
+                        {{ form_widget(formNew.city, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Ville' }}) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+
+                        {{ form_widget(formNew.cp, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'CP' }}) }}
+                        {{ form_widget(formNew.country, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Pays' }}) }}
+
+                    </div>
+
+                    {{ form_row(formNew.additional, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Additionnel' }}) }}
+
+                </div>
+
+
+                <div class="modal-footer d-flex justify-content-center border-top-0 p-0">
+                    <button class="btn-add-address btn btn-info w-100" type="submit">Enregistrer</button>
+                </div>
+
+                {{ form_end(formNew, {'render_rest': false}) }}
+
+            </div>
+        </div>
+    </div>
+</div>
