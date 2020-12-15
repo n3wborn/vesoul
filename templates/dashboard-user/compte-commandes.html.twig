@@ -3,22 +3,20 @@
 
 {% block content %}
 
-
-
     <div id="compte-page" class="pt-4 pb-4 d-flex">
 
         <nav id="menu-compte" class="col-3">
             <h2 class="text-center">Mon compte</h2>
             <ul>
-                <a class="list" href="{{ path('dashboard_user_informations' )}}">
-                    <li>INFORMATIONS</li>
-                </a>
-                <a class="list" href="{{ path('dashboard_user_addresses' )}}">
-                    <li>ADRESSES</li>
-                </a>
-                <a class="list active" href="{{ path('dashboard_user_commands' )}}">
-                    <li>COMMANDES</li>
-                </a>
+                <li>
+                    <a class="list" href="{{ path('dashboard_user_informations' )}}">INFORMATIONS</a>
+                </li>
+                <li>
+                    <a class="list" href="{{ path('dashboard_user_addresses' )}}">ADRESSES</a>
+                </li>
+                <li>
+                    <a class="list active" href="{{ path('dashboard_user_commands' )}}">COMMANDES</a>
+                </li>
             </ul>
         </nav>
         
