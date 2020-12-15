@@ -51,20 +51,25 @@ class DashboardUserController extends AbstractController
 
 
     /**
+     * Connected User home page
+     * From here he can show and update his infos/password
+     *
      * @Route("/accueil", name="dashboard_user_home")
      */
     public function home(Request $request)
     {
         $user = $this->getUser();
 
+        // if user update his infos, update db and refresh
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO
-            dd($form->get('gender')->getData());
+            $this->em->flush();
+            return $this->redirectToRoute('dashboard_user_informations');
         }
 
+        // if user wants to change his password, update and refresh
         $changePassword = $this->createForm(ChangePasswordType::class);
         $changePassword->handleRequest($request);
 
@@ -76,6 +81,7 @@ class DashboardUserController extends AbstractController
         }
 
 
+        // render default template
         return $this->render('dashboard-user/mon-compte.html.twig', [
             'title' => 'Mon compte',
             'user' => $user,
@@ -86,13 +92,17 @@ class DashboardUserController extends AbstractController
 
 
     /**
+     * TODO: Suppress this route (same as user home page)
+     *       or make useful
+     * Connected User home Infos page
+     * From here he can show and update his infos/password
+     *
      * @Route("/informations", name="dashboard_user_informations")
      */
     public function showInformations(Request $request)
     {
         // get current user
         $user = $this->getUser();
-
 
         // remember if "commande" is confirmed
         $commande = $this->session->get('commande');
