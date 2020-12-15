@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Command;
 use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -260,11 +261,16 @@ class DashboardUserController extends AbstractController
     public function showCommands(): Response
     {
         $user = $this->getUser();
-        $addresses = $this->addressRepo->findUserAddresses($user);
-        $commands = $this->commandRepo->findUserCommands($user);
+
+        $addresses = $this->addressRepo->findBy(['user' => $user]);
+        $commands = $this->commandRepo->findBy(['user' => $user]);
+        $panier = $this->session->get('panier');
+
+        dd($panier);
 
         return $this->render('dashboard-user/compte-commandes.html.twig', [
             'user' => $user,
+            'panier' => $panier,
             'commandes' => $commands,
             'addresses' => $addresses,
         ]);

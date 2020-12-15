@@ -59,39 +59,45 @@
                     {% for commande in commandes %}
 
 
-                            <!-- Modal -->
+                    <!-- Modal -->
                     <div class="modal fade" id="cmd-modal-{{ commande.number }}" tabindex="-1" role="dialog" aria-labelledby="cmd-title" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
+
+
                         <div class="modal-head d-flex">
                             <div class="col-8 offset-2 d-flex justify-content-center align-items-center">
                                 <h5 class="modal-title" id="cmd-title">Détail de votre commande</h5>
                             </div>
                             <div class="col-1 offset-1 pt-2">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            </button>
                         </div>
+
+
                         <div class="modal-body d-flex flex-column pl-5 pr-5 pb-5">
                             <div class="d-flex">
+
                                 <div class="col-4 subsection-cmd">
                                     <h3>Informations</h3>
                                     <div class="d-flex justify-content-between">
-                                        <div class="col6 label">
+
+                                        <div class="col-6 label">
                                             <p>Numéro</p>
                                             <p>Date</p>
                                             <p>Total</p>
                                         </div>
+
                                         <div class="col6 value">
-                                        
                                             <p>{{ commande.number }}</p>
-                                            <p>{{ commande.date }}</p>
+                                            <p>{{ commande.date | date('d/m/Y') }}</p>
                                             <p>{{ commande.totalcost }}</p>
-                                            
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-4 subsection-cmd">
                                     <h3>Adresse de livraison</h3>
                                     <div class="d-flex">
@@ -103,6 +109,7 @@
                                             <p>Dupont</p>
                                         </div>
                                     </div>
+
                                     <div class="d-flex">
                                         <div class="col-2 d-flex align-items-center">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -115,6 +122,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div class="col-4 subsection-cmd">
                                     <h3>Adresse de facturation</h3> 
                                     <div class="d-flex">
@@ -137,8 +146,9 @@
                                             <p>France</p>
                                         </div>
                                     </div>
+                                </div>
                             </div>
-                            </div>
+
                             <div>
                                 <table class="table table-sm thead-dark m-0 mt-5">
                                 <thead>
@@ -188,8 +198,10 @@
                                     </tr>
                                 </tbody>
                                 </table>
+
                             </div>
                         </div>
+
                         <div class="modal-footer d-flex justify-content-between pl-5 pr-5 pb-5">
                             <button type="button" class="btn btn-info"><i class="fas fa-file-pdf mr-3"></i>Télécharger en PDF</button>
                             <button type="button" class="btn" data-dismiss="modal">FERMER</button>
