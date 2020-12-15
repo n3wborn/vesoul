@@ -42,7 +42,7 @@
 
                             <div class="form-group my-3">
                                 {{ form_label(form.gender) }}
-                                {{ form_widget(form.gender, { value : user.gender|default(0) }) }}
+                                {{ form_widget(form.gender, { value : app.user.gender|default(0) }) }}
                             </div>
 
                             <div class="form-group my-3">

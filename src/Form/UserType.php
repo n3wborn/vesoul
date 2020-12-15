@@ -9,11 +9,20 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class UserType extends AbstractType
 {
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('username', EmailType::class, [
                 'label' => 'Email',
@@ -25,8 +34,10 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('gender', ChoiceType::class, [
-                'data' => 0,
-                'choices' => [ 'Homme' => 0, 'Femme' => 1],
+                'choices'  => [
+                    'Homme' => 0,
+                    'Femme' => 1,
+                ],
                 'label' => 'Genre',
                 'label_attr' => [
                     'class' => 'font-weight-bold'

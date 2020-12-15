@@ -57,12 +57,12 @@ class DashboardUserController extends AbstractController
     {
         $user = $this->getUser();
 
-        $form = $this->createForm(UserType::class);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // TODO
-            return true;
+            dd($form->get('gender')->getData());
         }
 
         $changePassword = $this->createForm(ChangePasswordType::class);
@@ -151,58 +151,52 @@ class DashboardUserController extends AbstractController
     {
 
         $user = $this->getUser();
+//        $address = new Address();
+//
+//        $form = $this->createForm(AddAddressesType::class, $address);
+//        $form->handleRequest($request);
+//
+//        // if user already owns an address, edit/add/remove
+//        $form_edit = $this->createForm(EditAddressesType::class, $address);
+//        $form_edit->handleRequest($request);
+//
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//            $address->setCity(strtoupper($address->getCity()))
+//                    ->setCountry(strtoupper($address->getCountry()))
+//                    ->setFirstname(ucfirst($address->getFirstname()))
+//                    ->setLastname(ucfirst($address->getLastname()));
+//
+//            $address->setUser($user);
+//            $this->em->persist($address);
+//            $this->em->flush();
+//
+//            return $this->redirectToRoute('dashboard_user_addresses');
+//
+//        }
+//
+//
+//        if ($form_edit->isSubmitted() && $form->isValid()) {
+//
+//            $address->setCity(strtoupper($address->getCity()))
+//                    ->setCountry(strtoupper($address->getCountry()))
+//                    ->setFirstname(ucfirst($address->getFirstname()))
+//                    ->setLastname(ucfirst($address->getLastname()));
+//
+//            $this->em->persist($address);
+//            $this->em->flush();
+//
+//            return $this->redirectToRoute('dashboard_user_addresses');
+//
+//        }
 
-        // if user owns no address, create a new one !
-        if ($this->addressRepo->findUserAddresses($user)){
-            $address_new = new Address();
-        };
+        $adresses = $this->addressRepo->findUserAddresses($user);
 
-
-        $form = $this->createForm(AddAddressesType::class, $address_new);
-        $form->handleRequest($request);
-
-        // if user already owns an address, edit/add/remove
-        $form_edit = $this->createForm(EditAddressesType::class, $address);
-        $form_edit->handleRequest($request);
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $address->setCity(strtoupper($address->getCity()))
-                    ->setCountry(strtoupper($address->getCountry()))
-                    ->setFirstname(ucfirst($address->getFirstname()))
-                    ->setLastname(ucfirst($address->getLastname()));
-
-            $address->setUser($user);
-            $this->em->persist($address);
-            $this->em->flush();
-
-            return $this->redirectToRoute('dashboard_user_addresses');
-
-        }
-
-
-        if($form_edit->isSubmitted() && $form->isValid()) {
-            
-            $address->setCity(strtoupper($address->getCity()))
-                    ->setCountry(strtoupper($address->getCountry()))
-                    ->setFirstname(ucfirst($address->getFirstname()))
-                    ->setLastname(ucfirst($address->getLastname()));
-
-            $address->setUser($user);
-            $this->em->persist($address);
-            $this->em->flush();
-
-            return $this->redirectToRoute('dashboard_user_addresses');
-
-        }
-
-        $adresses = $this->addressRepo->findBy(['users' => $user]);
-       
         return $this->render('dashboard-user/compte-adresses.html.twig', [
             'adresses' => $adresses,
-            'form' => $form->createView(),
-            'form_edit' => $form_edit->createView()
+//            'form' => $form->createView(),
+//            'form_edit' => $form_edit->createView()
         ]);
     }
 
@@ -217,39 +211,36 @@ class DashboardUserController extends AbstractController
      */
     public function EditAddresses(Address $address, Request $request)
     {
-        die();
+        $user = $this->getUser();
 
-        // $user = $this->getUser();
+        $form = $this->createForm(EditAddressesType::class, $address);
+        $form->handleRequest($request);
 
-        // $id = $user->getId();
+        // if submitted, update user address
+        if ($form->isSubmitted()) {
 
-        // $form = $this->createForm(EditAddressesType::class, $address);
-        // $form->handleRequest($request);
+            $address->setCity(strtoupper($address->getCity()))
+                ->setCountry(strtoupper($address->getCountry()))
+                ->setFirstname(ucfirst($address->getFirstname()))
+                ->setLastname(ucfirst($address->getLastname()));
 
-        // if($form->isSubmitted()) {
-            
-        //     $address->get;
+            $this->em->persist($address);
+            $this->em->flush();
 
-        //     $address->setCity(strtoupper($address->getCity()))
-        //     ->setCountry(strtoupper($address->getCountry()))
-        //     ->setFirstname(ucfirst($address->getFirstname()))
-        //     ->setLastname(ucfirst($address->getLastname()));
-            
-        //     $address->addUser($user);
-        //     $em->persist($address);
-        //     $em->flush();
+            return $this->redirectToRoute('dashboard_user_addresses');
+        }
 
-        //     return $this->redirectToRoute('dashboard_user_addresses');
+        $addresses = $this->addressRepo->findUserAddresses($user);
 
-        // }
+        return $this->render('dashboard-user/compte-adresses.html.twig', [
+            'adresses' => $addresses,
+            'form' => $form->createView(),
+        ]);
 
-        // $adresses = $repo->findAddressByUserId($id);
-        // return $this->render('dashboard-user/compte-adresses.html.twig', [
-        //     'adresses' => $adresses,
-        //     'form' => $form->createView(),
-        // ]);
+
+
     }
-    
+
 
     /**
      * Remove address if owned by current user
