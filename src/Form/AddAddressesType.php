@@ -22,7 +22,6 @@ class AddAddressesType extends AbstractType
             ->add('title')
             ->add('firstname')
             ->add('lastname')
-            ->add('users')
         ;
     }
 
