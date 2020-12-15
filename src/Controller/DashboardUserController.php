@@ -151,52 +151,29 @@ class DashboardUserController extends AbstractController
     {
 
         $user = $this->getUser();
-//        $address = new Address();
-//
-//        $form = $this->createForm(AddAddressesType::class, $address);
-//        $form->handleRequest($request);
-//
-//        // if user already owns an address, edit/add/remove
-//        $form_edit = $this->createForm(EditAddressesType::class, $address);
-//        $form_edit->handleRequest($request);
-//
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//
-//            $address->setCity(strtoupper($address->getCity()))
-//                    ->setCountry(strtoupper($address->getCountry()))
-//                    ->setFirstname(ucfirst($address->getFirstname()))
-//                    ->setLastname(ucfirst($address->getLastname()));
-//
-//            $address->setUser($user);
-//            $this->em->persist($address);
-//            $this->em->flush();
-//
-//            return $this->redirectToRoute('dashboard_user_addresses');
-//
-//        }
-//
-//
-//        if ($form_edit->isSubmitted() && $form->isValid()) {
-//
-//            $address->setCity(strtoupper($address->getCity()))
-//                    ->setCountry(strtoupper($address->getCountry()))
-//                    ->setFirstname(ucfirst($address->getFirstname()))
-//                    ->setLastname(ucfirst($address->getLastname()));
-//
-//            $this->em->persist($address);
-//            $this->em->flush();
-//
-//            return $this->redirectToRoute('dashboard_user_addresses');
-//
-//        }
+        $newAddress = new Address();
 
-        $adresses = $this->addressRepo->findUserAddresses($user);
+        $formNew = $this->createForm(AddAddressesType::class, $newAddress);
+        $formNew->handleRequest($request);
+
+        // if submitted, create user a new address
+        if ($formNew->isSubmitted()) {
+
+            $newAddress->setCity(strtoupper($newAddress->getCity()))
+                ->setCountry(strtoupper($newAddress->getCountry()))
+                ->setFirstname(ucfirst($newAddress->getFirstname()))
+                ->setLastname(ucfirst($newAddress->getLastname()));
+            $newAddress->setUser($user);
+
+            $this->em->persist($newAddress);
+            $this->em->flush();
+
+            return $this->redirectToRoute('dashboard_user_addresses');
+        }
 
         return $this->render('dashboard-user/compte-adresses.html.twig', [
-            'adresses' => $adresses,
-//            'form' => $form->createView(),
-//            'form_edit' => $form_edit->createView()
+            'adresses' => $this->addressRepo->findBy(['user' => $user]),
+            'formNew' => $formNew->createView(),
         ]);
     }
 
