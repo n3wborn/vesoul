@@ -230,7 +230,8 @@ class DashboardUserController extends AbstractController
 
             $this->em->remove($address);
             $this->em->flush();
-            return new Response("Ok", Response::HTTP_OK);
+            $this->addFlash('success', 'Adresse supprimée !');
+            return $this->redirectToRoute('dashboard_user_addresses');
 
         } else if (!$address->getUser() === $user) {
             throw new AccessDeniedException(AccessDeniedException::class);
