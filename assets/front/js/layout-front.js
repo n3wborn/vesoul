@@ -8,5 +8,5 @@ require('../../../node_modules/air-datepicker/dist/js/datepicker');
 require('../../../node_modules/air-datepicker/dist/js/i18n/datepicker.fr');
 require('./connexion-client.js');
 require('./user-panel.ts');
-require('./dashboard-user.ts');
+require('./dashboard-user.js');
 require('./home.js');
