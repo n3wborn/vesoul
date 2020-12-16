@@ -1,22 +1,25 @@
-let buttonEdit:NodeListOf<Element> = document.querySelectorAll('.edit-address');
-let modalAddress:NodeListOf<Element> = document.querySelectorAll('.modal-address');
+let editAddressBtns:NodeListOf<Element> = document.querySelectorAll('.btn-edit-address');
 let addressId:Array<string> = [];
 
-for (let i = 0; i < buttonEdit.length; i++) {
+for (let editAddressBtn:Element of editAddressBtns) {
 
-    let addressLink:string = modalAddress[i].id;
-    let id:string = addressLink.slice(11);
+    editAddressBtn.addEventListener('click', function(e) {
+        //e.preventDefault()
+        console.log();
 
-    console.log(id);
-    
-    buttonEdit[i].addEventListener('click', () => {
-        fetch('/panel-client/adresses/' + id + '/edit', {
+        fetch(this.getAttribute('href'), {
             method: 'POST',
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "datas": this.dataset
+            })
         })
 
         .then(res => res.json())
         .then(data => {
-
             console.log(data);
             //target.innerHTML = data
 

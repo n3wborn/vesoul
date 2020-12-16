@@ -11,77 +11,26 @@
 
         <div class="wrapper-adresses d-flex flex-wrap justify-content-center">
 
+
             <div class="title-wrapper">
                 <div class="title-compte">
+
+                    <!-- trigger add address modal -->
                     <button class="btn add-address mr-2" data-toggle="modal" data-target="#add-modal">
                         <i class="fas fa-plus-square mr-2"></i>
                         Ajouter une adresse
                     </button>
+
                     <h2>Mon carnet d'adresses</h2>
+
                 </div>
             </div>
 
             {% for adresse in adresses %}
 
-                <!-- Modal modifier adresse -->
-                <div class="modal fade modal-address" id="edit-modal-{{ adresse.id }}" tabindex="-1" role="dialog"
-                     aria-labelledby="edit-title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-head d-flex">
-                                <div class="col-8 offset-2 d-flex justify-content-center align-items-center">
-                                    <h5 class="modal-title" id="cmd-title">Modifier l'adresse</h5>
-                                </div>
-                                <div class="col-1 offset-1 pt-2">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            </div>
+                {% include 'dashboard-user/_modal_edit_address.html.twig' %}
 
-                            <div class="modal-body d-flex flex-column pl-5 pr-5 pb-5 pt-5">
-
-                            {{ form_start(form_edit) }}
-
-                                <div class="d-flex flex-column">
-
-                                    {{ form_row(form_edit.title, {'label' : false ,'attr' : {'class': 'form-control mb-3', 'placeholder' : 'Libellé', 'id' : 'inputNew'}}) }}
-                                    {{ form_row(form_edit.lastname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Prénom', 'id' : 'inputNew'}}) }}
-                                    {{ form_row(form_edit.firstname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Nom', 'id' : 'inputNew'}}) }}
-
-                                    <div class="d-flex justify-content-between">
-                                        {{ form_widget(form_edit.number, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Numéro', 'id' : 'inputUser'}}) }}
-                                        {{ form_widget(form_edit.type, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Type', 'id' : 'inputPassword'}}) }}
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        {{ form_widget(form_edit.street, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Rue', 'id' : 'inputNew'}}) }}
-                                        {{ form_widget(form_edit.city, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Ville', 'id' : 'inputNew'}}) }}
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        {{ form_widget(form_edit.cp, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'CP', 'id' : 'inputNew'}}) }}
-                                        {{ form_widget(form_edit.country, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Pays', 'id' : 'inputNew'}}) }}
-                                    </div>
-
-                                    {{ form_row(form_edit.additional, {'label' : false ,'attr' : {'class': 'form-control', 'placeholder' : 'Additionnel', 'id' : 'inputNew'}}) }}
-
-                                </div>
-                            </div>
-
-                            <div class="modal-footer d-flex justify-content-between pl-5 pr-5 pb-5">
-                                <button class="btn-add-address btn btn-info" type="submit">Enregistrer les
-                                    modifications
-                                </button>
-                            </div>
-                        </div>
-
-                        {{ form_end(form_edit, {'render_rest': false}) }}
-
-                    </div>
-                </div>
-
-
+                <!-- Addresses list-->
                 <div class="col-12 list-adresse card mb-3 ml-2 mr-2 pt-4 pb-4 pl-4 pr-4 d-flex justify-content-center">
                     <div class="row">
                         <div class="col-4 d-flex flex-column align-items-center justify-content-center">
@@ -94,6 +43,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-4 pl-5 d-flex">
                             <p class="align-self-center mb-0 mr-4 icon"><i class="fas fa-map-marker-alt"></i></p>
                             <div class="d-flex flex-column justify-content-center">
@@ -109,14 +59,18 @@
                             </div>
                         </div>
 
+
                         <div class="d-flex justify-content-end col-4">
+
+                            <!-- trigger edit-modal  -->
                             <button class="align-self-end btn edit-address mr-2" data-toggle="modal"
                                     data-target="#edit-modal-{{ adresse.id }}">Modifier
                             </button>
+
+                            <!-- delete section -->
                             <a class="align-self-end btn delete-address"
-                               href="{{ path('dashboard_user_addresses_delete') }}"><i
+                               href="{{ path("dashboard_user_addresses_delete", {'id': adresse.id }) }}"><i
                                         class="fas fa-trash trash-address"></i></a>
-                            {# <button class="align-self-end btn delete-address"><i class="fas fa-trash trash-address"></i></button> #}
                         </div>
                     </div>
                 </div>

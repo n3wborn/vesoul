@@ -190,36 +190,29 @@ class DashboardUserController extends AbstractController
      *
      * @Route("/adresses/edit/{id}", name="dashboard_user_addresses_edit")
      */
-    public function EditAddresses(Address $address, Request $request)
+    public function editAddress(Address $address, Request $request)
     {
         $user = $this->getUser();
-
-        $form = $this->createForm(EditAddressesType::class, $address);
-        $form->handleRequest($request);
+        $data = $request->request->get('edit_addresses');
 
         // if submitted, update user address
-        if ($form->isSubmitted()) {
+        if ($address->getUser() === $user) {
 
-            $address->setCity(strtoupper($address->getCity()))
-                ->setCountry(strtoupper($address->getCountry()))
-                ->setFirstname(ucfirst($address->getFirstname()))
-                ->setLastname(ucfirst($address->getLastname()));
+            $address->setTitle(ucfirst($data['title']))
+                ->setFirstname(ucfirst($data['firstname']))
+                ->setLastname(ucfirst($data['lastname']))
+                ->setNumber($data['number'])
+                ->setCp($data['cp'])
+                ->setCity(ucfirst($data['city']))
+                ->setCountry(ucfirst($data['country']))
+                ->setAdditional($data['additional'])
+                ->setType($data['additional'])
+            ;
 
-            $this->em->persist($address);
             $this->em->flush();
 
             return $this->redirectToRoute('dashboard_user_addresses');
         }
-
-        $addresses = $this->addressRepo->findBy(['user' => $user]);
-
-        return $this->render('dashboard-user/compte-adresses.html.twig', [
-            'adresses' => $addresses,
-            'form' => $form->createView(),
-        ]);
-
-
-
     }
 
 
