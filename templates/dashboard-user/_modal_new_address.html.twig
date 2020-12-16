@@ -21,30 +21,30 @@
 
                 <div class="d-flex flex-column">
 
-                    {{ form_row(formNew.title, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Libellé' }}) }}
-                    {{ form_row(formNew.lastname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Prénom' }}) }}
-                    {{ form_row(formNew.firstname, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Nom' }}) }}
+                    {{ form_row(formNew.title) }}
+                    {{ form_row(formNew.lastname) }}
+                    {{ form_row(formNew.firstname) }}
 
                     <div class="d-flex justify-content-between">
 
-                        {{ form_widget(formNew.number, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Numéro' }}) }}
-                        {{ form_widget(formNew.type, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Type' }}) }}
+                        {{ form_widget(formNew.number) }}
+                        {{ form_widget(formNew.type) }}
 
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        {{ form_widget(formNew.street, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Rue' }}) }}
-                        {{ form_widget(formNew.city, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Ville' }}) }}
+                        {{ form_widget(formNew.street) }}
+                        {{ form_widget(formNew.city) }}
                     </div>
 
                     <div class="d-flex justify-content-between">
 
-                        {{ form_widget(formNew.cp, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'CP' }}) }}
-                        {{ form_widget(formNew.country, {'label' : false ,'attr' : {'class': 'col-5 form-control mb-4', 'placeholder' : 'Pays' }}) }}
+                        {{ form_widget(formNew.cp) }}
+                        {{ form_widget(formNew.country) }}
 
                     </div>
 
-                    {{ form_row(formNew.additional, {'label' : false ,'attr' : {'class': 'form-control mb-4', 'placeholder' : 'Additionnel' }}) }}
+                    {{ form_row(formNew.additional) }}
 
                 </div>
 
