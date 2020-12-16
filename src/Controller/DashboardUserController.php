@@ -218,7 +218,7 @@ class DashboardUserController extends AbstractController
             return $this->redirectToRoute('dashboard_user_addresses');
         }
 
-        $addresses = $this->addressRepo->findUserAddresses($user);
+        $addresses = $this->addressRepo->findBy(['user' => $user]);
 
         return $this->render('dashboard-user/compte-adresses.html.twig', [
             'adresses' => $addresses,

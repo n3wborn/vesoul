@@ -458,7 +458,7 @@ class VesoulEditionController extends AbstractController
     {
         $panier = $this->session->get('panier');
         $user = $security->getUser();
-        $addresses = $this->addressRepo->findUserAddresses($user);
+        $addresses = $this->addressRepo->findBy(['user' => $user]);
 
         $form = $this->createForm(CommandType::class);
         $form->handleRequest($request);

@@ -34,7 +34,7 @@ class CommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $user = $this->security->getUser();
-        $addresses = $this->repoAddrress->findUserAddresses($user);
+        $addresses = $this->repoAddrress->findBy(['user' => $user]);
 
         $builder
             ->add('livraison', EntityType::class, [
