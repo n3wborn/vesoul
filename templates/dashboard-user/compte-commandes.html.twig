@@ -5,20 +5,7 @@
 
     <div id="compte-page" class="pt-4 pb-4 d-flex">
 
-        <nav id="menu-compte" class="col-3">
-            <h2 class="text-center">Mon compte</h2>
-            <ul>
-                <li>
-                    <a class="list" href="{{ path('dashboard_user_informations' )}}">INFORMATIONS</a>
-                </li>
-                <li>
-                    <a class="list" href="{{ path('dashboard_user_addresses' )}}">ADRESSES</a>
-                </li>
-                <li>
-                    <a class="list active" href="{{ path('dashboard_user_commands' )}}">COMMANDES</a>
-                </li>
-            </ul>
-        </nav>
+        {% include 'dashboard-user/_nav_user_infos.html.twig' %}
         
         <div id="commandes-compte" class="col-9 d-flex justify-content-center">
 
