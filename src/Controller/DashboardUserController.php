@@ -105,13 +105,6 @@ class DashboardUserController extends AbstractController
         // get current user
         $user = $this->getUser();
 
-        // remember if "commande" is confirmed
-        $commande = $this->session->get('commande');
-
-        if (isset( $commande['confirmation']) && $commande['confirmation'] === true){
-            return $this->redirectToRoute('commande');
-        }
-
         // SHOW and/or MAY CHANGE user infos
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
