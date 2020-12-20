@@ -29,6 +29,12 @@ $font-main: 'Work Sans', sans-serif;
 @import 'inscription';
 @import 'loader';
 
+@mixin empty-space($height: 16px, $width: 16px) {
+  height: $height;
+  width: $width;
+}
+
+
 //Checkbox custom ===========================
  /* Customize the label (the container) */
  .check-container {
@@ -187,6 +193,14 @@ $font-main: 'Work Sans', sans-serif;
     }
 }
 
+//===========================================
+
+
 .w-95 {
-    width: 95%!important;
+  width: 95%!important;
+}
+
+// just an empty (default to 16x16) span
+.empty-span {
+  @include empty-space();
 }

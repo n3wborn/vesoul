@@ -12,7 +12,7 @@ header {
         color: $color-text-light;
         font-size: 1em;
         &:hover{
-            color: $color-main !important;
+            color: $color-main;
             transition: all 0.3s;
         }
     }
@@ -57,6 +57,14 @@ header {
         }
         p{
             font-size: 0.9em;
+        }
+    }
+
+    .banner-infos {
+        a {
+            &:hover {
+                color: $color-text-dark !important;
+            }
         }
     }
 }
