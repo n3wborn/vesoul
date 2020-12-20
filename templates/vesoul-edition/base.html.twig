@@ -44,12 +44,22 @@
                 {# ======== Connexion ========#}
                 <div class="col-3 d-flex align-items-center justify-content-center">
                     <div class="d-flex align-items-center justify-content-end">
-                        {% if not app.user %}
-                            <a class="m-0 pr-3" href="{{ path('login') }}">Mon espace</a>
-                            <i class="fas fa-user user-icon p-2 m-0"></i>
-                        {% else %}
+
+                        {# if admin is already logged, show logout and his home #}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="m-0 pr-3" href="{{ path('logout') }}">Deconnexion</a>
+                            <a class="m-0 pr-3" href="{{ path('dashboard_admin_home') }}"><i class="fas fa-user user-icon p-2 m-0"></i></a>
+
+                        {# else, if a user is already logged, show logout and user home #}
+                        {% elseif is_granted('ROLE_USER') %}
                             <a class="m-0 pr-3" href="{{ path('logout') }}">Deconnexion</a>
                             <a class="m-0 pr-3" href="{{ path('dashboard_user_informations') }}"><i class="fas fa-user user-icon p-2 m-0"></i></a>
+
+                        {# else, show login page for all #}
+                        {% else %}
+                            <a class="m-0 pr-3" href="{{ path('login') }}">Connexion</a>
+                            <i class="fas fa-user user-icon p-2 m-0"></i>
+
                         {% endif %}
 
                         {# ======== Panier ========#}
