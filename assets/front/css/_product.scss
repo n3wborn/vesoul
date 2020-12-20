@@ -13,18 +13,18 @@ html, body {
 
     #preview-section {
 
-        #preview-img {
+        #preview-cover {
             height: auto; 
             width: 100%;
-        }
-        
-        .preview-small {
-            height: 120px;
-            width: 120px;
         }
 
         #preview-small-section {
             width: 100%;
+
+            .preview-img {
+                height: auto;
+                max-width: 125px;
+            }
 
             button {
                 background-color: rgba(0,0,0,0);
