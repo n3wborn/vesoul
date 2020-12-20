@@ -8,6 +8,7 @@ use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
 use App\Repository\GenreRepository;
 use App\Repository\AuthorRepository;
+use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -25,6 +26,7 @@ class VesoulEditionController extends AbstractController
     private BookRepository $bookRepo;
     private GenreRepository $genreRepo;
     private AddressRepository $addressRepo;
+    private ImageRepository $imageRepo;
 
 
     public function __construct(
@@ -33,7 +35,8 @@ class VesoulEditionController extends AbstractController
         BookRepository $bookRepo,
         GenreRepository $genreRepo,
         AuthorRepository $authorRepo,
-        AddressRepository $addressRepo
+        AddressRepository $addressRepo,
+        ImageRepository $imageRepo
     )
     {
         $this->em = $em;
@@ -42,6 +45,8 @@ class VesoulEditionController extends AbstractController
         $this->genreRepo = $genreRepo;
         $this->authorRepo = $authorRepo;
         $this->addressRepo = $addressRepo;
+        $this->imageRepo = $imageRepo;
+
     }
 
 
@@ -417,12 +422,14 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/product/{id}", name="product")
      */
-    public function showProduct($id)
+    public function showProduct($id): Response
     {
-        $book = $this->bookRepo->findBook($id);
+        $book = $this->bookRepo->findBy(['id' => $id]);
+        $images = $this->imageRepo->findBy(['book' => $id]);
 
         return $this->render('vesoul-edition/product.html.twig', [
-            'book' => $book
+            'book' => $book,
+            'images' => $images,
         ]);
     }
 
