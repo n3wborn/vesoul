@@ -47,14 +47,15 @@
                         <div class="col-4 pl-5 d-flex">
                             <p class="align-self-center mb-0 mr-4 icon"><i class="fas fa-map-marker-alt"></i></p>
                             <div class="d-flex flex-column justify-content-center">
-                                <p>{{ adresse.number }} {{ adresse.type }} {{ adresse.street }}</p>
+                                <p class="address-type my-1">{{ adresse.type }}</p>
+                                <p class="my-1">{{ adresse.number }} {{ adresse.street }}</p>
 
                                 {% if adresse.additional != "" %}
-                                    <p>{{ adresse.additional }}</p>
+                                    <p class="my-1">{{ adresse.additional }}</p>
                                 {% endif %}
 
-                                <p>{{ adresse.cp }} {{ adresse.city }}</p>
-                                <p class="mb-0">{{ adresse.country }}</p>
+                                <p class="my-1">{{ adresse.cp }} {{ adresse.city }}</p>
+                                <p class="my-1">{{ adresse.country }}</p>
 
                             </div>
                         </div>

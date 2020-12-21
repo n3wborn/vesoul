@@ -137,7 +137,7 @@
                                     0
                                 {% endif %}
                             {% endif %}
-                        </span>Livre(s) trouvé(s)
+                        </span> Livre(s) trouvé(s)
 
                             {% if books is defined %}
                             <span class="search-result-phras">
@@ -170,7 +170,7 @@
                     <div id="book-collection" class="col-12 m-0 p-0 pl-5 d-flex flex-wrap justify-content-left">
 
                         {% if books is defined %}
-                            {% if books | length > 0 %}
+                            {% if books | length  %}
                                 {% for book in books %}
 
                                     <div class="m-0 p-2">

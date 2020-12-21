@@ -155,7 +155,7 @@
                                 {% for image in images %}
                                     {% if image.name %}
                                         <div class="card card-img col-4 align-items-end justify-content-end border-1"
-                                             style="background-image: url({{ asset('/static/book/uploads/' ~ image.name) }});">
+                                             style="background-image: url({{ asset('static/book/uploads/') ~ image.name }});">
                                             <a class="btn btn-outline-danger mb-3" role="button" aria-pressed="true"
                                                href="{{ path('book_delete_image', {id: image.id}) }}"
                                                data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">

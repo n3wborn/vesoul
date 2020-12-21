@@ -422,14 +422,15 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/product/{id}", name="product")
      */
-    public function showProduct($id): Response
+    public function showProduct(Book $book): Response
     {
-        $book = $this->bookRepo->findBy(['id' => $id]);
-        $images = $this->imageRepo->findBy(['book' => $id]);
+        $images = $this->imageRepo->findBy(['book' => $book->getId()]);
+
+        //dd($images);
 
         return $this->render('vesoul-edition/product.html.twig', [
-            'book' => $book,
             'images' => $images,
+            'book' => $book
         ]);
     }
 

@@ -28,25 +28,25 @@ class BookRepository extends ServiceEntityRepository
     public function findTitle($title){
 
         return $this->createQueryBuilder('b')
-                    ->select('b.id, b.title')
-                    ->andWhere('b.title like :title')
-                    ->setParameter(':title', '%'.$title.'%')
-                    ->orderBy('b.id', 'ASC')
-                    ->setMaxResults(10)
-                    ->getQuery()
-                    ->getResult();
+            ->select('b.id, b.title')
+            ->andWhere('b.title like :title')
+            ->setParameter(':title', '%'.$title.'%')
+            ->orderBy('b.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
 
     public function maxAndMinYear(){
         return $this->createQueryBuilder('b')
-                    ->select('max(b.year) as maxyear, min(b.year) as minyear')
-                    ->getQuery()
-                    ->getScalarResult();
+            ->select('max(b.year) as maxyear, min(b.year) as minyear')
+            ->getQuery()
+            ->getScalarResult();
     }
 
     public function countBooks($new, $genre, $author, $yearmin, $yearmax, $title){
         
-        $queryParamaters = [];
+        $queryParameters = [];
 
         $query =  $this->createQueryBuilder('b')
                         ->select('count(b.id) as count')
@@ -55,7 +55,7 @@ class BookRepository extends ServiceEntityRepository
 
         if( $new === "true" ){
             $query = $query->andWhere('b.new = :new');
-            $queryParamaters[':new'] = $new;
+            $queryParameters[':new'] = $new;
         }
 
         if( count($genre) > 0 ){
@@ -64,7 +64,7 @@ class BookRepository extends ServiceEntityRepository
 
             for( $i = 0; $i < count($genre); $i++){
                 $queryGenre .= ($i === 0 ) ? 'g.name = :genre'.$i : ' OR g.name = :genre'.$i ;
-                $queryParamaters['genre'.$i] = $genre[$i];
+                $queryParameters['genre'.$i] = $genre[$i];
             }
             
             $query = $query->andWhere($queryGenre);
@@ -78,8 +78,8 @@ class BookRepository extends ServiceEntityRepository
                 $authorFirstAndLastName = explode('-', $author[$i]);
                 if( count($authorFirstAndLastName) === 2 ){
                     $queryAuthor .= ($i === 0 ) ? ' ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' : ' OR ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' ;
-                    $queryParamaters[':authorfirstname'.$i] = $authorFirstAndLastName[0];
-                    $queryParamaters[':authorlastname'.$i] = $authorFirstAndLastName[1];
+                    $queryParameters[':authorfirstname'.$i] = $authorFirstAndLastName[0];
+                    $queryParameters[':authorlastname'.$i] = $authorFirstAndLastName[1];
                 }
             }
             
@@ -90,24 +90,21 @@ class BookRepository extends ServiceEntityRepository
 
         if( strlen( $title ) > 0 ){
             $query = $query->andWhere('b.title like :title');
-            $queryParamaters[':title'] = '%'.$title.'%';
+            $queryParameters[':title'] = '%'.$title.'%';
         }
 
        
 
         $query = $query->andWhere('b.year >= :yearmin and b.year <= :yearmax');
-        $queryParamaters[':yearmin'] = $yearmin;
-        $queryParamaters[':yearmax'] = $yearmax;
+        $queryParameters[':yearmin'] = $yearmin;
+        $queryParameters[':yearmax'] = $yearmax;
 
-        if(count($queryParamaters) > 0 ){
-            $query = $query->setParameters($queryParamaters);
+        if(count($queryParameters) > 0 ){
+            $query = $query->setParameters($queryParameters);
         }
-        
-        $query = $query->getQuery()
-        ->getSingleScalarResult();
 
-        return $query;
-        
+        return $query->getQuery()->getSingleScalarResult();
+
     }
 
     public function findAllBooksByAscName(): array
@@ -115,7 +112,7 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.id, author.firstname, author.lastname, image.url, genre.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.id, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
@@ -135,7 +132,7 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genre.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
@@ -155,7 +152,7 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genre.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
@@ -175,7 +172,7 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.url, genre.name AS genre
+            SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER JOIN image ON book.id = image.book_id
@@ -195,7 +192,7 @@ class BookRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = ' 
-            SELECT book.description, book.price, book.isbn, book.title, book.stock, book.year, book.length, book.width, author.id, author.firstname, author.lastname, genre.name AS genre, image.url
+            SELECT book.description, book.price, book.isbn, book.title, book.stock, book.year, book.length, book.width, author.id, author.firstname, author.lastname, genre.name AS genre, image.name
             FROM book
             INNER JOIN  author ON book.author_id = author.id
             INNER jOIN book_genre ON book.id = book_genre.book_id
@@ -243,7 +240,7 @@ class BookRepository extends ServiceEntityRepository
 
         $fieldOrderBy = 'title';
         $howOrderBy = 'ASC';
-        $queryParamaters = [];
+        $queryParameters = [];
 
         switch($orderBy){
 
@@ -273,7 +270,7 @@ class BookRepository extends ServiceEntityRepository
 
         if( $new === "true" ){
             $query = $query->andWhere('b.new = :new');
-            $queryParamaters[':new'] = $new;
+            $queryParameters[':new'] = $new;
         }
 
         if( count($genre) > 0 ){
@@ -282,7 +279,7 @@ class BookRepository extends ServiceEntityRepository
 
             for( $i = 0; $i < count($genre); $i++){
                 $queryGenre .= ($i === 0 ) ? 'g.name = :genre'.$i : ' OR g.name = :genre'.$i ;
-                $queryParamaters[':genre'.$i] = $genre[$i];
+                $queryParameters[':genre'.$i] = $genre[$i];
             }
             
             $query = $query->andWhere($queryGenre);
@@ -298,8 +295,8 @@ class BookRepository extends ServiceEntityRepository
                 $authorFirstAndLastName = explode('-', $author[$i]);
                 if( count($authorFirstAndLastName) === 2 ){
                     $queryAuthor .= ($i === 0 ) ? ' ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' : ' OR ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' ;
-                    $queryParamaters[':authorfirstname'.$i] = $authorFirstAndLastName[0];
-                    $queryParamaters[':authorlastname'.$i] = $authorFirstAndLastName[1];
+                    $queryParameters[':authorfirstname'.$i] = $authorFirstAndLastName[0];
+                    $queryParameters[':authorlastname'.$i] = $authorFirstAndLastName[1];
                 }
             }
             
@@ -308,47 +305,39 @@ class BookRepository extends ServiceEntityRepository
         }
 
 
-        if( strlen( $title ) > 0 ){
+        if (strlen( $title ) > 0) {
             $query = $query->andWhere('b.title like :title');
-            $queryParamaters[':title'] = '%'.$title.'%';
+            $queryParameters[':title'] = '%'.$title.'%';
         }
 
         $query = $query->andWhere('b.year >= :yearmin and b.year <= :yearmax');
-        $queryParamaters[':yearmin'] = $yearmin;
-        $queryParamaters[':yearmax'] = $yearmax;
+        $queryParameters[':yearmin'] = $yearmin;
+        $queryParameters[':yearmax'] = $yearmax;
 
 
-        if(count($queryParamaters) > 0 ){
-            $query = $query->setParameters($queryParamaters);
+        if (count($queryParameters) > 0 ){
+            $query = $query->setParameters($queryParameters);
         }
         
-        $query = $query->orderBy('b.'.$fieldOrderBy, $howOrderBy)        
-                        ->setFirstResult( $offset )
-                        ->setMaxResults( self::LIMIT )
-                        ->getQuery()
-                        ->getArrayResult();
-        
-        
-
-        return $query;
+        return $query->orderBy('b.'.$fieldOrderBy, $howOrderBy)
+            ->setFirstResult( $offset )
+            ->setMaxResults( self::LIMIT )
+            ->getQuery()
+            ->getArrayResult()
+        ;
     }
 
-    public function searchByTitle(  $title ) {
+    public function searchByTitle($title) {
 
         $fieldOrderBy = 'title';
         $howOrderBy = 'ASC';
         
-        $query =  $this->createQueryBuilder('b')
-                        ->select('b','a','i')
-                        ->join('b.author', 'a')
-                        ->join('b.images', 'i')
-                        ->join('b.genres', 'g')
-                        ->andWhere(' b.title like :title ')
-                        ->setParameter(':title', '%'.$title.'%')
-                        ->orderBy('b.'.$fieldOrderBy, $howOrderBy)
-                        ->getQuery()
-                        ->getArrayResult();
-
-        return $query;   
+        return $this->createQueryBuilder('b')
+            ->Where('b.title like :title ')
+            ->setParameter(':title', '%'.$title.'%')
+            ->orderBy('b.'.$fieldOrderBy, $howOrderBy)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

@@ -610,11 +610,11 @@ function applyYearFilter(){
         
         e.preventDefault();  
         
-        const  elementHasClicked = e.currentTarget;
+        const elementHasClicked = e.currentTarget;
         const action = elementHasClicked.dataset.action;
         const idProduct = parseInt( elementHasClicked.dataset.id, 10 );
         const price = parseFloat( elementHasClicked.dataset.price, 10 );
-        const  elementQuantity = elementHasClicked.parentNode.children[0];
+        const elementQuantity = elementHasClicked.parentNode.children[0];
         const elementTotalProduct = elementHasClicked.parentNode.nextElementSibling;
         const elementTotalArticles = document.querySelectorAll('.article .total');
         const elementsTotals = document.querySelectorAll('#subtotal, #totalpanier')
