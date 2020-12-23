@@ -143,7 +143,7 @@
                             <span class="search-result-phras">
                             Recherche :
                             <span class="search-keyword">
-                                {{ searchValue }}
+                                {{ searchValue}}
                                 {% endif %}
                         </span>
                         </span>
@@ -177,8 +177,13 @@
                                         <div class="book-card">
 
                                             <div class="photo">
-                                                <img class="book-pic" src="{{ book.images[0].url }}"
-                                                     alt="image du livre">
+                                                {% if book.images[0].name | length  %}
+                                                    <img class="book-pic" src="{{asset('static/book/uploads/' ~ images[0].name)}}"
+                                                         alt="image du livre">
+                                                {% else %}
+                                                    <img class="book-pic" src="{{asset('build/images/cover.png') }}"
+                                                         alt="image du livre">
+                                                {% endif %}
                                                 <div class="overlay d-flex justify-content-center  align-items-center">
                                                     <a href="product/{{ book.id }}">
                                                         <button class="btn btn-info p-2">Details</button>

@@ -6,13 +6,13 @@
     <div class="row m-0 p-5">
 
         {# ==> Section gauche avec les images ======================================== #}
-        <div id="preview-section" class="col-6 m-0 p-2 d-flex align-items-end flex-column">
+        <div id="preview-section" class="col-6 m-0 d-flex align-items-end flex-column">
 
             {# ---------- Image principale ---------- #}
 
             {# if book has images display them #}
-            {% if images %}
-                <img id="preview-cover" src="{{asset('static/book/uploads/' ~ images[0].name)}}" alt="image d illustration">
+            {% if book.images[0].name %}
+                <img class="img rounded" id="preview-cover" src="{{asset('static/book/uploads/' ~ images[0].name)}}" alt="image d illustration">
 
                 {# ---------- Carousel ----------- #}
                 <div id="preview-small-section" class="d-flex align-items-center justify-content-between pt-2">
@@ -22,9 +22,8 @@
                     </button> #}
 
                     {% for image in images %}
-                        <div class="preview-img"
-                             style="background: url({{asset('static/book/uploads/' ~ image.name)}});
-                                     background-size: contain;">
+                        <div>
+                            <img  class="img rounded preview-img" src="{{asset('static/book/uploads/' ~ image.name)}}"  alt="image d illustration">
                         </div>
                     {% endfor %}
 

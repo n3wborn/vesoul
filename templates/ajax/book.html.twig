@@ -4,7 +4,15 @@
 <div class="m-0 p-2">
     <div class="book-card">
         <div class="photo">
-            <img class="book-pic" src="{{book.url}}" alt="image du livre">
+
+            {% if book.images[0].name|length  %}
+                <img class="book-pic" src="{{book.images[0].name}}"
+                     alt="image du livre">
+            {% else %}
+                <img class="book-pic" src="{{asset('images/cover.png')}}"
+                     alt="image du livre">
+            {% endif %}
+
             <div class="overlay d-flex justify-content-center  align-items-center">
                 <a href="product/{{book.id}}"><button class="btn btn-info p-2">Details</button></a>
             </div>

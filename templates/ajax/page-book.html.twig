@@ -3,8 +3,9 @@
     <div class="m-0 p-2">
         <div class="book-card">
             <div class="photo">
-                {% if book.images[0].name|length  %}
-                    <img class="book-pic" src="{{book.images[0].name}}"
+
+                {% if book.images[0].name %}
+                    <img class="book-pic" src="{{asset('static/book/uploads/' ~ book.images[0].name)}}"
                          alt="image du livre">
                 {% else %}
                     <img class="book-pic" src="{{asset('build/images/cover.png')}}"

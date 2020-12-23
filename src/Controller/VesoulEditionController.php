@@ -67,9 +67,9 @@ class VesoulEditionController extends AbstractController
             $this->session->set('panier', []);
         }
 
-        $allBooks = $this->bookRepo->findAllBooksByAscName();
-        $genres = $this->genreRepo->findAllGenre();
-        $authors = $this->authorRepo->findAllAuthors();
+        $books = $this->bookRepo->findBy(['title' => 'ASC']);
+        $genres = $this->genreRepo->findAll();
+        $authors = $this->authorRepo->findAll();
         $maxAndMinYear = $this->bookRepo->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];

@@ -22,8 +22,8 @@ html, body {
             width: 100%;
 
             .preview-img {
-                height: 125px;
-                width: 125px;
+                max-height: 125px;
+                max-width: 125px;
             }
 
             button {

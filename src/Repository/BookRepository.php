@@ -107,11 +107,12 @@ class BookRepository extends ServiceEntityRepository
 
     }
 
+
     public function findAllBooksByAscName(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = ' 
+        $sql = '
             SELECT book.id, book.price, book.title, book.stock, book.year, author.id, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
@@ -122,7 +123,7 @@ class BookRepository extends ServiceEntityRepository
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-    
+
         // returns an array of book
         return $stmt->fetchAll();
     }
@@ -323,7 +324,7 @@ class BookRepository extends ServiceEntityRepository
             ->setFirstResult( $offset )
             ->setMaxResults( self::LIMIT )
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
         ;
     }
 
