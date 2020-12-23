@@ -154,12 +154,12 @@
                                 {# Only display "real" images, not fixtures (only having image.url) #}
                                 {% for image in images %}
                                     {% if image.name %}
-                                        <div class="card card-img col-4 align-items-end justify-content-end border-1"
+                                        <div class="img-preview rounded col-4 align-items-center justify-content-center"
                                              style="background-image: url({{ asset('static/book/uploads/') ~ image.name }});">
-                                            <a class="btn btn-outline-danger mb-3" role="button" aria-pressed="true"
+                                            <a class="btn btn-outline-danger m-2" role="button" aria-pressed="true"
                                                href="{{ path('book_delete_image', {id: image.id}) }}"
                                                data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">
-                                                <i class="fas fa-trash-alt"></i>
+                                                <i class="fas fa-trash-alt align-self-end"></i>
                                             </a>
                                         </div>
                                     {% endif %}

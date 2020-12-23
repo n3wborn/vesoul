@@ -25,9 +25,10 @@
   height: 155px;
   margin-bottom: 1rem;
 
-  .card {
+  .img-preview {
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: inherit;
   }
 }
 
