@@ -14,7 +14,7 @@
 
             {# if book has images display them #}
             {% if book.images[0].name %}
-                <img class="img rounded" id="preview-cover" src="{{asset('static/book/uploads/' ~ images[0].name)}}" alt="image d illustration">
+                <img class="img rounded" id="preview-cover" src="{{asset('static/book/uploads/' ~ images[0].name)}}">
 
                 {# ---------- Carousel ----------- #}
                 <div id="preview-small-section" class="d-flex align-items-center justify-content-between pt-2">
@@ -25,7 +25,7 @@
 
                     {% for image in images %}
                         <div>
-                            <img  class="img rounded preview-img" src="{{asset('static/book/uploads/' ~ image.name)}}"  alt="image d illustration">
+                            <img  class="img rounded preview-img" src="{{asset('static/book/uploads/' ~ image.name)}}">
                         </div>
                     {% endfor %}
 
@@ -86,7 +86,7 @@
                 </div>
 
                 {# only enable add/remove book if a user is connected #}
-                {% if  app.user != null %}
+                {% if app.user %}
                 <div class="m-0 py-5 d-flex align-items-center">
                         <p class="legend m-0 pr-4">Quantité :</p>
                     <p class="m-0 p-3" id="quantite">1</p>
