@@ -23,7 +23,7 @@ closeBtn.addEventListener("click", function () {
 const navBtn:HTMLCollectionOf<Element> = document.getElementsByClassName('button-menu');
 
 for (let el of Array.from(navBtn)) {
-    if (window.location.pathname.startsWith(el.getAttribute('href'))) {
+    if (window.location.pathname.startsWith(el.getAttribute('href')) && el.getAttribute('href') == window.location.pathname) {
         el.classList.add("button-active");
     }
 }

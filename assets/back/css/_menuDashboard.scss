@@ -33,8 +33,6 @@
         background-color: rgba(0, 0, 0, 0.78);
         border-radius: 5px;
         margin: 5px 0px;
-        transition: .2s ease-out;
-        box-shadow: 0px 5px 16px #00000087;
 
         @media (min-width: 576px) and (max-width: 767px) {
             width: 32px;
@@ -97,6 +95,7 @@
             }
             h1{
                 text-decoration: none;
+                text-transform: capitalize;
                 font-size: 1.4rem;
                 color: white;
                 @media (min-width: 768px) and (max-width: 991.98px) { 
