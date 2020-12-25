@@ -102,6 +102,9 @@
     "egulias/email-validator": {
         "version": "2.1.22"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.0"
+    },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
@@ -198,6 +201,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.4.15"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.4.15"

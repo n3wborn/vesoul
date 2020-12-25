@@ -28,6 +28,7 @@
         "bootstrap": "^4.5.3",
         "bootstrap-select": "^1.13.18",
         "chart.js": "^2.9.4",
+        "dependency-check": "^4.1.0",
         "jquery": "^3.5.1",
         "materialize-css": "^1.0.0",
         "mjml": "^4.7.1",
