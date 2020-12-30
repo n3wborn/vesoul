@@ -163,7 +163,7 @@ class DashboardUserController extends AbstractController
         // if submitted, create user a new address
         if ($formNew->isSubmitted()) {
 
-            $newAddress->setCity(strtoupper($newAddress->getCity()))
+            $newAddress->setCity(ucfirst($newAddress->getCity()))
                 ->setCountry(strtoupper($newAddress->getCountry()))
                 ->setFirstname(ucfirst($newAddress->getFirstname()))
                 ->setLastname(ucfirst($newAddress->getLastname()));
