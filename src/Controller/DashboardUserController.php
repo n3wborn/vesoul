@@ -202,11 +202,11 @@ class DashboardUserController extends AbstractController
                 ->setFirstname(ucfirst($data['firstname']))
                 ->setLastname(ucfirst($data['lastname']))
                 ->setNumber($data['number'])
+                ->setType($data['type'])
                 ->setCp($data['cp'])
                 ->setCity(ucfirst($data['city']))
                 ->setCountry(ucfirst($data['country']))
                 ->setAdditional($data['additional'])
-                ->setType($data['additional'])
             ;
 
             $this->em->flush();
