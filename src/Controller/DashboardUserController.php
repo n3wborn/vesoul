@@ -192,6 +192,11 @@ class DashboardUserController extends AbstractController
      */
     public function editAddress(Address $address, Request $request)
     {
+
+        if ($address->getUser() !== $this->getUser()) {
+            throw new AccessDeniedException(AccessDeniedException::class);
+        }
+
         $user = $this->getUser();
         $data = $request->request->get('edit_addresses');
 
@@ -212,6 +217,10 @@ class DashboardUserController extends AbstractController
             $this->em->flush();
 
             return $this->redirectToRoute('dashboard_user_addresses');
+
+        } else {
+
+            Return new Response("Not Found", Response::HTTP_NOT_FOUND);
         }
     }
 
