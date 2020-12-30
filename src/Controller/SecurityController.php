@@ -89,8 +89,8 @@ class SecurityController extends AbstractController
 
             // and confirm va email
             $mail = (new Swift_Message("Bienvenue sur Vesoul Edition !"))
-                ->setFrom($user->getUsername())
-                // TODO: Replace by site email
+                ->setFrom('vesouledition@sfr.fr')
+                ->setTo($user->getUsername())
                 ->setBody(
                     $this->renderView(
                         'email/confirm.html.twig',
