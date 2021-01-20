@@ -111,9 +111,12 @@ class DashboardAdminController extends AbstractController
                     $e->getMessage();
                 }
 
-                // We keep image name in db
+                // link image file to an Image object
                 $img = new Image();
                 $img->setName($file);
+                $img->setUrl($this->getParameter('images_directory') . '/' . $file);
+
+                // and link it with book
                 $book->addImage($img);
             }
 
@@ -206,6 +209,7 @@ class DashboardAdminController extends AbstractController
                 // Instanciate a new Image with corresponding spec's and link it to book entity
                 $img = new Image();
                 $img->setName($file);
+                $img->setUrl($this->getParameter('images_directory') . '/' . $file);
                 $book->addImage($img);
             }
 
