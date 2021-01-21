@@ -120,6 +120,7 @@
             .book-pic{
                 width: $width-book-card;
                 height: $width-book-card;
+                object-fit: cover;
             }
             .overlay{
                 display: none !important;
