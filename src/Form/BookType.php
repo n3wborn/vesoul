@@ -189,7 +189,7 @@ class BookType extends AbstractType
                     new Count(['max' => 3]),
                     new All([
                         new File([
-                            'maxSize' => '2048k',
+                            'maxSize' => '50M',
                             'mimeTypes' => [
                                 'image/jpeg',
                                 'image/png'
