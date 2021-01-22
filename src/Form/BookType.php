@@ -187,14 +187,12 @@ class BookType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Count(['max' => 3]),
-                    new All([
-                        new File([
-                            'maxSize' => '50M',
-                            'mimeTypes' => [
-                                'image/jpeg',
-                                'image/png'
-                            ],
-                        ])
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png'
+                        ]
                     ])
                 ],
             ])

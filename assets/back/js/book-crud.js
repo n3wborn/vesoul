@@ -1,11 +1,11 @@
-// ELEMENTS TO TARGET
 const delLinks = document.getElementsByClassName('delete-link')
 const delModal = document.getElementById('delete-modal')
 const confirmBtn = document.getElementById('confirm-delete')
 const cancelBtn = document.getElementById('cancel-delete')
 const chkBox = document.getElementById('book_new')
 const newBtn = document.getElementById('book_newbtn')
-
+const uploadedFilesMaxSize = 5000000    // Max Total size = 5Mo
+const uploadedFilesMaxCount = 3         // Max images count
 
 // FUNCTIONS
 
@@ -78,21 +78,59 @@ function checkDelLinks() {
 }
 
 
+// Check if images uploaded are smaller than Maxsize constraint
+// return true if total size is lesser than uploadedFilesMaxSize, false if not
+const fileSizeCheck = (fileInput) => {
+
+    if (fileInput.files.length > 0) {
+        for (const i = 0; i <= fileInput.files.length - 1; i++) {
+            const fileSize = fileInput.files.item(i).size
+
+            return (fileSize <= uploadedFilesMaxSize)
+        }
+    }
+}
+
+
+// Check if images uploaded are less equal uploadedFilesMaxCount
+// return True if number of files given is less than max allowed
+const fileCountCheck = (fileInput) => {
+
+    return (fileInput.files.length <= uploadedFilesMaxCount)
+}
+
+
 // Update form input label with image names
 const updateInputLabel = () => {
     let input = document.querySelector('.custom-file-input')
+    let label = document.querySelector('label.custom-file-label')
 
     if(input !== null) {
 
         input.addEventListener('change', () => {
 
-            // target and empty label
-            let label = document.querySelector('label.custom-file-label')
-            label.innerText = ''
+            // check file size/count
+            if(fileSizeCheck(input) && fileCountCheck(input)) {
 
-            // fill label with image(s) name(s)
-            for (let i = 0; i < input.files.length; i++) {
-                label.innerText += ` ${input.files[i].name}`
+                // target and reset style
+                label.classList.remove('text-danger')
+                label.classList.remove('border-danger')
+                label.innerText = ''
+
+                // replace label by file name
+                if (input.files.length > 1) {
+                    label.innerText = ` ${input.files.length} fichiers sélectionnés`
+                // or show number of files selected
+                } else {
+                    label.innerText = ` ${input.files[0].name}`
+                }
+
+            } else {
+                // give label/border danger style
+                label.classList.add('border-danger')
+                label.classList.add('text-danger')
+                label.innerText = 'Taille ou total des fichiers dépassé !'
+
             }
         })
     }
