@@ -53,8 +53,6 @@ class Address
      */
     private $additional;
 
-
-
     /**
      * @ORM\Column(type="string", length=45)
      */

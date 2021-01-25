@@ -17,7 +17,8 @@
                 <div class="title-compte">
 
                     <!-- trigger add address modal -->
-                    <button class="btn add-address mr-2" data-toggle="modal" data-target="#add-modal">
+                    <button class="btn add-address mr-2" data-toggle="modal"
+                            data-target="#add-modal">
                         <i class="fas fa-plus-square mr-2"></i>
                         Ajouter une adresse
                     </button>
@@ -32,47 +33,69 @@
                 {% include 'dashboard-user/_modal_edit_address.html.twig' %}
 
                 <!-- Addresses list-->
-                <div class="col-12 list-adresse card mb-3 ml-2 mr-2 pt-4 pb-4 pl-4 pr-4 d-flex justify-content-center">
+                <div class="col-12 list-adresse card mb-3 ml-2 mr-2 pt-4 pb-4
+                    pl-4 pr-4 d-flex justify-content-center">
                     <div class="row">
-                        <div class="col-4 d-flex flex-column align-items-center justify-content-center">
-                            <h3 class="align-self-start">{{ adresse.title }}</h3>
+                        <div class="col-4 d-flex flex-column align-items-center
+                            justify-content-center">
+
+                            <h3 class="align-self-start">
+                                {{ adresse.title|capitalize }}
+                            </h3>
+
                             <div class="d-flex align-items-center">
                                 <p class="mr-4 icon"><i class="fas fa-user"></i></p>
                                 <div class="d-flex flex-column">
-                                    <p>{{ adresse.firstname }}</p>
-                                    <p>{{ adresse.lastname }}</p>
+                                    <p>{{ adresse.firstname|capitalize }}</p>
+                                    <p>{{ adresse.lastname|capitalize }}</p>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="col-4 pl-5 d-flex">
-                            <p class="align-self-center mb-0 mr-4 icon"><i class="fas fa-map-marker-alt"></i></p>
+
+                            <p class="align-self-center mb-0 mr-4 icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </p>
+
                             <div class="d-flex flex-column justify-content-center">
-                                <p class="address-type my-1">{{ adresse.type }}</p>
-                                <p class="my-1">{{ adresse.number }} {{ adresse.street }}</p>
+                                <p class="my-1">
+                                    {{ adresse.number }}
+                                    {{ adresse.type }}
+                                    {{ adresse.street|capitalize }}
+                                </p>
 
                                 {% if adresse.additional != "" %}
                                     <p class="my-1">{{ adresse.additional }}</p>
                                 {% endif %}
 
-                                <p class="my-1">{{ adresse.cp }} {{ adresse.city }}</p>
-                                <p class="my-1">{{ adresse.country }}</p>
+                                <p class="my-1">
+                                    {{ adresse.cp }} {{ adresse.city|capitalize }}
+                                </p>
+
+                                <p class="my-1">{{ adresse.country|upper }}</p>
 
                             </div>
+
                         </div>
 
 
                         <div class="d-flex justify-content-end col-4">
 
                             <!-- trigger edit-modal  -->
-                            <button class="align-self-end btn edit-address mr-2" data-toggle="modal"
-                                    data-target="#edit-modal-{{ adresse.id }}">Modifier
+                            <button class="align-self-end btn edit-address mr-2"
+                                    data-toggle="modal"
+                                    data-target="#edit-modal-{{ adresse.id }}">
+                                    Modifier
                             </button>
 
                             <!-- delete section -->
                             <a class="align-self-end btn delete-address"
-                               href="{{ path("dashboard_user_addresses_delete", {'id': adresse.id }) }}"><i
-                                        class="fas fa-trash trash-address"></i></a>
+                               href="{{ path("dashboard_user_addresses_delete",
+                                    {'id': adresse.id }) }}">
+                                <i class="fas fa-trash trash-address"></i>
+                            </a>
                         </div>
                     </div>
                 </div>

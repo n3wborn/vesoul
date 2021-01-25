@@ -3,7 +3,7 @@
     display: flex;
     height: 100%;
     flex: 1;
-    
+
     #menu-compte {
         background-color: transparent;
         color: $color-header;
@@ -52,13 +52,13 @@
             background-color: rgba(0, 188, 212, 0.2);
             color: $color-header;
         }
-        
+
         .list:hover {
             background-color: $color-main;
             text-decoration: none;
             color: white;
         }
-        
+
         li {
             display: flex;
             align-items: center;
@@ -67,7 +67,7 @@
 
     }
 
-   
+
 
 }
 
@@ -117,7 +117,7 @@
     .wrapper-infos {
         width: 100%;
     }
-      
+
 
 }
 
@@ -154,7 +154,7 @@
     .delete-address {
         background-color: red;
     }
-    
+
     .edit-address {
         background-color: $color-title;
         color: white;
@@ -167,7 +167,7 @@
         .list-adresses:first-child {
             margin-top: 0px !important;
         }
-        
+
         h3 {
             justify-self: stretch;
             color: $color-main;
@@ -209,11 +209,6 @@
         }
     }
 
-    .address-type {
-        font-weight: bold;
-        color: $color-main;
-    }
-
     .trash-address {
         color: white;
     }
@@ -236,7 +231,7 @@
     .wrapper-commandes {
         width: 100%;
         background-color: white;
-        
+
         .table-commandes:nth-child(odd) {
             background-color: rgba(212, 212, 212, 0.6);
         }
@@ -248,14 +243,14 @@
         display: flex;
         align-items: center;
     }
-    
+
     .commandes-header {
 
-        background-color: $color-header; 
+        background-color: $color-header;
         color: white;
-        font-size: 12px;        
+        font-size: 12px;
     }
-    
+
     .commandes-tableau {
         color: $color-text-dark;
         font-size: 16px;
@@ -286,7 +281,7 @@
             font-weight: bold;
         }
     }
-    
+
     .subsection-cmd {
         h3 {
             color: $color-main;
@@ -385,7 +380,7 @@
     padding-right: 15px;
     padding-left: 15px;
     margin-bottom: 20px;
-    
+
     h2 {
         font-weight: bold;
         margin-bottom: 0;
