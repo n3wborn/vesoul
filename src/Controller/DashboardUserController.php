@@ -257,18 +257,15 @@ class DashboardUserController extends AbstractController
     public function showCommands(): Response
     {
         $user = $this->getUser();
-
         $addresses = $this->addressRepo->findBy(['user' => $user]);
-        $commands = $this->commandRepo->findBy(['user' => $user]);
-        $panier = $this->session->get('panier');
-
-        dd($panier);
+        $cart = $this->session->get('cart');
+        $orders = $this->commandRepo->findBy(['user' => $user]);
 
         return $this->render('dashboard-user/compte-commandes.html.twig', [
             'user' => $user,
-            'panier' => $panier,
-            'commandes' => $commands,
             'addresses' => $addresses,
+            'cart' => $cart,
+            'orders' => $orders
         ]);
     }
 

@@ -90,8 +90,23 @@
                 <div class="m-0 py-5 d-flex align-items-center">
                         <p class="legend m-0 pr-4">Quantité :</p>
                     <p class="m-0 p-3" id="quantite">1</p>
-                    <button class="btn-quantity btn btn-info d-flex justify-content-center align-items-center product-details-add">+</button>
-                    <button class="btn-quantity btn btn-light d-flex justify-content-center align-items-center">-</button>
+
+                    <a class="btn-quantity btn btn-info d-flex
+                        justify-content-center align-items-center
+                        product-details-add"
+                        href="{{ path('addItem',{ 'id':book.id }) }}"
+                        data-action="add" data-id="{{ book.id  }}"
+                        data-price="{{ book.price|number_format(2, ',')  }}">
+                        <i class="fa fa-plus"></i>
+                    </a>
+
+                    <a class="btn-quantity btn btn-light d-flex
+                        justify-content-center align-items-center"
+                        href="{{ path('reduceItem',{ 'id':book.id }) }}"
+                        data-action="reduce" data-id="{{ book.id  }}"
+                        data-price="{{ book.price|number_format(2, ',')  }}">
+                        <i class="fa fa-minus"></i>
+                    </a>
                 </div>
                 {% endif %}
             </div>
@@ -99,8 +114,8 @@
             <div class="d-flex justify-content-center">
                     <form action="/panier/add/{{book.id}}">
                         <input type="hidden" value="1" name="quantity" >
-                        <button class="btn btn-info d-flex justify-content-center align-items-center mt-4"><i class="fas fa-shopping-cart fa-2x pr-2"></i>
-                            Ajouter au panier</button>
+                        <a class="btn btn-info d-flex justify-content-center align-items-center mt-4"><i class="fas fa-shopping-cart fa-2x pr-2"></i>
+                            Ajouter au panier</a>
                     </form>
 
 

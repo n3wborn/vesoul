@@ -67,13 +67,13 @@
 
                     {% endif %}
 
-                    {# ======== Panier ======== #}
+                    {# ======== Cart ======== #}
                     <div class="d-flex align-items-center justify-content-center px-3">
-                        <a href="{{ path('panier') }}" class="d-flex flex-column justify-content-center">
+                        <a href="{{ path('cart') }}" class="d-flex flex-column justify-content-center">
                             <div>
                                 <i class="fas fa-shopping-cart"></i>
                                 <span id="nb-items"
-                                      class="badge badge-pill badge-warning">{{ app.session.get('panier') | length }}</span>
+                                      class="badge badge-pill badge-warning">{{ app.session.get('cart') | length }}</span>
                             </div>
                             <p class="m-0">panier</p>
                         </a>
@@ -162,7 +162,7 @@
                             <a href="{{ path('registration') }}" class="text-left">Inscription</a>
                         </li>
                         <li>
-                            <a href="{{ path('panier') }}" class="text-left">Panier</a>
+                            <a href="{{ path('cart') }}" class="text-left">Panier</a>
                         </li>
                     </ul>
                 </div>

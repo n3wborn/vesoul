@@ -20,14 +20,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class VesoulEditionController extends AbstractController
 {
-    private EntityManagerInterface $em;
     private SessionInterface $session;
     private AuthorRepository $authorRepo;
     private BookRepository $bookRepo;
     private GenreRepository $genreRepo;
     private AddressRepository $addressRepo;
-    private ImageRepository $imageRepo;
-
 
     public function __construct(
         EntityManagerInterface $em,
@@ -59,15 +56,8 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home(Request $request)
+    public function home()
     {
-        if($this->session->get('panier')) {
-            $panier = $this->session->get('panier');
-        } else {
-            $this->session->set('panier', []);
-        }
-
-        $books = $this->bookRepo->findBy(['title' => 'ASC']);
         $genres = $this->genreRepo->findAll();
         $authors = $this->authorRepo->findAll();
         $maxAndMinYear = $this->bookRepo->maxAndMinYear();
@@ -80,24 +70,18 @@ class VesoulEditionController extends AbstractController
             'minyear' => $minYear,
             'maxyear' => $maxYear
         ]);
-    } 
+    }
 
 
      /**
      * @Route("/home/search/bytitle/{searchValue}", name="search-bytitle")
      */
-    public function searchByTitle(Request $request, string $searchValue) {
-        
+    public function searchByTitle(string $searchValue) {
+
         $books = [];
 
         if (strlen($searchValue) > 0 ) {
             $books = $this->bookRepo->searchByTitle($searchValue);
-        }
-        
-        if($this->session->get('panier')) {
-            $panier = $this->session->get('panier');
-        } else {
-            $this->session->set('panier', []);
         }
 
         $genres = $this->genreRepo->findAll();
@@ -105,7 +89,7 @@ class VesoulEditionController extends AbstractController
         $maxAndMinYear = $this->bookRepo->maxAndMinYear();
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
-        
+
         return $this->render('vesoul-edition/home.html.twig', [
             'genres' => $genres,
             'authors' => $authors,
@@ -121,13 +105,13 @@ class VesoulEditionController extends AbstractController
      * @Route("/home/search/ajax/{searchValue}", name="search-autocomplete")
      */
     public function autocomplete(string $searchValue) {
-        
+
         $books = [];
-        
+
         if( strlen( $searchValue ) >= 3 ){
             $books = $this->bookRepo->findTitle($searchValue);
         }
-        
+
         $response = new Response();
         if( count($books) > 0 ){
 
@@ -151,11 +135,11 @@ class VesoulEditionController extends AbstractController
      * @Route("/home/load", name="load-home")
      */
     public function homeload(Request $request) {
-        
+
         $page = $request->get('page');
         $orderBy = $request->get('orderBy');
         $new = $request->get('new');
-        $genre = strlen($request->get('genre')) > 0 ? explode(',', $request->get('genre')) : []; 
+        $genre = strlen($request->get('genre')) > 0 ? explode(',', $request->get('genre')) : [];
         $author = strlen($request->get('author')) > 0 ? explode(',', $request->get('author')) : [];
         $yearmin = $request->get('yearmin');
         $yearmax = $request->get('yearmax');
@@ -175,7 +159,7 @@ class VesoulEditionController extends AbstractController
         $response->setStatusCode(Response::HTTP_OK);
         $response->send();
         return $this->render(
-            'ajax/page-book.html.twig', 
+            'ajax/page-book.html.twig',
             [
                 'books' => $books
             ]
@@ -265,157 +249,167 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/add/{id}", name="addItem")
+     * @Route("/cart/add/{id}", name="addItem")
      */
     public function addItem(Book $book)
     {
+        // get infos
         $id = $book->getId();
-        $title = $book->getTitle();
-        $author = $book->getAuthor();
-        $price = $book->getPrice();
         $stock = $book->getStock();
-        $images = $book->getImages();
-        $image = $images[0]->getUrl(); // Juste la couverture du livre.
-        $panier = $this->session->get('panier');
+        $cart = $this->session->get('cart');
 
-        if (array_key_exists($id, $panier)) {
+        // add one more item if already in cart and still available
+        // else add 1
+        if (!empty($cart[$id])) {
+            $qtyInCart = $cart[$id]['quantity'];
 
-            $quantityInPanier = $panier[$id]['quantity'];
-            if ( ($stock - $quantityInPanier - 1 ) > 0) {
-                $panier[$id]['quantity']++;
+            if (($stock - $qtyInCart) >= 1 ) {
+                $cart[$id]['quantity']++;
             }
         } else {
-            $panier[$id] = [
+            $cart[$id] = [
                 'id' => $id,
-                'title'=> $title,
-                'firstname'=> $author->getFirstname(),
-                'lastname'=> $author->getLastname(),
-                'quantity'=> 1,
-                'price'=> $price,
-                'image' => $image
+                'title' => $book->getTitle(),
+                'firstname' => $book->getAuthor()->getFirstname(),
+                'lastname' => $book->getAuthor()->getLastname(),
+                'quantity' => 1,
+                'price' => $book->getPrice(),
+                'image' => $book->getImages()[0]->getUrl()
             ];
         }
-        $this->session->set('panier', $panier);
-        return $this->redirectToRoute('panier');
+
+
+        // keep infos in session
+        $this->session->set('cart', $cart);
+
+        // TODO: Redirect really wanted ??
+        // Redirect to cart
+        return $this->redirectToRoute('cart');
     }
 
 
     /**
-     * @Route("/panier/ajax/add/{id}", name="ajaxaddItem")
+     * @Route("/cart/ajax/add/{id}", name="ajaxAddItem")
      */
     public function ajaxAddItem(Book $book)
     {
+        // get infos
         $id = $book->getId();
-        $title = $book->getTitle();
-        $author = $book->getAuthor();
-        $price = $book->getPrice();
         $stock = $book->getStock();
-        $images = $book->getImages();
-        $image = $images[0]->getUrl(); // Juste la couverture du livre.
-        $panier = $this->session->get('panier');
-        $quantityInPanier = $panier[$id]['quantity'];
-        
-        if ( ($stock - $quantityInPanier - 1 ) > 0) { 
-              
-            if (array_key_exists($id, $panier)) {
+        $cart = $this->session->get('cart');
 
-                $panier[$id]['quantity']++;
 
-            } else {
-                
-                $panier[$id] = [
-                    'id' => $id,
-                    'title'=> $title,
-                    'firstname'=> $author->getFirstname(),
-                    'lastname'=> $author->getLastname(),
-                    'quantity'=> 1,
-                    'price'=> $price,
-                    'image' => $image               
-                ];   
+        // add one more item if already in cart and still available
+        // else add 1
+        if (!empty($cart[$id])) {
+            $qtyInCart = $cart[$id]['quantity'];
+
+            if (($stock - $qtyInCart) >= 1 ) {
+                $cart[$id]['quantity']++;
             }
 
-            $this->session->set('panier', $panier);
-            
-            return new Response("OK", Response::HTTP_OK);
         } else {
-            return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
+            $cart[$id] = [
+                'id' => $id,
+                'title' => $book->getTitle(),
+                'firstname' => $book->getAuthor()->getFirstname(),
+                'lastname' => $book->getAuthor()->getLastname(),
+                'quantity' => 1,
+                'price' => $book->getPrice(),
+                'image' => $book->getImages()[0]->getUrl()
+            ];
         }
+
+
+        // keep infos in session
+        $this->session->set('cart', $cart);
+
+        return new Response("OK", Response::HTTP_OK);
     }
 
 
     /**
-     * @Route("/panier/ajax/reduce/{id}", name="reduceAjaxItem")
+     * @Route("/cart/ajax/reduce/{id}", name="ajaxReduceItem")
      */
     public function reduceAjaxItem(Book $book)
-    {   
-        
-        $id = $book->getId();
-        
-        $panier = $this->session->get('panier');
-       
-        if (array_key_exists($id, $panier) && ($panier[$id]['quantity'] - 1 ) >= 1) {
-            
-            $panier[$id]['quantity']--;            
-            $this->session->set('panier', $panier);
-            return new Response("OK", Response::HTTP_OK);
-
-        } 
-
-        return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
-    }
-
-
-    /**
-     * @Route("/panier/reduce/{id}", name="reduceItem")
-     */
-    public function reduceItem(Book $book)
-    {   
-        
-        $id = $book->getId();
-        $panier = $this->session->get('panier');
-       
-        if (array_key_exists($id, $panier) && ($panier[$id]['quantity'] - 1 ) >= 1) {
-            
-            $panier[$id]['quantity']--;            
-            $this->session->set('panier', $panier);
-            return new Response("OK", Response::HTTP_OK);
-
-        } 
-
-        return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
-    }
-
-
-    /**
-     * @Route("/panier/ajax/delete/{id}", name="deleteAjaxItem")
-     */
-    public function deleteAjaxItem(Book $book)
     {
+        // get infos
         $id = $book->getId();
-        $panier = $this->session->get('panier');
+        $cart = $this->session->get('cart');
 
-        if (array_key_exists($id, $panier)){
-            unset($panier[$id]);
-            $this->session->set('panier', $panier);
-            return new Response("OK", Response::HTTP_OK);
+        // remove 1 item only if 2 minimum
+        if (!empty($cart[$id]) && ($cart[$id]['quantity'] >= 2)) {
+
+            // update cart infos
+            $cart[$id]['quantity']--;
+            $this->session->set('cart', $cart);
         }
 
-        return new Response("Not Acceptable", Response::HTTP_NOT_ACCEPTABLE);
+        return new Response("OK", Response::HTTP_OK);
     }
 
 
     /**
-     * @Route("/panier/delete/{id}", name="deleteItem")
+     * @Route("/cart/reduce/{id}", name="reduceItem")
+     */
+    public function reduceItem(Book $book)
+    {
+
+        // get infos
+        $id = $book->getId();
+        $cart = $this->session->get('cart');
+
+        // remove 1 item only if 2 minimum
+        if (!empty($cart[$id]) && ($cart[$id]['quantity'] >= 2)) {
+
+            // update cart infos
+            $cart[$id]['quantity']--;
+            $this->session->set('cart', $cart);
+        }
+
+        return new Response("OK", Response::HTTP_OK);
+    }
+
+
+    /**
+     * @Route("/cart/ajax/delete/{id}", name="ajaxDeleteItem")
+     */
+    public function ajaxDeleteItem(Book $book)
+    {
+        // get needed infos
+        $id = $book->getId();
+        $cart = $this->session->get('cart');
+
+        // if product is in cart remove it
+        if (!empty($cart[$id])) {
+
+            unset($cart[$id]);
+            $this->session->set('cart', $cart);
+        }
+
+        return new Response("OK", Response::HTTP_OK);
+    }
+
+
+    /**
+     * @Route("/cart/delete/{id}", name="deleteItem")
      */
     public function deleteItem(Book $book)
     {
+
+        // get needed infos
         $id = $book->getId();
-        $panier = $this->session->get('panier');
+        $cart = $this->session->get('cart');
 
-        unset($panier[$id]);
-        $this->session->set('panier', $panier);
+        // remove product if already in cart
+        if (!empty($cart[$id])) {
+            unset($cart[$id]);
 
-        return $this->redirectToRoute('panier');
+            $this->session->set('cart', $cart);
+        }
+
+        // Refresh cart page
+        return $this->redirectToRoute('cart');
     }
 
 
@@ -424,36 +418,35 @@ class VesoulEditionController extends AbstractController
      */
     public function showProduct(Book $book): Response
     {
-        $images = $this->imageRepo->findBy(['book' => $book->getId()]);
-
-        //dd($images);
-
         return $this->render('vesoul-edition/product.html.twig', [
-            'images' => $images,
+            'images' => $book->getImages(),
             'book' => $book
         ]);
     }
 
 
     /**
-     * @Route("/panier", name="panier")
+     * @Route("/cart", name="cart")
      */
-    public function showPanier()
+    public function showCart()
     {
+        // get cart infos
+        $cart = $this->session->get('cart');
 
-        $panier = $this->session->get('panier');
-
-        if( $panier === null ){
-            return $this->render('vesoul-edition/panier.html.twig', [
+        // redirect if no cart
+        if ($cart === null) {
+            return $this->render('vesoul-edition/cart.html.twig', [
                 'total' => 0
             ]);
         }
 
-        foreach ($panier as $elem) {
-            $this->totalCost += $elem['price'] * $elem['quantity'];                
+        // calc total cost
+        foreach ($cart as $item) {
+            $this->totalCost += $item['price'] * $item['quantity'];
         }
 
-        return $this->render('vesoul-edition/panier.html.twig', [
+        // render cart infos
+        return $this->render('vesoul-edition/cart.html.twig', [
             'total' => $this->totalCost
         ]);
     }
@@ -464,7 +457,7 @@ class VesoulEditionController extends AbstractController
      */
     public function showCommande(Security $security, Request $request)
     {
-        $panier = $this->session->get('panier');
+        $cart = $this->session->get('cart');
         $user = $security->getUser();
         $addresses = $this->addressRepo->findBy(['user' => $user]);
 
@@ -478,7 +471,7 @@ class VesoulEditionController extends AbstractController
         }
 
         // if no cart ~> go back home
-        if( $panier === null ){
+        if( $cart === null ){
             return $this->redirectToRoute('home');
         }
 
@@ -493,7 +486,7 @@ class VesoulEditionController extends AbstractController
         return $this->render('vesoul-edition/commande.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
-            'panier' => $panier,
+            'cart' => $cart,
             'form' => $form->createView(),
         ]);
     }

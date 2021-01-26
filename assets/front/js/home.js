@@ -63,7 +63,7 @@ class book {
         this.image = '';
         this.title = '';
         this.author = {
-            'firstname' : '', 
+            'firstname' : '',
             'lastname' : ''
         };
         this.year = 0;
@@ -85,9 +85,9 @@ window.addEventListener('load', function(){
     // Ouverture des sections de filtrage
     filterButtons.forEach((elem)=>{
         elem.addEventListener('click', (e)=>{
-        
+
             e.preventDefault();
-    
+
             let activeButton = e.target.id;
             let button = '';
             let target = '';
@@ -106,7 +106,7 @@ window.addEventListener('load', function(){
                     target = author;
                     break;
             }
-            
+
             displayFilters(button, target);
         });
     });
@@ -115,9 +115,9 @@ window.addEventListener('load', function(){
       //Récupération des années
       applyYearFilter();
     }
-    
+
     booksCollection = document.querySelector('#book-collection');
-    
+
     if( booksCollection !== null ){
       if( booksCollection.childElementCount === 0 ){
         fetchBooks();
@@ -125,7 +125,7 @@ window.addEventListener('load', function(){
       }
     }
 
-    
+
 });
 
 if (itemList !== null){
@@ -148,7 +148,7 @@ if (itemList !== null){
     loader.classList.add("loader-on");
     fetchBooks();
     ticking = true;
-    
+
   });
 }
 
@@ -170,21 +170,21 @@ if( checkNews !== null ){
 }
 
 //=============================================
-//Sur clique des cases genres 
+//Sur clique des cases genres
 for( let item of checksFilter){
   item.addEventListener('change', (evt)=>{
-    
+
     const  elChecked = evt.currentTarget;
     let choiceId = elChecked.getAttribute('id');
     let  typeFilter = elChecked.dataset.type;
     const zoneBadge = document.querySelector('#badges');
 
     if( elChecked.checked ){
-      
-      filter[typeFilter].push(choiceId);
-      
 
-      //ajout du bagde      
+      filter[typeFilter].push(choiceId);
+
+
+      //ajout du bagde
       const newBadge = document.createElement('div');
       const listClass = ['badge-filter', 'px-2',  'd-flex', 'align-items-center', 'mr-1', 'mb-1'];
       const newBadgeTexte = document.createElement('p');
@@ -192,12 +192,12 @@ for( let item of checksFilter){
       const newBadgeClose = document.createElementNS('http://www.w3.org/2000/svg','svg');
       const listClassClose = ['svg-inline--fa', 'fa-times-circle', 'fa-w-16'];
       const newBadgeClosePath = document.createElementNS('http://www.w3.org/2000/svg','path');
-      
+
       newBadge.classList.add(...listClass);
       newBadge.setAttribute('data-value', choiceId );
       newBadge.addEventListener('click', evt => {
 
-        baliseHasClicked = evt.currentTarget;        
+        baliseHasClicked = evt.currentTarget;
         choiceId = baliseHasClicked.dataset.value;
         baliseHasClicked.remove();
         inputWantDesactivate = document.querySelector('#'+ choiceId );
@@ -205,7 +205,7 @@ for( let item of checksFilter){
         typeFilter = inputWantDesactivate.dataset.type
         removeAndUpdateFilter(choiceId, typeFilter);
       });
-      
+
       newBadgeTexte.classList.add(...listClassTexte);
       newBadgeTexte.innerText = choiceId;
       newBadge.appendChild(newBadgeTexte);
@@ -218,23 +218,23 @@ for( let item of checksFilter){
       newBadgeClose.setAttribute('viewBox', "0 0 512 512");
       newBadgeClose.setAttribute('data-fa-i2svg', "");
       newBadge.appendChild(newBadgeClose);
-      
-      
+
+
       newBadgeClosePath.setAttribute('fill', "currentColor");
       newBadgeClosePath.setAttribute('d', "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z");
-      newBadgeClose.appendChild(newBadgeClosePath);      
+      newBadgeClose.appendChild(newBadgeClosePath);
       zoneBadge.appendChild(newBadge);
 
     }else{
-      
+
       removeAndUpdateFilter(choiceId, typeFilter);
       badge = zoneBadge.querySelector('div[data-value="'+choiceId+'"]');
       badge.remove();
     }
-    
-    
-    
-    
+
+
+
+
   });
 }
 
@@ -259,7 +259,7 @@ if( btnApplyFilter !== null ){
     loader.classList.add("loader-on");
     fetchBooks();
     ticking = true;
-    
+
 
   });
 }
@@ -275,7 +275,7 @@ if( btnDesactivateFilter !== null ){
 
 
 btnSearch.addEventListener('click', (evt) =>{
-  
+
   inputSearch.classList.remove('is-invalid');
 
   //Si pas de saisie ou saisi
@@ -293,7 +293,7 @@ btnSearch.addEventListener('click', (evt) =>{
 });
 
 inputSearch.addEventListener('keypress', (evt) => {
-  
+
   //Récup des éléments du script
   element = evt.currentTarget;
   autocomplete = document.querySelector('.search-autocomplete');
@@ -313,10 +313,10 @@ inputSearch.addEventListener('keypress', (evt) => {
     return;
   }
 
-  
 
-  
-    
+
+
+
   //On récupère le contenu saisie
   searchValue = element.value;
 
@@ -324,9 +324,9 @@ inputSearch.addEventListener('keypress', (evt) => {
   fetch(`/home/search/ajax/${searchValue}`)
   .then( response => {
 
-    //Si pas de réponse 
+    //Si pas de réponse
     if(response.status === 204 ){
-      
+
       //on supprime la liste
       if( autocomplete !== null ){
         autocomplete.remove();
@@ -345,17 +345,17 @@ inputSearch.addEventListener('keypress', (evt) => {
 
     //on va vérifier si on n'est null
     if( data === null   ){
-      
+
       if( autocomplete !== null){
         autocomplete.remove();
       }
 
       return;
     }
-    
 
 
-    
+
+
     //on va créer créer la zone autocomplete
     if( document.querySelector('.search-autocomplete') === null ){
       formSearch = document.querySelector('.form-search');
@@ -374,12 +374,12 @@ inputSearch.addEventListener('keypress', (evt) => {
     }
 
     listPropositionExist = autocomplete.querySelectorAll('.search-autocomplete-proposition');
-    
+
     for( item of listPropositionExist){
       item.remove();
     }
 
-    for( item of data.books ){      
+    for( item of data.books ){
       newP = document.createElement('p');
       newP.innerText = item.title;
       newP.setAttribute('data-title' , item.title );
@@ -399,7 +399,7 @@ inputSearch.addEventListener('keypress', (evt) => {
     console.log(error);
   });
 
-  
+
 
 
 });
@@ -416,7 +416,7 @@ document.addEventListener('click', evt =>{
 
 function removeAndUpdateFilter(choiceId, typeFilter){
 
-  
+
   indexInArrayGenre = filter[typeFilter].findIndex( (element)=>  element == choiceId );
   filter[typeFilter].splice(indexInArrayGenre,1);
 
@@ -424,7 +424,7 @@ function removeAndUpdateFilter(choiceId, typeFilter){
 
 
 function resetFilter(){
-  
+
   //Si on n'est sur la page search alors
   //on redirige la personne sur la page d'acceuil
   areaDescribeSearch = document.querySelector('.search-result-phrase');
@@ -432,12 +432,12 @@ function resetFilter(){
     window.location.replace("/");
     return;
   }
-  
+
   //Désactiver new
   if( checkNews.checked == true ){
     checkNews.checked = false;
     filter.nouveaute = false;
-  } 
+  }
 
   //Désactiver les années
   initialValues = resetSlider();
@@ -463,8 +463,8 @@ function resetFilter(){
   //réinitialisation de la case de formulaire
   inputSearch.value = '';
   inputSearch.classList.remove('is-invalid');
-  
-  
+
+
 
   //on recharge la page
   orderBy = itemList.value;
@@ -495,14 +495,14 @@ function fetchNewOrder(url, target){
     .catch((err) => { if (err) throw err;})
 }
 
-//Fonction qui applique les filtres au livres 
+//Fonction qui applique les filtres au livres
 // function applyFilters(){
 
 // }
 
 //Fonction qui affiche les livres dans le DOM
 function displayBooks(target, content){
-    
+
     let strContent = content.join('');
     console.log(strContent);
     target.innerHTML = strContent;
@@ -530,7 +530,7 @@ function applyYearFilter(){
 
 
 
-  
+
   window.addEventListener('scroll', function (e) {
     pageHeight = document.querySelector('.wrapper').offsetHeight;
     footer = document.querySelector('footer').offsetHeight;
@@ -545,24 +545,24 @@ function applyYearFilter(){
       }
     }
   });
-  
-  function onScrollFetch() {    
+
+  function onScrollFetch() {
     if( page <= totalPages ){
       if(ticking === false){
         loader.classList.add("loader-on");
         fetchBooks();
-      } 
-    } 
+      }
+    }
   }
-  
+
   function fetchBooks() {
-    
+
     if(ticking === false){
 
       fetch(`/home/load?page=${page}&orderBy=${orderBy}&new=${filter.nouveaute}&genre=${[...filter.genre]}&author=${[...filter.author]}&yearmin=${filter.year.min}&yearmax=${filter.year.max}&title=${filter.title}`, {
           method: 'GET'
         })
-        .then(res => {      
+        .then(res => {
           const totalBooks = res.headers.get('X-TotalBooks');
           totalPages = res.headers.get('X-TotalPage');
           elTotalBooks = document.querySelector('#totalPage')
@@ -580,21 +580,21 @@ function applyYearFilter(){
             throw new Error('handled');
           }
           return res.text();
-          
+
         })
         .then(res => {
-  
+
           if (loader.classList.contains("loader-on")) {
             loader.classList.remove("loader-on");
-  
+
           }
-          
-          
+
+
           wrapperBooks.innerHTML+= res;
           ticking = false;
           page++;
-          
-          
+
+
         })
         .catch(err => {
           if (err) throw err;
@@ -603,13 +603,13 @@ function applyYearFilter(){
   }
 
   //Page panier
- 
-  if( btnQuantity.length > 0 ){
-    btnQuantity.forEach( (element) => {
-      element.addEventListener('click', async (e) => {  
-        
-        e.preventDefault();  
-        
+
+  if (btnQuantity.length > 0) {
+    btnQuantity.forEach((element) => {
+      element.addEventListener('click', async (e) => {
+
+        e.preventDefault();
+
         const elementHasClicked = e.currentTarget;
         const action = elementHasClicked.dataset.action;
         const idProduct = parseInt( elementHasClicked.dataset.id, 10 );
@@ -623,10 +623,10 @@ function applyYearFilter(){
 
         //Vérifier si l'objet est en stock
 
-        let response = await fetch(`/panier/ajax/${action}/${idProduct}`);
+        let response = await fetch(`/cart/ajax/${action}/${idProduct}`);
         let status = await response.status
-       
-        if( status === 406 ){          
+
+        if( status === 406 ){
           return;
         }
 
@@ -648,11 +648,11 @@ function applyYearFilter(){
 
         if( isNaN( idProduct )){
           return;
-        }        
+        }
 
         if( isNaN( price )){
           return;
-        }       
+        }
 
 
 
@@ -664,29 +664,29 @@ function applyYearFilter(){
           case 'reduce' :
             if( quantity > 1 ){
               quantity -= 1;
-            } 
+            }
             break;
 
-          default : 
+          default :
             return;
         }
-        
 
-        
-          
+
+
+
         elementQuantity.innerText = quantity;
         total = quantity * price;
         elementTotalProduct.innerText = new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR' }).format(total);
 
         //Mise à jour du panier
-        
+
         let totalPannier = 0;
 
         elementTotalArticles.forEach( (element ) => {
           totalPannier += parseFloat(element.innerText);
-        }); 
-        
-        elementsTotals.forEach( element => {          
+        });
+
+        elementsTotals.forEach( (element) => {
           element.innerText = new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR' }).format(totalPannier);
         });
 
@@ -710,9 +710,9 @@ function applyYearFilter(){
         let elementsTotals = null;
         const badge = document.querySelector('#nb-items');
 
-        
+
         //Suppression session panier
-        let response = await fetch(`/panier/ajax/delete/${idProduct}`);
+        let response = await fetch(`/cart/ajax/delete/${idProduct}`);
         let status = await response.status;
 
         if( status === 406){
@@ -730,21 +730,21 @@ function applyYearFilter(){
         rowArticle.remove();
 
         //Mise à jour du panier
-        
+
         let totalPannier = 0;
         elementTotalArticles = document.querySelectorAll('.article .total');
         elementsTotals = document.querySelectorAll('#subtotal, #totalpanier');
 
         elementTotalArticles.forEach( (element ) => {
           totalPannier += parseFloat(element.innerText);
-        }); 
-        
-        elementsTotals.forEach( element => {  
+        });
+
+        elementsTotals.forEach( element => {
           element.innerText = new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR' }).format(totalPannier);
         });
 
         badge.innerText = elementTotalArticles.length;
-        
+
       });
     });
   }
@@ -752,5 +752,4 @@ function applyYearFilter(){
 
 
 
-  
-    
+
