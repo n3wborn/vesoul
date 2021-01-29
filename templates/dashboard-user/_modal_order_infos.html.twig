@@ -1,0 +1,152 @@
+{# order modal infos #}
+
+<div class="modal fade" id="modal-order-{{ order.number }}" tabindex="-1"
+    role="dialog" aria-labelledby="cmd-title" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+
+    <div class="modal-head d-flex">
+
+        <div class="col-8 offset-2 d-flex justify-content-center align-items-center">
+            <h5 class="modal-title" id="cmd-title">Détail de votre commande</h5>
+        </div>
+
+        <div class="col-1 offset-1 pt-2">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    </div>
+
+
+    <div class="modal-body d-flex flex-column pl-5 pr-5 pb-5">
+        <div class="d-flex">
+
+            <div class="col-4 subsection-cmd">
+                <h3>Informations</h3>
+                <div class="d-flex justify-content-between">
+
+                    <div class="col-6 label">
+                        <p>Numéro</p>
+                        <p>Date</p>
+                        <p>Total</p>
+                    </div>
+
+                    <div class="col6 value">
+                        <p>{{ order.number }}</p>
+                        <p>{{ order.date | date('d/m/Y') }}</p>
+                        <p>{{ order.totalcost }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4 subsection-cmd">
+                <h3>Adresse de livraison</h3>
+                <div class="d-flex">
+                    <div class="col-2 d-flex align-items-center mb-2">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="col-10 mb-2">
+                        <p>{{ order.livraison.firstname|capitalize }}</p>
+                        <p>{{ order.livraison.lastname|capitalize }}</p>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="col-2 d-flex align-items-center">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="col-10">
+                        <p>
+                            {{ order.livraison.number }}  {{ order.livraison.type|default(null) }} {{ order.livraison.street }}
+                        </p>
+                        <p>{{ order.livraison.additional|default(null) }}</p>
+                        <p>{{ order.livraison.cp }} {{ order.livraison.city }}</p>
+                        <p>{{ order.livraison.country }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-4 subsection-cmd">
+                <h3>Adresse de facturation</h3>
+                <div class="d-flex">
+                    <div class="col-2 d-flex align-items-center mb-2">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="col-10 mb-2">
+                        <p>{{ order.facturation.firstname|capitalize }}</p>
+                        <p>{{ order.facturation.lastname|capitalize }}</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="col-2 d-flex align-items-center">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="col-10">
+                        <p>
+                            {{ order.facturation.number }}  {{ order.facturation.type|default(null) }} {{ order.facturation.street }}
+                        </p>
+                        <p>{{ order.facturation.additional|default(null) }}</p>
+                        <p>{{ order.facturation.cp }} {{ order.facturation.city }}</p>
+                        <p>{{ order.facturation.country }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-sm thead-dark m-0 mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">Articles commandés</th>
+                    <th scope="col">Prix unitaire</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in order.books %}
+                    <tr>
+                        <th scope="row">
+                            <span class="th-title">{{ book.title }}</span> -
+                            {{ book.author.firstname }} {{ book.author.lastname }}
+                        </th>
+
+                        <td>{{ book.price }}</td>
+                    </tr>
+                {% endfor %}
+
+                <tr class="last">
+                    <td></td>
+                    <td></td>
+                    <td>Sous total</td>
+                    <td>73,49 €</td>
+                </tr>
+                <tr class="last">
+                    <td></td>
+                    <td></td>
+                    <td>Livraison</td>
+                    <td>Gratuite</td>
+                </tr>
+                <tr class="last">
+                    <td></td>
+                    <td></td>
+                    <td>Total</td>
+                    <td>{{ order.totalcost }}</td>
+                </tr>
+            </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-between pl-5 pr-5 pb-5">
+        <button type="button" class="btn btn-info"><i class="fas fa-file-pdf mr-3"></i>Télécharger en PDF</button>
+        <button type="button" class="btn" data-dismiss="modal">FERMER</button>
+    </div>
+    </div>
+</div>
+</div>
