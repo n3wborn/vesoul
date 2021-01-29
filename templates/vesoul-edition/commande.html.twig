@@ -53,7 +53,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="m-0 py-2 d-flex align-items-center">
               <input type="checkbox" name="same-adress" value="yes">
               <p class="same-adress m-0 px-3">Utiliser la même adresse pour la facturation</p>
@@ -171,15 +171,19 @@
         <h2 class="mb-3">Récapitulatif</h2>
 
         <div class="items mt-3">
+
           {% set total = 0 %}
-          {% for item in panier %}
+
+          {% for item in cart %}
             <div class="item d-flex justify-content-between">
               <p class="w-50">{{ item.title }}</p>
               <p class="w-25 text-center">{{ item.quantity}}</p>
               <p class="price w-25 text-right">{{ (item.quantity * item.price)|number_format(2, ',') }} €</p>
             </div>
+
             {%  set total =  (item.quantity * item.price) %}
-          {% endfor %}          
+
+          {% endfor %}
         </div>
 
         <div class="ss-total py-2 mt-3 d-flex justify-content-between">
@@ -191,7 +195,7 @@
           <p class="w-75 m-0">Livraison</p>
           <p class="w-25 text-right m-0">Gratuite</p>
         </div>
-        
+
         <row class="total mt-3 py-2 d-flex justify-content-between">
           <p class="w-75 m-0">Total</p>
           <p class="w-25 text-right m-0">{{ total|number_format(2, ',') }} €</p>
