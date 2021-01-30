@@ -259,7 +259,6 @@ class VesoulEditionController extends AbstractController
         $cart = $this->session->get('cart');
 
         // add one more item if already in cart and still available
-        // else add 1
         if (!empty($cart[$id])) {
             $qtyInCart = $cart[$id]['quantity'];
 
@@ -267,14 +266,16 @@ class VesoulEditionController extends AbstractController
                 $cart[$id]['quantity']++;
             }
         } else {
+            // else, add one (and keep everything needed for cart and order)
             $cart[$id] = [
                 'id' => $id,
                 'title' => $book->getTitle(),
-                'firstname' => $book->getAuthor()->getFirstname(),
-                'lastname' => $book->getAuthor()->getLastname(),
-                'quantity' => 1,
+                'description' => $book->getDescription(),
                 'price' => $book->getPrice(),
-                'image' => $book->getImages()[0]->getUrl()
+                'authorFirstname' => $book->getAuthor()->getFirstname(),
+                'authorLastname' => $book->getAuthor()->getLastname(),
+                'image' => $book->getImages()[0]->getName(),
+                'quantity' => 1,
             ];
         }
 
@@ -300,23 +301,23 @@ class VesoulEditionController extends AbstractController
 
 
         // add one more item if already in cart and still available
-        // else add 1
         if (!empty($cart[$id])) {
             $qtyInCart = $cart[$id]['quantity'];
 
             if (($stock - $qtyInCart) >= 1 ) {
                 $cart[$id]['quantity']++;
             }
-
         } else {
+            // else, add one (and keep everything needed for cart and order)
             $cart[$id] = [
                 'id' => $id,
                 'title' => $book->getTitle(),
-                'firstname' => $book->getAuthor()->getFirstname(),
-                'lastname' => $book->getAuthor()->getLastname(),
-                'quantity' => 1,
+                'description' => $book->getDescription(),
                 'price' => $book->getPrice(),
-                'image' => $book->getImages()[0]->getUrl()
+                'authorFirstname' => $book->getAuthor()->getFirstname(),
+                'authorLastname' => $book->getAuthor()->getLastname(),
+                'image' => $book->getImages()[0]->getName(),
+                'quantity' => 1,
             ];
         }
 
@@ -447,7 +448,8 @@ class VesoulEditionController extends AbstractController
 
         // render cart infos
         return $this->render('vesoul-edition/cart.html.twig', [
-            'total' => $this->totalCost
+            'total' => $this->totalCost,
+            'cart' => $cart
         ]);
     }
 
