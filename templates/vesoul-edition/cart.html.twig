@@ -24,22 +24,26 @@
             </div>
 
 
-            {# ------ Cart Articles ------ #}
-            {% set filter = app.session.get('cart') %}
+            {# ------ Loop through each book ------ #}
+            {% for article in cart %}
 
-            {# ------ Loop through each book #}
-            {% for article in filter %}
                 <div class="row article m-0 my-2 p-0">
                     <div class="col-12  m-0 p-0 d-flex justify-content-between align-items-center">
 
                         <div class="d-flex livre">
                             <div class="d-flex align-items-center">
-                                <img src="{{ article.image }}"
-                                    alt="photo principale du livre"
-                                    width="150px" height="150px">
+
+                            {% if article.image %}
+                                <img src="{{ asset('static/book/uploads/') ~ article.image }}"
+                                    alt="cover" width="150px" height="150px">
+                            {% else %}
+                                <img src="https://picsum.photos/640/480"
+                                    alt="cover" width="150px" height="150px">
+                            {% endif %}
+
                                 <div class="p-2 d-flex flex-column">
                                     <h4 class="m-0">{{ article.title }}</h4>
-                                    <h5 class="m-0">{{ article.firstname }} {{ article.lastname }}</h5>
+                                    <h5 class="m-0">{{ article.authorFirstname }} {{ article.authorLastname }}</h5>
                                 </div>
                             </div>
                         </div>
