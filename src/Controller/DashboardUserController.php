@@ -252,6 +252,14 @@ class DashboardUserController extends AbstractController
 
 
     /**
+     * /panel-client/commandes is where a user can see every orders
+     * he has done before. He can check in which "state" they are, for
+     * example, if the last one he did has been send or not.
+     *
+     * A search icon, once clicked, shows details about an order and
+     * the modal displayed owns a "download order" that user can use
+     * to download the order in pdf.
+     *
      * @Route("/commandes", name="dashboard_user_commands")
      */
     public function showCommands(): Response

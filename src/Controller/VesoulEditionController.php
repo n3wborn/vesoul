@@ -455,6 +455,13 @@ class VesoulEditionController extends AbstractController
 
 
     /**
+     * /commande is where a user can order something. showCommande()
+     * will search for every products in cart and render  the form
+     * (CommandType) used to make an order.
+     *
+     * User will be able to choose where his books will be delivered
+     * and where to send the bill.
+     *
      * @Route("/commande", name="commande")
      */
     public function showCommande(Security $security, Request $request)
@@ -469,16 +476,25 @@ class VesoulEditionController extends AbstractController
         // if form is ok ~> go on
         if ($form->isSubmitted() && $form->isValid()) {
             // TODO: Handle "command ok" Logic
-            return $this->redirectToRoute('home');
+            //
+            // Here we must send two emails :
+            //  - one to the seller so that he knows "who" want to buy "what"
+            //  - one the the buyer, to confirm one more time and to tell him
+            //      how to deal with the seller.
+            //
+            // Here, we also have to tell to the backend he must update his
+            // stock.
+            //
+            return $this->redirectToRoute('showConfirmation');
         }
 
         // if no cart ~> go back home
-        if( $cart === null ){
+        if ($cart === null) {
             return $this->redirectToRoute('home');
         }
 
         // if user is unknown ~> propose connection
-        if( $user === null ){
+        if ($user === null) {
             $commande['confirmation'] = true;
             $this->session->set('commande', $commande);
             return $this->redirectToRoute('login');
@@ -495,7 +511,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/confirmation", name="commander")
+     * @Route("/confirmation", name="showConfirmation")
      */
     public function showConfirmation()
     {

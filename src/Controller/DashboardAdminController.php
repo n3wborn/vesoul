@@ -358,6 +358,10 @@ class DashboardAdminController extends AbstractController
 
 
     /**
+     * /admin/commandes will show the admin every orders his customers
+     * made before and which orders are in which state.
+     * For example: waiting for payement, sent,...
+     *
      * @Route("/commandes", name="dashboard_admin_commandes")
      */
     public function commands(): Response
@@ -563,7 +567,7 @@ class DashboardAdminController extends AbstractController
         $userLastname = $command->getUser()->getLastname();
         // dump($userFirstname, $userLastname);
 
-        // Adresse de facturation 
+        // Adresse de facturation
         $billNumber = $command->getFacturation()->getNumber();
         $billType = $command->getFacturation()->getType();
         $billStreet = $command->getFacturation()->getStreet();
@@ -574,7 +578,7 @@ class DashboardAdminController extends AbstractController
         $billFirstname = $command->getFacturation()->getFirstname();
         $billLastname = $command->getFacturation()->getLastname();
 
-        // Adresse de facturation 
+        // Adresse de facturation
         $shipNumber = $command->getLivraison()->getNumber();
         $shipType = $command->getLivraison()->getType();
         $shipStreet = $command->getLivraison()->getStreet();
