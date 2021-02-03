@@ -66,9 +66,15 @@ class Command
      */
     private $livraison;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderItems::class, mappedBy="OrderId")
+     */
+    private $orderItems;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +202,36 @@ class Command
     public function setLivraison(?Address $livraison): self
     {
         $this->livraison = $livraison;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderItems[]
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItems $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setOrderId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItems $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getOrderId() === $this) {
+                $orderItem->setOrderId(null);
+            }
+        }
 
         return $this;
     }

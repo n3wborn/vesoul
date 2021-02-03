@@ -88,11 +88,17 @@ class Book
      */
     private $new = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderItems::class, mappedBy="book")
+     */
+    private $orderItems;
+
     public function __construct()
     {
         $this->commands = new ArrayCollection();
         $this->genres = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -295,7 +301,7 @@ class Book
 
     /**
      * Get the value of new
-     */ 
+     */
     public function getNew()
     {
         return $this->new;
@@ -305,7 +311,7 @@ class Book
      * Set the value of new
      *
      * @return  self
-     */ 
+     */
     public function setNew($new)
     {
         $this->new = $new;
@@ -329,5 +335,35 @@ class Book
     public function getHeight()
     {
         return $this->height;
+    }
+
+    /**
+     * @return Collection|OrderItems[]
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItems $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItems $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getBook() === $this) {
+                $orderItem->setBook(null);
+            }
+        }
+
+        return $this;
     }
 }
