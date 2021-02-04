@@ -21,3 +21,9 @@ yarn-error.log
 .idea/
 ### images uploads ###
 public/static/book/uploads
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

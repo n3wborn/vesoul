@@ -49,6 +49,13 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "prepare-test": [
+          "cd /var/www/vesoul",
+          "php bin/console doctrine:database:drop --if-exists --force --env=test",
+          "php bin/console doctrine:database:create --env=test",
+          "php bin/console doctrine:schema:update --force --env=test",
+          "php bin/console doctrine:fixtures:load -n --env=test"
+        ],
         "prepare": [
           "cd /var/www/vesoul",
           "php bin/console doctrine:database:drop --if-exists --force",
@@ -77,10 +84,13 @@
         }
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.8",
         "doctrine/doctrine-fixtures-bundle": "^3.1",
+        "fzaninotto/faker": "^1.8",
+        "phpunit/php-code-coverage": "^9.2",
+        "symfony/browser-kit": "4.4.*",
         "symfony/debug-bundle": "^4.4",
         "symfony/maker-bundle": "^1.11",
+        "symfony/phpunit-bridge": "^5.2",
         "symfony/stopwatch": "^4.4",
         "symfony/var-dumper": "4.4.*",
         "symfony/web-profiler-bundle": "^4.4"
