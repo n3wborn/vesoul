@@ -18,6 +18,9 @@ class ProductTest extends WebTestCase
      */
     public function test()
     {
+        /** avoid deprecation notice */
+        static::ensureKernelShutdown();
+
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator  */

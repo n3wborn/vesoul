@@ -34,6 +34,9 @@ class StaticPagesTest extends WebTestCase
      */
     public function provideUri(): Generator
     {
+        /** avoid deprecation notice */
+        static::ensureKernelShutdown();
+
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator */
