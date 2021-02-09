@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class ProductTest extends WebTestCase
 {
     /**
-     * Test ifa random product details page lives
+     * Test if a random product details page lives
      *
      * @return Response
      */
