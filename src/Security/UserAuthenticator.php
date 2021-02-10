@@ -74,9 +74,10 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
+
         if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Utilisateur inexistant !');
+            // fail authentication xith custom (not precise) message
+            throw new CustomUserMessageAuthenticationException('Identifiants invalides.');
         }
 
         return $user;
