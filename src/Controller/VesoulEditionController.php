@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\Cart;
 use App\Form\CommandType;
 use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
@@ -397,7 +398,6 @@ class VesoulEditionController extends AbstractController
      */
     public function deleteItem(Book $book)
     {
-
         // get needed infos
         $id = $book->getId();
         $cart = $this->session->get('cart');
@@ -423,6 +423,33 @@ class VesoulEditionController extends AbstractController
             'images' => $book->getImages(),
             'book' => $book
         ]);
+    }
+
+
+    /**
+     * @Route("/cart/empty", name="cartEmpty")
+     */
+    public function emptyCart(Request $request): Response
+    {
+
+        // get cart infos
+        $cart = $this->session->get('cart');
+
+        // check if cart exist and empty it
+        if ($cart !== null) {
+
+            $this->session->set('cart', []);
+
+            // if ajax request, send ok, else show cart page
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'status' => 'OK',
+                ], 200);
+            }
+
+            // else go to cart page
+            return $this->redirectToRoute('cart');
+        }
     }
 
 
