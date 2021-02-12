@@ -250,7 +250,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/add/{id}", name="addItem")
+     * @Route("/panier/add/{id}", name="addItem")
      */
     public function addItem(Book $book)
     {
@@ -291,7 +291,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/ajax/add/{id}", name="ajaxAddItem")
+     * @Route("/panier/ajax/add/{id}", name="ajaxAddItem")
      */
     public function ajaxAddItem(Book $book)
     {
@@ -331,7 +331,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/ajax/reduce/{id}", name="ajaxReduceItem")
+     * @Route("/panier/ajax/reduce/{id}", name="ajaxReduceItem")
      */
     public function reduceAjaxItem(Book $book)
     {
@@ -352,7 +352,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/reduce/{id}", name="reduceItem")
+     * @Route("/panier/reduce/{id}", name="reduceItem")
      */
     public function reduceItem(Book $book)
     {
@@ -374,7 +374,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/ajax/delete/{id}", name="ajaxDeleteItem")
+     * @Route("/panier/ajax/delete/{id}", name="ajaxDeleteItem")
      */
     public function ajaxDeleteItem(Book $book)
     {
@@ -394,7 +394,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/delete/{id}", name="deleteItem")
+     * @Route("/panier/delete/{id}", name="deleteItem")
      */
     public function deleteItem(Book $book)
     {
@@ -427,7 +427,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart/empty", name="cartEmpty")
+     * @Route("/panier/empty", name="cartEmpty")
      */
     public function emptyCart(Request $request): Response
     {
@@ -454,7 +454,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/cart", name="cart")
+     * @Route("/panier", name="cart")
      */
     public function showCart()
     {

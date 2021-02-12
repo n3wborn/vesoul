@@ -623,7 +623,7 @@ function applyYearFilter(){
 
         //Vérifier si l'objet est en stock
 
-        let response = await fetch(`/cart/ajax/${action}/${idProduct}`);
+        let response = await fetch(`/panier/ajax/${action}/${idProduct}`);
         let status = await response.status
 
         if( status === 406 ){
@@ -712,7 +712,7 @@ function applyYearFilter(){
 
 
         //Suppression session panier
-        let response = await fetch(`/cart/ajax/delete/${idProduct}`);
+        let response = await fetch(`/panier/ajax/delete/${idProduct}`);
         let status = await response.status;
 
         if( status === 406){
