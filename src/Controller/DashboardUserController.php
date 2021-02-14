@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,7 +10,7 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AddressRepository;
-use App\Repository\CommandRepository;
+use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Form\EditAddressesType;
 use App\Form\AddAddressesType;
@@ -31,7 +31,7 @@ class DashboardUserController extends AbstractController
     private UserPasswordEncoderInterface $encoder;
     private AddressRepository $addressRepo;
     private UserRepository $userRepo;
-    private CommandRepository $commandRepo;
+    private OrderRepository $orderRepo;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -39,7 +39,7 @@ class DashboardUserController extends AbstractController
         UserPasswordEncoderInterface $encoder,
         AddressRepository $addressRepo,
         UserRepository $userRepo,
-        CommandRepository $commandRepo
+        OrderRepository $orderRepo
     )
     {
         $this->em = $em;
@@ -47,7 +47,7 @@ class DashboardUserController extends AbstractController
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
         $this->userRepo = $userRepo;
-        $this->commandRepo = $commandRepo;
+        $this->orderRepo = $orderRepo;
     }
 
 
@@ -267,7 +267,7 @@ class DashboardUserController extends AbstractController
         $user = $this->getUser();
         $addresses = $this->addressRepo->findBy(['user' => $user]);
         $cart = $this->session->get('cart');
-        $orders = $this->commandRepo->findBy(['user' => $user]);
+        $orders = $this->orderRepo->findBy(['user' => $user]);
 
         return $this->render('dashboard-user/compte-commandes.html.twig', [
             'user' => $user,

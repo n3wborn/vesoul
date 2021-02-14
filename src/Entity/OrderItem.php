@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
@@ -18,20 +19,23 @@ class OrderItem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="orderItems")
+     * @ORM\ManyToOne(targetEntity=Book::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $book;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\GreaterThanOrEqual(1)
      */
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Command::class, inversedBy="orderItems")
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="items")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $OrderId;
+    private $orderRef;
 
     public function getId(): ?int
     {
@@ -62,15 +66,37 @@ class OrderItem
         return $this;
     }
 
-    public function getOrderId(): ?Command
+    public function getOrderRef(): ?Order
     {
-        return $this->OrderId;
+        return $this->orderRef;
     }
 
-    public function setOrderId(?Command $OrderId): self
+    public function setOrderRef(?Order $orderRef): self
     {
-        $this->OrderId = $OrderId;
+        $this->orderRef = $orderRef;
 
         return $this;
     }
+
+    /**
+     * Tests if the given item given corresponds to the same order item.
+     *
+     * @param OrderItem $item
+     * @return bool
+     */
+    public function equals(OrderItem $item): bool
+    {
+        return $this->getBook()->getId() === $item->getBook()->getId();
+    }
+
+    /**
+     * Calculates the item total.
+     *
+     * @return float|int
+     */
+    public function getTotal(): float
+    {
+        return $this->getBook()->getPrice() * $this->getQuantity();
+    }
 }
+

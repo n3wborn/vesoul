@@ -8,7 +8,7 @@ use App\Entity\Genre;
 use App\Form\BookType;
 use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
-use App\Repository\CommandRepository;
+use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Entity\Image;
 use App\Repository\ImageRepository;
 
@@ -34,22 +34,21 @@ class DashboardAdminController extends AbstractController
     private EntityManagerInterface $manager;
     private BookRepository $repoBook;
     private ImageRepository $imageRepo;
-    private AuthorRepository $authorRepo;
-    private CommandRepository $commandRepo;
+    private OrderRepository $commandRepo;
 
     public function __construct(
         EntityManagerInterface $manager,
         BookRepository $repoBook,
         ImageRepository $imageRepo,
         AuthorRepository $authorRepo,
-        CommandRepository $commandRepo
+        OrderRepository $orderRepo
     )
     {
         $this->manager = $manager;
         $this->repoBook = $repoBook;
         $this->imageRepo = $imageRepo;
         $this->authorRepo = $authorRepo;
-        $this->commandRepo = $commandRepo;
+        $this->orderRepo = $orderRepo;
     }
 
 
@@ -366,7 +365,7 @@ class DashboardAdminController extends AbstractController
      */
     public function commands(): Response
     {
-        $allCommands = $this->commandRepo->findAll();
+        $allCommands = $this->orderRepo->findAll();
         $enCours = 0;
         $expedie = 0;
         $total = 0;
@@ -395,84 +394,21 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/commandes/imprimer/{id}", name="dashboard_admin_commandes_imprime")
-     * @param Command $command
-     * @param CommandRepository $repo
-     * @return RedirectResponse
+     * @param Order $order
+     * @param OrderRepository $repo
      */
-    public function printBill(Command $command, CommandRepository $repo)
+    public function printBill(Order $order)
     {
-
-        // Information de la commande
-        $commandNumero = $command->getId();
-        $commandDate = $command->getDate();
-
-        // Titre et prix des livres
-        $book = [];
-        $books = [];
-        $prixTotal = 0;
-
-        foreach ($command->getBooks() as $value) {
-            array_push($book, $value->getIsbn());
-            array_push($book, $value->getTitle());
-            array_push($book, $value->getPrice());
-            $prixTotal = $prixTotal + $value->getPrice();
-            array_push($books, $book);
-            $book = [];
-        }
-
-        // Adresse de facturation
-        $billNumber = $command->getFacturation()->getNumber();
-        $billType = $command->getFacturation()->getType();
-        $billStreet = $command->getFacturation()->getStreet();
-        $billCity = $command->getFacturation()->getCity();
-        $billCp = $command->getFacturation()->getCp();
-        $billCountry = $command->getFacturation()->getCountry();
-        $billAdditional = $command->getFacturation()->getAdditional();
-        $billFirstname = $command->getFacturation()->getFirstname();
-        $billLastname = $command->getFacturation()->getLastname();
-
-        // Adresse de facturation
-        $shipNumber = $command->getLivraison()->getNumber();
-        $shipType = $command->getLivraison()->getType();
-        $shipStreet = $command->getLivraison()->getStreet();
-        $shipCity = $command->getLivraison()->getCity();
-        $shipCp = $command->getLivraison()->getCp();
-        $shipCountry = $command->getLivraison()->getCountry();
-        $shipAdditional = $command->getLivraison()->getAdditional();
-        $shipFirstname = $command->getLivraison()->getFirstname();
-        $shipLastname = $command->getLivraison()->getLastname();
-
-        // Configure Dompdf according to your needs
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
+        $orderRef = $order->getOrderRef();
 
         // Instantiate Dompdf with our options
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bill/facture.html.twig', [
-            'commandNumero' => $commandNumero,
-            'commandDate' => $commandDate,
-            'livres' => $books,
-            'prixTotal' => $prixTotal,
-            'afPrenom' => $billFirstname,
-            'afNom' => $billLastname,
-            'afNumero' => $billNumber,
-            'afType' => $billType,
-            'afRue' => $billStreet,
-            'afComplement' => $billAdditional,
-            'afVille' => $billCity,
-            'afCp' => $billCp,
-            'afPays' => $billCountry,
-            'alPrenom' => $shipFirstname,
-            'alNom' => $shipLastname,
-            'alNumero' => $shipNumber,
-            'alType' => $shipType,
-            'alRue' => $shipStreet,
-            'alComplement' => $shipAdditional,
-            'alVille' => $shipCity,
-            'alCp' => $shipCp,
-            'alPays' => $shipCountry,
+            'commandNumero' => $orderRef,
         ]);
 
         // Load HTML to Dompdf
@@ -485,7 +421,7 @@ class DashboardAdminController extends AbstractController
         $dompdf->render();
 
         // Output the generated PDF to Browser (force download)
-        $dompdf->stream("Facture " . $commandNumero . "-IT.pdf", [
+        $dompdf->stream("Facture " . $orderRef. "-IT.pdf", [
             "Attachment" => true
         ]);
 
@@ -544,74 +480,26 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/bill/{id}", name="test_facture")
-     * @param Command $command
+     * @param Order $order
      * @return Response
      */
-    public function testFacture(Command $command)
+    public function testFacture(Order $order)
     {
 
-        // dump($command);
-        $commandNumero = $command->getId();
-        $commandDate = $command->getDate();
+        // dump($order);
+        $reference = $order->getOrderRef();
+        $date = $order->getDate();
 
         // Titre et prix des livres
-        foreach ($command->getBooks() as $value) {
-            $bookTitle = $value->getTitle();
-            $bookPrice = $value->getPrice();
-            // dump($bookTitle);
-            // dump($bookPrice);
+        foreach ($order->getItems() as $item) {
+            $title = $item->getTitle();
+            $price = $item->getPrice();
+            $quantity = $item->getQuantity();
         }
 
-        // Prénom et nom de l'utilisateur passant la commande
-        $userFirstname = $command->getUser()->getFirstname();
-        $userLastname = $command->getUser()->getLastname();
-        // dump($userFirstname, $userLastname);
-
-        // Adresse de facturation
-        $billNumber = $command->getFacturation()->getNumber();
-        $billType = $command->getFacturation()->getType();
-        $billStreet = $command->getFacturation()->getStreet();
-        $billCity = $command->getFacturation()->getCity();
-        $billCp = $command->getFacturation()->getCp();
-        $billCountry = $command->getFacturation()->getCountry();
-        $billAdditional = $command->getFacturation()->getAdditional();
-        $billFirstname = $command->getFacturation()->getFirstname();
-        $billLastname = $command->getFacturation()->getLastname();
-
-        // Adresse de facturation
-        $shipNumber = $command->getLivraison()->getNumber();
-        $shipType = $command->getLivraison()->getType();
-        $shipStreet = $command->getLivraison()->getStreet();
-        $shipCity = $command->getLivraison()->getCity();
-        $shipCp = $command->getLivraison()->getCp();
-        $shipCountry = $command->getLivraison()->getCountry();
-        $shipAdditional = $command->getLivraison()->getAdditional();
-        $shipFirstname = $command->getLivraison()->getFirstname();
-        $shipLastname = $command->getLivraison()->getLastname();
 
         return $this->render('bill/facture.html.twig', [
-            'commandNumero' => $commandNumero,
-            'commandDate' => $commandDate,
-            'livreTitre' => $bookTitle,
-            'livrePrix' => $bookPrice,
-            'afNumero' => $billNumber,
-            'afType' => $billType,
-            'afRue' => $billStreet,
-            'afVille' => $billCity,
-            'afCp' => $billCp,
-            'afPays' => $billCountry,
-            'afComplement' => $billAdditional,
-            'afPrenom' => $billFirstname,
-            'afNom' => $billLastname,
-            'alNumero' => $shipNumber,
-            'alType' => $shipType,
-            'alRue' => $shipStreet,
-            'alVille' => $shipCity,
-            'alCp' => $shipCp,
-            'alPays' => $shipCountry,
-            'alComplement' => $shipAdditional,
-            'alPrenom' => $shipFirstname,
-            'alNom' => $shipLastname,
+            'reference' => $reference,
         ]);
     }
 }

@@ -26,12 +26,12 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="integer", options={"default":null})
      */
     private $gender;
-    
+
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -59,15 +59,15 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Command", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="user")
      */
-    private $commands;
+    private $orders;
 
     /**
      * @ORM\Column(type="simple_array")
      */
     private $roles = [];
-    
+
     /**
      * @ORM\Column(type="string", length=30)
      */
@@ -83,10 +83,10 @@ class User implements UserInterface
      */
     private $addresses;
 
-    
+
     public function __construct()
     {
-        $this->commands = new ArrayCollection();
+        $this->orders = new ArrayCollection();
         $this->addresses = new ArrayCollection();
     }
 
@@ -102,12 +102,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getGender(): ?int 
+    public function getGender(): ?int
     {
         return $this->gender;
     }
 
-    public function setGender(string $gender): self 
+    public function setGender(string $gender): self
     {
         $this->gender = $gender;
 
@@ -145,34 +145,11 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Command[]
+     * @return Collection|Order[]
      */
-    public function getCommands(): Collection
+    public function getOrders(): Collection
     {
-        return $this->commands;
-    }
-
-    public function addCommand(Command $command): self
-    {
-        if (!$this->commands->contains($command)) {
-            $this->commands[] = $command;
-            $command->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommand(Command $command): self
-    {
-        if ($this->commands->contains($command)) {
-            $this->commands->removeElement($command);
-            // set the owning side to null (unless already changed)
-            if ($command->getUser() === $this) {
-                $command->setUser(null);
-            }
-        }
-
-        return $this;
+        return $this->orders;
     }
 
 
@@ -217,7 +194,7 @@ class User implements UserInterface
     }
 
     public function eraseCredentials() {
-        
+
     }
 
     public function getBirth(): ?DateTimeInterface

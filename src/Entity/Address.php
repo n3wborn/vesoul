@@ -69,14 +69,15 @@ class Address
     private $lastname;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Command", mappedBy="facturation")
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="facturation", orphanRemoval=true, cascade={"persist"})
      */
-    private $command_facturation;
+    private $order_facturation;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Command", mappedBy="livraison")
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="livraison", orphanRemoval=true, cascade={"persist"})
+
      */
-    private $command_livraison;
+    private $order_livraison;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addresses")
@@ -85,8 +86,8 @@ class Address
 
     public function __construct()
     {
-        $this->command_facturation = new ArrayCollection();
-        $this->command_livraison = new ArrayCollection();
+        $this->order_facturation = new ArrayCollection();
+        $this->order_livraison = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,30 +216,30 @@ class Address
     }
 
     /**
-     * @return Collection|Command[]
+     * @return Collection|Order[]
      */
-    public function getCommandFacturation(): Collection
+    public function getOrderFacturation(): Collection
     {
-        return $this->command_facturation;
+        return $this->order_facturation;
     }
 
-    public function addCommandFacturation(Command $commandFacturation): self
+    public function addOrderFacturation(Order $orderFacturation): self
     {
-        if (!$this->command_facturation->contains($commandFacturation)) {
-            $this->command_facturation[] = $commandFacturation;
-            $commandFacturation->setFacturation($this);
+        if (!$this->order_facturation->contains($orderFacturation)) {
+            $this->order_facturation[] = $orderFacturation;
+            $orderFacturation->setFacturation($this);
         }
 
         return $this;
     }
 
-    public function removeCommandFacturation(Command $commandFacturation): self
+    public function removeOrderFacturation(Order $orderFacturation): self
     {
-        if ($this->command_facturation->contains($commandFacturation)) {
-            $this->command_facturation->removeElement($commandFacturation);
+        if ($this->order_facturation->contains($orderFacturation)) {
+            $this->order_facturation->removeElement($orderFacturation);
             // set the owning side to null (unless already changed)
-            if ($commandFacturation->getFacturation() === $this) {
-                $commandFacturation->setFacturation(null);
+            if ($orderFacturation->getFacturation() === $this) {
+                $orderFacturation->setFacturation(null);
             }
         }
 
@@ -246,30 +247,30 @@ class Address
     }
 
     /**
-     * @return Collection|Command[]
+     * @return Collection|Order[]
      */
-    public function getCommandLivraison(): Collection
+    public function getOrderLivraison(): Collection
     {
-        return $this->command_livraison;
+        return $this->order_livraison;
     }
 
-    public function addCommandLivraison(Command $commandLivraison): self
+    public function addOrderLivraison(Order $orderLivraison): self
     {
-        if (!$this->command_livraison->contains($commandLivraison)) {
-            $this->command_livraison[] = $commandLivraison;
-            $commandLivraison->setLivraison($this);
+        if (!$this->order_livraison->contains($orderLivraison)) {
+            $this->order_livraison[] = $orderLivraison;
+            $orderLivraison->setLivraison($this);
         }
 
         return $this;
     }
 
-    public function removeCommandLivraison(Command $commandLivraison): self
+    public function removeOrderLivraison(Order $orderLivraison): self
     {
-        if ($this->command_livraison->contains($commandLivraison)) {
-            $this->command_livraison->removeElement($commandLivraison);
+        if ($this->order_livraison->contains($orderLivraison)) {
+            $this->order_livraison->removeElement($orderLivraison);
             // set the owning side to null (unless already changed)
-            if ($commandLivraison->getLivraison() === $this) {
-                $commandLivraison->setLivraison(null);
+            if ($orderLivraison->getLivraison() === $this) {
+                $orderLivraison->setLivraison(null);
             }
         }
 

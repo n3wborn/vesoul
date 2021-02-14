@@ -44,11 +44,6 @@ class Book
     private $title;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Command", mappedBy="books")
-     */
-    private $commands;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Genre", inversedBy="books")
      */
     private $genres;
@@ -88,17 +83,11 @@ class Book
      */
     private $new = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="book")
-     */
-    private $orderItems;
 
     public function __construct()
     {
-        $this->commands = new ArrayCollection();
         $this->genres = new ArrayCollection();
         $this->images = new ArrayCollection();
-        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,34 +151,6 @@ class Book
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Command[]
-     */
-    public function getCommands(): Collection
-    {
-        return $this->commands;
-    }
-
-    public function addCommand(Command $command): self
-    {
-        if (!$this->commands->contains($command)) {
-            $this->commands[] = $command;
-            $command->addBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommand(Command $command): self
-    {
-        if ($this->commands->contains($command)) {
-            $this->commands->removeElement($command);
-            $command->removeBook($this);
-        }
 
         return $this;
     }
@@ -337,33 +298,4 @@ class Book
         return $this->height;
     }
 
-    /**
-     * @return Collection|OrderItem[]
-     */
-    public function getOrderItem(): Collection
-    {
-        return $this->orderItems;
-    }
-
-    public function addOrderItem(OrderItem $orderItem): self
-    {
-        if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems[] = $orderItem;
-            $orderItem->setBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderItem(OrderItem $orderItem): self
-    {
-        if ($this->orderItems->removeElement($orderItem)) {
-            // set the owning side to null (unless already changed)
-            if ($orderItem->getBook() === $this) {
-                $orderItem->setBook(null);
-            }
-        }
-
-        return $this;
-    }
 }
