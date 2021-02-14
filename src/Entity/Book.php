@@ -89,7 +89,7 @@ class Book
     private $new = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderItems::class, mappedBy="book")
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="book")
      */
     private $orderItems;
 
@@ -338,14 +338,14 @@ class Book
     }
 
     /**
-     * @return Collection|OrderItems[]
+     * @return Collection|OrderItem[]
      */
-    public function getOrderItems(): Collection
+    public function getOrderItem(): Collection
     {
         return $this->orderItems;
     }
 
-    public function addOrderItem(OrderItems $orderItem): self
+    public function addOrderItem(OrderItem $orderItem): self
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems[] = $orderItem;
@@ -355,7 +355,7 @@ class Book
         return $this;
     }
 
-    public function removeOrderItem(OrderItems $orderItem): self
+    public function removeOrderItem(OrderItem $orderItem): self
     {
         if ($this->orderItems->removeElement($orderItem)) {
             // set the owning side to null (unless already changed)
