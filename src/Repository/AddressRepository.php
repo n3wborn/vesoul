@@ -45,12 +45,10 @@ class AddressRepository extends ServiceEntityRepository
             ';
         $stmt = $conn->prepare($sql);
         $stmt->execute(['value' => $value]);
-    
         // returns an array of arrays (i.e. a raw data set)
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 
-        
     /*
     public function findOneBySomeField($value): ?Address
     {
@@ -62,5 +60,4 @@ class AddressRepository extends ServiceEntityRepository
         ;
     }
     */
-    
 }

@@ -67,28 +67,27 @@ class Address
      * @ORM\Column(type="string", length=100)
      */
     private $lastname;
-
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="facturation", orphanRemoval=true, cascade={"persist"})
-     */
-    private $order_facturation;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="livraison", orphanRemoval=true, cascade={"persist"})
-
-     */
-    private $order_livraison;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addresses")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="addresses")
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="deliveryAddress")
+     */
+    private $order_deliveryAddress;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="billAddress")
+     */
+    private $order_billAddress;
+
     public function __construct()
     {
-        $this->order_facturation = new ArrayCollection();
-        $this->order_livraison = new ArrayCollection();
+        $this->order_deliveryAddress = new ArrayCollection();
+        $this->order_billAddress = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -214,69 +213,6 @@ class Address
 
         return $this;
     }
-
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrderFacturation(): Collection
-    {
-        return $this->order_facturation;
-    }
-
-    public function addOrderFacturation(Order $orderFacturation): self
-    {
-        if (!$this->order_facturation->contains($orderFacturation)) {
-            $this->order_facturation[] = $orderFacturation;
-            $orderFacturation->setFacturation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderFacturation(Order $orderFacturation): self
-    {
-        if ($this->order_facturation->contains($orderFacturation)) {
-            $this->order_facturation->removeElement($orderFacturation);
-            // set the owning side to null (unless already changed)
-            if ($orderFacturation->getFacturation() === $this) {
-                $orderFacturation->setFacturation(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrderLivraison(): Collection
-    {
-        return $this->order_livraison;
-    }
-
-    public function addOrderLivraison(Order $orderLivraison): self
-    {
-        if (!$this->order_livraison->contains($orderLivraison)) {
-            $this->order_livraison[] = $orderLivraison;
-            $orderLivraison->setLivraison($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderLivraison(Order $orderLivraison): self
-    {
-        if ($this->order_livraison->contains($orderLivraison)) {
-            $this->order_livraison->removeElement($orderLivraison);
-            // set the owning side to null (unless already changed)
-            if ($orderLivraison->getLivraison() === $this) {
-                $orderLivraison->setLivraison(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -285,6 +221,66 @@ class Address
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrderDeliveryAddress(): Collection
+    {
+        return $this->order_deliveryAddress;
+    }
+
+    public function addOrderDeliveryAddress(Order $orderDeliveryAddress): self
+    {
+        if (!$this->order_deliveryAddress->contains($orderDeliveryAddress)) {
+            $this->order_deliveryAddress[] = $orderDeliveryAddress;
+            $orderDeliveryAddress->setDeliveryAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDeliveryAddress(Order $orderDeliveryAddress): self
+    {
+        if ($this->order_deliveryAddress->removeElement($orderDeliveryAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDeliveryAddress->getDeliveryAddress() === $this) {
+                $orderDeliveryAddress->setDeliveryAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrderBillAddress(): Collection
+    {
+        return $this->order_billAddress;
+    }
+
+    public function addOrderBillAddress(Order $orderBillAddress): self
+    {
+        if (!$this->order_billAddress->contains($orderBillAddress)) {
+            $this->order_billAddress[] = $orderBillAddress;
+            $orderBillAddress->setBillAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderBillAddress(Order $orderBillAddress): self
+    {
+        if ($this->order_billAddress->removeElement($orderBillAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($orderBillAddress->getBillAddress() === $this) {
+                $orderBillAddress->setBillAddress(null);
+            }
+        }
 
         return $this;
     }

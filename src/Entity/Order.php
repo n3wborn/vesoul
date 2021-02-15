@@ -6,8 +6,6 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\User;
-use App\Entity\Address;
 
 
 /**
@@ -24,7 +22,7 @@ class Order
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="orderRef", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="orderRef", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $items;
 
@@ -51,21 +49,21 @@ class Order
     const STATUS_CART = 'cart';
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
      */
     private User $user;
 
     /**
-     * @ROM\OneToMany(targetEntity="Address", inversedBy="order_facturation", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_deliveryAddress")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Address $facturation;
+    private $deliveryAddress;
 
     /**
-     * @ROM\OneToMany(targetEntity="Address", inversedBy="order_livraison")
+     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_billAddress")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private Address $livraison;
-
+    private $billAddress;
 
 
 
@@ -199,37 +197,29 @@ class Order
         $this->user = $user;
     }
 
-
-    /**
-     * @param Address $facturation
-     */
-    public function setFacturation(Address $facturation)
+    public function getDeliveryAddress(): ?Address
     {
-        $this->facturation = $facturation;
+        return $this->deliveryAddress;
     }
 
-    /**
-     * @param Address $facturation
-     */
-    public function getFacturation()
+    public function setDeliveryAddress(?Address $deliveryAddress): self
     {
-        return $this->facturation;
+        $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
     }
 
-    /**
-     * @param Address $livraison
-     */
-    public function setLivraison(Address $livraison)
+    public function getBillAddress(): ?Address
     {
-        $this->livraison = $livraison ;
+        return $this->billAddress;
     }
 
-    /**
-     * @param Address $livraison
-     */
-    public function getLivraison()
+    public function setBillAddress(?Address $billAddress): self
     {
-        return $this->livraison;
+        $this->billAddress = $billAddress;
+
+        return $this;
     }
+
 }
 
