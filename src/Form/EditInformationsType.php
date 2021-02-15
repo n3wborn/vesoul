@@ -18,23 +18,11 @@ class EditInformationsType extends AbstractType
             ->add('username')
             ->add('tel')
             ->add('confirm_password', PasswordType::class)
-            // ->add('confirm_password', null, array(
-            // 'mapped' => false,
-            // 'required'      => true,
-            // 'multiple' => true,
-            // 'class'         => 'UserBundle:User',
-            // 'query_builder' => function(EntityRepository $er) {
-                    // return $er->createQueryBuilder('u')
-                        // ->where('u.type = 3');
-                // }
-            // ))
-            ;
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults(['data_class' => User::class]);
     }
 }

@@ -31,13 +31,11 @@ class AuthorType extends AbstractType
                     'class' => 'form-control',
                 ]
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Author::class,
-        ]);
+        $resolver->setDefaults(['data_class' => Author::class]);
     }
 }

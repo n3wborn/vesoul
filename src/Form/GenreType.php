@@ -22,13 +22,11 @@ class GenreType extends AbstractType
                     'class' => 'form-control',
                 ]
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Genre::class,
-        ]);
+        $resolver->setDefaults(['data_class' => Genre::class]);
     }
 }

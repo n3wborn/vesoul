@@ -84,13 +84,11 @@ class EditAddressesType extends AbstractType
                     'placeholder' => 'Informations supplémentaires'
                 ]
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Address::class,
-        ]);
+        $resolver->setDefaults(['data_class' => Address::class]);
     }
 }

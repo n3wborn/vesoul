@@ -34,13 +34,11 @@ class RegisterType extends AbstractType
                 'format' => 'dd-mm-yyyy',
 
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults(['data_class' => User::class]);
     }
 }

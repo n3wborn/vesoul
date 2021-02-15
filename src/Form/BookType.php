@@ -9,8 +9,6 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -51,7 +49,7 @@ class BookType extends AbstractType
                 },
                 'query_builder' => function(EntityRepository $author) {
                     return $author->createQueryBuilder('a')
-                        ->orderBy('a.firstname','ASC');
+                                  ->orderBy('a.firstname','ASC');
                 },
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -71,7 +69,7 @@ class BookType extends AbstractType
                 },
                 'query_builder' => function(EntityRepository $genre) {
                     return $genre->createQueryBuilder('g')
-                        ->orderBy('g.name','ASC');
+                                 ->orderBy('g.name','ASC');
                 },
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -198,18 +196,6 @@ class BookType extends AbstractType
                     ])
                 ],
             ])
-
-            // ->add('commands', ChoiceType::class, [
-            //     'choices' => [],
-            //     'label' => 'Commandes',
-            //     'label_attr' => [
-            //         'class' => 'font-weight-bold py-1 m-0 col-4'
-            //     ],
-            //     'attr' => [
-            //         'class' => 'mt-1 mb-3 col-7'
-            //     ]
-            // ])
-
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
@@ -220,12 +206,6 @@ class BookType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Book::class,
-        ]);
+        $resolver->setDefaults(['data_class' => Book::class]);
     }
-
-    //     private function getChoices(){
-    //         $choices =
-    //     }
 }
