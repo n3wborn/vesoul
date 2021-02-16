@@ -15,11 +15,6 @@ class CartManager
     private $entityManager;
 
 
-    /**
-     * @param CartSessionStorage $cartStorage
-     * @param OrderFactory $orderFactory
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
         CartSessionStorage $cartStorage,
         OrderFactory $orderFactory,
@@ -31,11 +26,6 @@ class CartManager
     }
 
 
-    /**
-     * Gets the current cart.
-     *
-     * @return Order
-     */
     public function getCurrentCart(): Order
     {
         $cart = $this->cartSessionStorage->getCart();
@@ -48,11 +38,6 @@ class CartManager
     }
 
 
-    /**
-     * Persists the cart in database and session.
-     *
-     * @param Order $cart
-     */
     public function save(Order $cart): void
     {
         // Persist in database
