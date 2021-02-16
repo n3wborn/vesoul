@@ -5,31 +5,39 @@
     <div class="book-card">
         <div class="photo">
 
-            {% if book.images[0].name|length  %}
-                <img class="book-pic" src="{{book.images[0].name}}"
-                     alt="image du livre">
+            {# image name is returned as "name" by bookRepo request #}
+            {% if book.name|length %}
+                <img class="book-pic"
+                src="{{ asset('static/book/uploads/') ~ book.name }}"
+                alt="image du livre">
             {% else %}
-                <img class="book-pic" src="{{asset('images/cover.png')}}"
-                     alt="image du livre">
+                <img class="book-pic" src="{{ asset('images/cover.png') }}"
+                                      alt="image du livre">
             {% endif %}
 
-            <div class="overlay d-flex justify-content-center  align-items-center">
-                <a href="product/{{book.id}}"><button class="btn btn-info p-2">Details</button></a>
+            <div class="overlay d-flex justify-content-center align-items-center">
+                <a href="{{ path('product', {'id': book.id}) }}">
+                    <button class="btn btn-info p-2">Details</button>
+                </a>
             </div>
         </div>
         <div class="info p-2 d-flex flex-column justify-content-between">
             <h3 class="m-0">{{book.title}}</h3>
             <div class="d-flex justify-content-between w-100">
-                <p class="m-0">{{book.firstname}} {{book.lastname}}</p>
-                <p class="m-0">{{book.year}}</p>
+                <p class="m-0">{{ book.firstname }} {{ book.lastname }}</p>
+                <p class="m-0">{{ book.year }}</p>
             </div>
             <div class="row">
                 <div class="col-4 d-flex align-items-center">
-                    <p class="m-0 pl-2" id="price"><span>{{book.price}}</span>€</p>
+                    <p class="m-0 pl-2" id="price">
+                    <span>{{ book.price }}</span>€
+                    </p>
                 </div>
                 <div class="col-8 d-flex justify-content-end">
-                    <a href="{{ path('addItem',{ 'id':book.id }) }}">
-                        <button class="btn btn-info">Ajouter<i class="fas fa-shopping-cart"></i></button>
+                    <a href="{{ path('addItem', {'id':book.id}) }}">
+                        <button class="btn btn-info">Ajouter
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
                     </a>
                 </div>
             </div>
