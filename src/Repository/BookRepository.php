@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -14,7 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class BookRepository extends ServiceEntityRepository
-{   
+{
 
     public const LIMIT = 9;
 
@@ -24,7 +23,7 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    
+
     public function findTitle($title){
 
         return $this->createQueryBuilder('b')
@@ -45,7 +44,7 @@ class BookRepository extends ServiceEntityRepository
     }
 
     public function countBooks($new, $genre, $author, $yearmin, $yearmax, $title){
-        
+
         $queryParameters = [];
 
         $query =  $this->createQueryBuilder('b')
@@ -66,7 +65,7 @@ class BookRepository extends ServiceEntityRepository
                 $queryGenre .= ($i === 0 ) ? 'g.name = :genre'.$i : ' OR g.name = :genre'.$i ;
                 $queryParameters['genre'.$i] = $genre[$i];
             }
-            
+
             $query = $query->andWhere($queryGenre);
         }
 
@@ -82,9 +81,9 @@ class BookRepository extends ServiceEntityRepository
                     $queryParameters[':authorlastname'.$i] = $authorFirstAndLastName[1];
                 }
             }
-            
+
             $query = $query->andWhere($queryAuthor);
-            
+
         }
 
 
@@ -93,7 +92,7 @@ class BookRepository extends ServiceEntityRepository
             $queryParameters[':title'] = '%'.$title.'%';
         }
 
-       
+
 
         $query = $query->andWhere('b.year >= :yearmin and b.year <= :yearmax');
         $queryParameters[':yearmin'] = $yearmin;
@@ -125,14 +124,14 @@ class BookRepository extends ServiceEntityRepository
         $stmt->execute();
 
         // returns an array of book
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 
     public function findAllBooksByDescName(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = ' 
+        $sql = '
             SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
@@ -143,16 +142,16 @@ class BookRepository extends ServiceEntityRepository
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-    
+
         // returns an array of book
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 
     public function findAllBooksByAscYear(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = ' 
+        $sql = '
             SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
@@ -163,16 +162,16 @@ class BookRepository extends ServiceEntityRepository
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-    
+
         // returns an array of book
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 
     public function findAllBooksByDescYear(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = ' 
+        $sql = '
             SELECT book.id, book.price, book.title, book.stock, book.year, author.firstname, author.lastname, image.name, genre.name AS genre
             FROM book
             INNER JOIN  author ON book.author_id = author.id
@@ -183,16 +182,16 @@ class BookRepository extends ServiceEntityRepository
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-    
+
         // returns an array of book
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 
     public function findBook($id): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = ' 
+        $sql = '
             SELECT book.description, book.price, book.isbn, book.title, book.stock, book.year, book.length, book.width, author.id, author.firstname, author.lastname, genre.name AS genre, image.name
             FROM book
             INNER JOIN  author ON book.author_id = author.id
@@ -203,9 +202,9 @@ class BookRepository extends ServiceEntityRepository
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute(['book_id' => $id]);
-    
+
         // returns an array of book
-        return $stmt->fetchAll();
+        return $stmt->fetchAllAssociative();
     }
 
     // /**
@@ -245,24 +244,24 @@ class BookRepository extends ServiceEntityRepository
 
         switch($orderBy){
 
-            case 'ascName' : 
+            case 'ascName' :
                 $fieldOrderBy = 'title';
                 $howOrderBy = 'ASC';
                 break;
-            case 'descName' : 
+            case 'descName' :
                 $fieldOrderBy = 'title';
                 $howOrderBy = 'DESC';
                 break;
-            case 'ascYear' : 
+            case 'ascYear' :
                 $fieldOrderBy = 'year';
                 $howOrderBy = 'ASC';
                 break;
-            case 'descYear' : 
+            case 'descYear' :
                 $fieldOrderBy = 'year';
                 $howOrderBy = 'DESC';
                 break;
         }
-        
+
         $query =  $this->createQueryBuilder('b')
                         ->select('b','a','i')
                         ->join('b.author', 'a')
@@ -282,15 +281,15 @@ class BookRepository extends ServiceEntityRepository
                 $queryGenre .= ($i === 0 ) ? 'g.name = :genre'.$i : ' OR g.name = :genre'.$i ;
                 $queryParameters[':genre'.$i] = $genre[$i];
             }
-            
+
             $query = $query->andWhere($queryGenre);
-            
+
         }
 
         if( count($author) > 0 ){
 
             $queryAuthor = "";
-            
+
 
             for( $i = 0; $i < count($author); $i++){
                 $authorFirstAndLastName = explode('-', $author[$i]);
@@ -300,9 +299,9 @@ class BookRepository extends ServiceEntityRepository
                     $queryParameters[':authorlastname'.$i] = $authorFirstAndLastName[1];
                 }
             }
-            
+
             $query = $query->andWhere($queryAuthor);
-            
+
         }
 
 
@@ -319,7 +318,7 @@ class BookRepository extends ServiceEntityRepository
         if (count($queryParameters) > 0 ){
             $query = $query->setParameters($queryParameters);
         }
-        
+
         return $query->orderBy('b.'.$fieldOrderBy, $howOrderBy)
             ->setFirstResult( $offset )
             ->setMaxResults( self::LIMIT )
@@ -332,7 +331,7 @@ class BookRepository extends ServiceEntityRepository
 
         $fieldOrderBy = 'title';
         $howOrderBy = 'ASC';
-        
+
         return $this->createQueryBuilder('b')
             ->Where('b.title like :title ')
             ->setParameter(':title', '%'.$title.'%')
