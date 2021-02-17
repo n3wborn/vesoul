@@ -24,80 +24,27 @@
             </div>
 
 
-            {# ------ Loop through each book ------ #}
-            {% for article in cart %}
-
-                <div class="row article m-0 my-2 p-0">
-                    <div class="col-12  m-0 p-0 d-flex justify-content-between align-items-center">
-
-                        <div class="d-flex livre">
-                            <div class="d-flex align-items-center">
-
-                            {% if article.image %}
-                                <img src="{{ asset('static/book/uploads/') ~ article.image }}"
-                                    alt="cover" width="150px" height="150px">
-                            {% else %}
-                                <img src="https://picsum.photos/640/480"
-                                    alt="cover" width="150px" height="150px">
-                            {% endif %}
-
-                                <div class="p-2 d-flex flex-column">
-                                    <h4 class="m-0">{{ article.title }}</h4>
-                                    <h5 class="m-0">{{ article.authorFirstname }} {{ article.authorLastname }}</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="m-0"><span>{{ article.price|number_format(2, ',') }}</span> €</p>
-
-                        <div class="d-flex align-items-center">
-                            <p class="m-0 p-3" class="quantite">{{ article.quantity }}</p>
-
-                            {# Add Item #}
-                            <a href="{{ path('addItem',{ 'id':article.id }) }}"
-                                data-action="add" data-id="{{ article.id }}"
-                                data-price="{{ article.price|number_format(2, ',')  }}"
-                                class="btn-quantity btn btn-info d-flex
-                                    justify-content-center align-items-center">
-                                <i class="fa fa-plus"></i>
-                            </a>
-
-                            {# Reduce Item #}
-                            <a href="{{ path('reduceItem',{ 'id':article.id }) }}"
-                                data-action="reduce" data-id="{{ article.id  }}"
-                                data-price="{{ article.price|number_format(2, ',')  }}"
-                                class="btn-quantity btn btn-light d-flex
-                                    justify-content-center align-items-center">
-                                <i class="fa fa-minus"></i>
-                            </a>
-                        </div>
-
-                        <p class="m-0 pr-3 total"><span>{{ (article.price * article.quantity) |number_format(2, ',') }}</span> €</p>
-
-                        {# Delete Item #}
-                        <a href="{{ path('deleteItem',{ 'id':article.id }) }}"
-                            data-id="{{ article.id  }}"
-                            class=" btn btn-danger delete-article d-flex
-                                    justify-content-center align-item-center">
-                            <i class="fas fa-trash"></i>
-                        </a>
-
-                    </div>
-                </div>
-            {% endfor %}
+            {# ------ Item infos ------ #}
+            {% include 'vesoul-edition/_cart_items.html.twig' %}
 
         </div>
 
 
         {# ------ Total ------ #}
+
         <div class="col-3 p-3" id="total">
+
             <div class="row mb-5">
                 <div class="col-12 titre">Total du panier</div>
             </div>
+
             <div class="row py-3 d-flex justify-content-between">
                 <div class="col-6">Sous-total</div>
-                <div class="col-6 text-right infos "><span id="subtotal">{{ total|number_format(2, ',') }} €</span></div>
+                <div class="col-6 text-right infos ">
+                    <span id="subtotal">{{ cart.total|number_format(2, ',') }} €</span>
+                </div>
             </div>
+
             <div class="row py-3 d-flex justify-content-between">
                 <div class="col-6">Livraison</div>
                 <div class="col-6 text-right infos">Gratuite</div>
@@ -105,25 +52,36 @@
 
             <div class="row py-4 d-flex justify-content-between">
                 <div class="col-6 total">Total</div>
-                <div class="col-6 text-right total"><span id="totalpanier" >{{ total|number_format(2, ',') }} €</span></div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{ path('commande') }}"><button class="btn btn-info w-100 m-2">Commander</button></a>
+                <div class="col-6 text-right total">
+                    <span id="totalpanier" >{{ cart.total|number_format(2, ',') }} €</span>
                 </div>
+            </div>
+
+            <div class="row">
+
                 <div class="col-12">
-                    <a href="{{ path('cartEmpty') }}"><button class="btn btn-danger w-100 m-2">Supprimer mon panier</button></a>
+                    <a href="{{ path('commande') }}">
+                        <button class="btn btn-info w-100 m-2">Commander</button>
+                    </a>
+                </div>
+
+                <div class="col-12">
+                    <a href="{{ path('cartEmpty') }}">
+                        <button class="btn btn-danger w-100 m-2">Supprimer mon panier</button>
+                    </a>
+                </div>
+
             </div>
-            </div>
-            </div-col-3>
+
         </div>
-
-
     </div>
-    <div class="row py-4">
-        <div class="col-4 offset-4">
-            <a href="{{ path('home') }}"><button class="btn btn-info w-100">Continuer mes achats</button></a>
-        </div>
+</div>
+
+<div class="row py-4">
+    <div class="col-4 offset-4">
+        <a href="{{ path('home') }}">
+            <button class="btn btn-info w-100">Continuer mes achats</button>
+        </a>
     </div>
 </div>
 {% endblock %}
