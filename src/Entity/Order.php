@@ -55,13 +55,11 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_deliveryAddress")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $deliveryAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_billAddress")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $billAddress;
 

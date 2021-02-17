@@ -3,47 +3,44 @@
 namespace App\Controller;
 
 use App\Entity\Book;
-use App\Entity\Cart;
+use App\Entity\OrderItem;
+use App\Manager\CartManager;
+use App\Storage\CartSessionStorage;
 use App\Form\CommandType;
 use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
 use App\Repository\GenreRepository;
 use App\Repository\AuthorRepository;
-use App\Repository\ImageRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class VesoulEditionController extends AbstractController
 {
-    private SessionInterface $session;
+    private CartManager $cartManager;
     private AuthorRepository $authorRepo;
     private BookRepository $bookRepo;
     private GenreRepository $genreRepo;
     private AddressRepository $addressRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
-        SessionInterface $session,
         BookRepository $bookRepo,
         GenreRepository $genreRepo,
         AuthorRepository $authorRepo,
         AddressRepository $addressRepo,
-        ImageRepository $imageRepo
+        CartSessionStorage $session,
+        CartManager $cartManager
     )
     {
-        $this->em = $em;
-        $this->session = $session;
         $this->bookRepo = $bookRepo;
         $this->genreRepo = $genreRepo;
         $this->authorRepo = $authorRepo;
         $this->addressRepo = $addressRepo;
-        $this->imageRepo = $imageRepo;
+        $this->session = $session;
+        $this->cartManager = $cartManager;
 
     }
 
@@ -254,35 +251,17 @@ class VesoulEditionController extends AbstractController
      */
     public function addItem(Book $book)
     {
-        // get infos
-        $id = $book->getId();
-        $stock = $book->getStock();
-        $cart = $this->session->get('cart');
+        // get current/new cart
+        $cart = $this->cartManager->getCurrentCart();
 
-        // add one more item if already in cart and still available
-        if (!empty($cart[$id])) {
-            $qtyInCart = $cart[$id]['quantity'];
+        // set this book as a order item
+        $orderItem = new OrderItem();
+        $orderItem->setBook($book);
+        $orderItem->setQuantity(1);
 
-            if (($stock - $qtyInCart) >= 1 ) {
-                $cart[$id]['quantity']++;
-            }
-        } else {
-            // else, add one (and keep everything needed for cart and order)
-            $cart[$id] = [
-                'id' => $id,
-                'title' => $book->getTitle(),
-                'description' => $book->getDescription(),
-                'price' => $book->getPrice(),
-                'authorFirstname' => $book->getAuthor()->getFirstname(),
-                'authorLastname' => $book->getAuthor()->getLastname(),
-                'image' => $book->getImages()[0]->getName(),
-                'quantity' => 1,
-            ];
-        }
-
-
-        // keep infos in session
-        $this->session->set('cart', $cart);
+        // add it (or one more) to the cart and persist
+        $cart->addItem($orderItem);
+        $this->cartManager->save($cart);
 
         // TODO: Redirect really wanted ??
         // Redirect to cart
@@ -295,36 +274,17 @@ class VesoulEditionController extends AbstractController
      */
     public function ajaxAddItem(Book $book)
     {
-        // get infos
-        $id = $book->getId();
-        $stock = $book->getStock();
-        $cart = $this->session->get('cart');
+        // get current/new cart
+        $cart = $this->cartManager->getCurrentCart();
 
+        // set this book as a order item
+        $orderItem = new OrderItem();
+        $orderItem->setBook($book);
+        $orderItem->setQuantity(1);
 
-        // add one more item if already in cart and still available
-        if (!empty($cart[$id])) {
-            $qtyInCart = $cart[$id]['quantity'];
-
-            if (($stock - $qtyInCart) >= 1 ) {
-                $cart[$id]['quantity']++;
-            }
-        } else {
-            // else, add one (and keep everything needed for cart and order)
-            $cart[$id] = [
-                'id' => $id,
-                'title' => $book->getTitle(),
-                'description' => $book->getDescription(),
-                'price' => $book->getPrice(),
-                'authorFirstname' => $book->getAuthor()->getFirstname(),
-                'authorLastname' => $book->getAuthor()->getLastname(),
-                'image' => $book->getImages()[0]->getName(),
-                'quantity' => 1,
-            ];
-        }
-
-
-        // keep infos in session
-        $this->session->set('cart', $cart);
+        // add it (or one more) to the cart and persist
+        $cart->addItem($orderItem);
+        $this->cartManager->save($cart);
 
         return new Response("OK", Response::HTTP_OK);
     }
@@ -427,29 +387,25 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/empty", name="cartEmpty")
+     * @Route("/panier/vider", name="cartEmpty")
      */
     public function emptyCart(Request $request): Response
     {
 
         // get cart infos
-        $cart = $this->session->get('cart');
+        $cart = $this->cartManager->getCurrentCart();
+        $cart->removeItems();
+        $this->cartManager->save($cart);
 
-        // check if cart exist and empty it
-        if ($cart !== null) {
-
-            $this->session->set('cart', []);
-
-            // if ajax request, send ok, else show cart page
-            if ($request->isXmlHttpRequest()) {
-                return new JsonResponse([
-                    'status' => 'OK',
-                ], 200);
-            }
-
-            // else go to cart page
-            return $this->redirectToRoute('cart');
+        // if ajax request, send ok, else show cart page
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'status' => 'OK',
+            ], 200);
         }
+
+        // else go to cart page
+        return $this->redirectToRoute('cart');
     }
 
 
@@ -459,24 +415,11 @@ class VesoulEditionController extends AbstractController
     public function showCart()
     {
         // get cart infos
-        $cart = $this->session->get('cart');
-
-        // redirect if no cart
-        if ($cart === null) {
-            return $this->render('vesoul-edition/cart.html.twig', [
-                'total' => 0
-            ]);
-        }
-
-        // calc total cost
-        foreach ($cart as $item) {
-            $this->totalCost += $item['price'] * $item['quantity'];
-        }
+        $cart = $this->cartManager->getCurrentCart();
 
         // render cart infos
         return $this->render('vesoul-edition/cart.html.twig', [
-            'total' => $this->totalCost,
-            'cart' => $cart
+            'cart' => $cart,
         ]);
     }
 
