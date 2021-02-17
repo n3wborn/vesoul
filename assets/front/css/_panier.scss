@@ -1,69 +1,90 @@
-#panier{
-    h1{
+#panier {
+    h1 {
         color: $color-text-dark;
         font-weight: bold;
         font-size: 2em;
     }
-    .legend{
+
+    .legend {
         background-color: $color-header;
         color: $color-text-light;
-        h3{
+        h3 {
             font-size: 1em;
         }
-        .livre{
+
+        .livre {
             width: 400px;
         }
-        .prix{
+
+        .prix {
             width: 80px;
         }
-        .qty{
+
+        .qty {
             width: 80px;
         }
-        .total{
+
+        .total {
             width: 60px;
         }
     }
-    .article{
+
+    .article {
         background-color: $color-bg-clear;
         position: relative;
-        .livre{
+
+        .livre {
             width: 400px;
-            h4{
+
+            h4 {
                 font-weight: bold;
                 font-size: 1.4em;
             }
-            h5{
+
+            h5 {
                 font-size: 1em;
             }
         }
-        .total{
+
+        .cover {
+            object-fit: cover;
+        }
+
+        .total {
             font-weight: bold;
         }
-        .delete-article{
+
+        .delete-article {
             position: absolute;
             top: 10px;
             right: 10px;
             width: 30px;
             height: 30px;
         }
-        .btn-quantity{
+
+        .btn-quantity {
             width: 30px;
             height: 30px;
             font-size: small;
         }
+
     }
-    #total{
+
+    #total {
         background-color: $color-bg-clear;
         height: 400px;
-        .titre{
+
+        .titre {
             font-weight: bold;
             font-size: 1.4em;
             color: $color-main;
         }
-        .infos{
+
+        .infos {
             font-weight: bold;
         }
-        .total{
+
+        .total {
             font-weight: bold;
             font-size: 1.3em;
         }
