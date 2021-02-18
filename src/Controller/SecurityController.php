@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Manager\CartManager;
 
 class SecurityController extends AbstractController
 {
@@ -21,18 +22,21 @@ class SecurityController extends AbstractController
     private UserPasswordEncoderInterface $encoder;
     private Swift_Mailer $mailer;
     private EntityManagerInterface $manager;
+    private CartManager $cartManager;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         UserPasswordEncoderInterface $encoder,
         Swift_Mailer $mailer,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        CartManager $cartManager
     )
     {
         $this->authenticationUtils = $authenticationUtils;
         $this->encoder = $encoder;
         $this->mailer = $mailer;
         $this->manager = $manager;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -47,10 +51,13 @@ class SecurityController extends AbstractController
 
         $error = $this->authenticationUtils->getLastAuthenticationError();
         $lastUsername = $this->authenticationUtils->getLastUsername();
+        $cart = $this->cartManager->getCurrentCart();
+
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error
+            'error' => $error,
+            'cart' => $cart
         ]);
     }
 
@@ -72,6 +79,8 @@ class SecurityController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user)
             ->handleRequest($request);
+        $cart = $this->cartManager->getCurrentCart();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -107,7 +116,8 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/inscription.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'cart' => $cart
         ]);
     }
 }

@@ -56,6 +56,7 @@ class VesoulEditionController extends AbstractController
      */
     public function home()
     {
+        $cart = $this->cartManager->getCurrentCart();
         $genres = $this->genreRepo->findAll();
         $authors = $this->authorRepo->findAll();
         $maxAndMinYear = $this->bookRepo->maxAndMinYear();
@@ -66,7 +67,8 @@ class VesoulEditionController extends AbstractController
             'genres' => $genres,
             'authors' => $authors,
             'minyear' => $minYear,
-            'maxyear' => $maxYear
+            'maxyear' => $maxYear,
+            'cart' => $cart
         ]);
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Order;
 use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,14 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AddressRepository;
 use App\Repository\OrderRepository;
-use App\Repository\UserRepository;
-use App\Form\EditAddressesType;
 use App\Form\AddAddressesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Address;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Manager\CartManager;
 
 
 /**
@@ -30,24 +28,24 @@ class DashboardUserController extends AbstractController
     private SessionInterface $session;
     private UserPasswordEncoderInterface $encoder;
     private AddressRepository $addressRepo;
-    private UserRepository $userRepo;
     private OrderRepository $orderRepo;
+    private CartManager $cartManager;
 
     public function __construct(
         EntityManagerInterface $em,
         SessionInterface $session,
         UserPasswordEncoderInterface $encoder,
         AddressRepository $addressRepo,
-        UserRepository $userRepo,
-        OrderRepository $orderRepo
+        OrderRepository $orderRepo,
+        CartManager $cartManager
     )
     {
         $this->em = $em;
         $this->session = $session;
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
-        $this->userRepo = $userRepo;
         $this->orderRepo = $orderRepo;
+        $this->cartManager = $cartManager;
     }
 
 
@@ -60,6 +58,7 @@ class DashboardUserController extends AbstractController
     public function home(Request $request)
     {
         $user = $this->getUser();
+        $cart = $this->cartManager->getCurrentCart();
 
         // if user update his infos, update db and refresh
         $form = $this->createForm(UserType::class, $user);
@@ -87,7 +86,8 @@ class DashboardUserController extends AbstractController
             'title' => 'Mon compte',
             'user' => $user,
             'form' => $form->createView(),
-            'form_password' => $changePassword->createView()
+            'form_password' => $changePassword->createView(),
+            'cart' => $cart,
         ]);
     }
 
@@ -104,6 +104,7 @@ class DashboardUserController extends AbstractController
     {
         // get current user
         $user = $this->getUser();
+        $cart = $this->cartManager->getCurrentCart();
 
         // SHOW and/or MAY CHANGE user infos
         $form = $this->createForm(UserType::class, $user);
@@ -140,7 +141,8 @@ class DashboardUserController extends AbstractController
         return $this->render('dashboard-user/mon-compte.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-            'form_password' => $changePassword->createView()
+            'form_password' => $changePassword->createView(),
+            'cart' => $cart
         ]);
     }
 
@@ -156,6 +158,7 @@ class DashboardUserController extends AbstractController
 
         $user = $this->getUser();
         $newAddress = new Address();
+        $cart = $this->cartManager->getCurrentCart();
 
         $formNew = $this->createForm(AddAddressesType::class, $newAddress);
         $formNew->handleRequest($request);
@@ -178,6 +181,7 @@ class DashboardUserController extends AbstractController
         return $this->render('dashboard-user/compte-adresses.html.twig', [
             'adresses' => $this->addressRepo->findBy(['user' => $user]),
             'formNew' => $formNew->createView(),
+            'cart' => $cart
         ]);
     }
 
@@ -266,14 +270,14 @@ class DashboardUserController extends AbstractController
     {
         $user = $this->getUser();
         $addresses = $this->addressRepo->findBy(['user' => $user]);
-        $cart = $this->session->get('cart');
+        $cart = $this->cartManager->getCurrentCart();
         $orders = $this->orderRepo->findBy(['user' => $user]);
 
         return $this->render('dashboard-user/compte-commandes.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
             'cart' => $cart,
-            'orders' => $orders
+            'orders' => $orders,
         ]);
     }
 
