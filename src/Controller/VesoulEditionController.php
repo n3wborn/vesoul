@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Entity\OrderItem;
 use App\Manager\CartManager;
-use App\Storage\CartSessionStorage;
+use App\Factory\OrderFactory;
 use App\Form\CommandType;
 use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
@@ -25,23 +25,23 @@ class VesoulEditionController extends AbstractController
     private BookRepository $bookRepo;
     private GenreRepository $genreRepo;
     private AddressRepository $addressRepo;
+    private OrderFactory $orderFactory;
 
     public function __construct(
         BookRepository $bookRepo,
         GenreRepository $genreRepo,
         AuthorRepository $authorRepo,
         AddressRepository $addressRepo,
-        CartSessionStorage $session,
-        CartManager $cartManager
+        CartManager $cartManager,
+        OrderFactory $orderFactory
     )
     {
         $this->bookRepo = $bookRepo;
         $this->genreRepo = $genreRepo;
         $this->authorRepo = $authorRepo;
         $this->addressRepo = $addressRepo;
-        $this->session = $session;
         $this->cartManager = $cartManager;
-
+        $this->orderFactory = $orderFactory;
     }
 
 
@@ -257,12 +257,10 @@ class VesoulEditionController extends AbstractController
         $cart = $this->cartManager->getCurrentCart();
 
         // set this book as a order item
-        $orderItem = new OrderItem();
-        $orderItem->setBook($book);
-        $orderItem->setQuantity(1);
+        $item = $this->orderFactory->createItem($book);
+        $cart->addItem($item);
 
-        // add it (or one more) to the cart and persist
-        $cart->addItem($orderItem);
+        // persis in db
         $this->cartManager->save($cart);
 
         // TODO: Redirect really wanted ??
@@ -280,12 +278,10 @@ class VesoulEditionController extends AbstractController
         $cart = $this->cartManager->getCurrentCart();
 
         // set this book as a order item
-        $orderItem = new OrderItem();
-        $orderItem->setBook($book);
-        $orderItem->setQuantity(1);
+        $item = $this->orderFactory->createItem($book);
+        $cart->addItem($item);
 
-        // add it (or one more) to the cart and persist
-        $cart->addItem($orderItem);
+        // persis in db
         $this->cartManager->save($cart);
 
         return new Response("OK", Response::HTTP_OK);
