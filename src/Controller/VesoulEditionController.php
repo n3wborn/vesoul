@@ -377,9 +377,12 @@ class VesoulEditionController extends AbstractController
      */
     public function showProduct(Book $book): Response
     {
+        $cart = $this->cartManager->getCurrentCart();
+
         return $this->render('vesoul-edition/product.html.twig', [
             'images' => $book->getImages(),
-            'book' => $book
+            'book' => $book,
+            'cart' => $cart
         ]);
     }
 

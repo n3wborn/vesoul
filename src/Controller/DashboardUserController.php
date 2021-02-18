@@ -14,7 +14,6 @@ use App\Form\AddAddressesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Address;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Manager\CartManager;
 
@@ -25,7 +24,6 @@ use App\Manager\CartManager;
 class DashboardUserController extends AbstractController
 {
     private EntityManagerInterface $em;
-    private SessionInterface $session;
     private UserPasswordEncoderInterface $encoder;
     private AddressRepository $addressRepo;
     private OrderRepository $orderRepo;
@@ -33,7 +31,6 @@ class DashboardUserController extends AbstractController
 
     public function __construct(
         EntityManagerInterface $em,
-        SessionInterface $session,
         UserPasswordEncoderInterface $encoder,
         AddressRepository $addressRepo,
         OrderRepository $orderRepo,
@@ -41,7 +38,6 @@ class DashboardUserController extends AbstractController
     )
     {
         $this->em = $em;
-        $this->session = $session;
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
         $this->orderRepo = $orderRepo;
