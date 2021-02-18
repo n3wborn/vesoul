@@ -336,18 +336,24 @@ class VesoulEditionController extends AbstractController
      */
     public function ajaxDeleteItem(Book $book)
     {
-        // get needed infos
-        $id = $book->getId();
-        $cart = $this->session->get('cart');
+        // get current cart and items
+        $cart = $this->cartManager->getCurrentCart();
+        $items = $cart->getItems();
 
-        // if product is in cart remove it
-        if (!empty($cart[$id])) {
+        // remove item if already in cart
+        foreach ($items as $item) {
+            if ($item->getBook() === $book) {
 
-            unset($cart[$id]);
-            $this->session->set('cart', $cart);
+                $cart->removeItem($item);
+                $this->cartManager->save($cart);
+
+                // Return Ok
+                return new Response(Response::HTTP_OK);
+            } else {
+                // Return 302 if $book not in cart
+                return new Response("Book not in cart", Response::HTTP_FOUND);
+            }
         }
-
-        return new Response("OK", Response::HTTP_OK);
     }
 
 
@@ -356,19 +362,25 @@ class VesoulEditionController extends AbstractController
      */
     public function deleteItem(Book $book)
     {
-        // get needed infos
-        $id = $book->getId();
-        $cart = $this->session->get('cart');
+        // get current cart and items
+        $cart = $this->cartManager->getCurrentCart();
+        $items = $cart->getItems();
 
-        // remove product if already in cart
-        if (!empty($cart[$id])) {
-            unset($cart[$id]);
+        // remove item if already in cart
+        foreach ($items as $item) {
+            if ($item->getBook() === $book) {
 
-            $this->session->set('cart', $cart);
+                $cart->removeItem($item);
+                $this->cartManager->save($cart);
+
+                // Refresh cart page
+                return $this->redirectToRoute('cart');
+            } else {
+                // Return 302 if $book not in cart
+                return new Response("Book not in cart", Response::HTTP_FOUND);
+            }
         }
 
-        // Refresh cart page
-        return $this->redirectToRoute('cart');
     }
 
 
@@ -392,9 +404,10 @@ class VesoulEditionController extends AbstractController
      */
     public function emptyCart(Request $request): Response
     {
-
         // get cart infos
         $cart = $this->cartManager->getCurrentCart();
+
+        // remove every items and persist in db
         $cart->removeItems();
         $this->cartManager->save($cart);
 
