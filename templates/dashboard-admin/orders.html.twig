@@ -37,22 +37,22 @@
 
         <section class="commandes">
 
-            {% for command in commands %}
-                <div class="commande row m-0 d-flex justify-content-between">
-                    <p class="m-0 py-3 col-1">{{ command.date|date("d/m/y") }}</p>
-                    <p class="m-0 py-3 col-1">{{ command.id }}</p>
-                    <p class="m-0 py-3 col-2">{{ command.user.lastname }} {{ command.user.firstname }}</p>
+            {% for order in orders %}
+                <div class="ordere row m-0 d-flex justify-content-between">
+                    <p class="m-0 py-3 col-1">{{ order.date|date("d/m/y") }}</p>
+                    <p class="m-0 py-3 col-1">{{ order.id }}</p>
+                    <p class="m-0 py-3 col-2">{{ order.user.lastname }} {{ order.user.firstname }}</p>
                     <p class="m-0 py-3 col-3 text-center">
-                        {{ command.livraison.number }} {{ command.livraison.type }} {{ command.livraison.street }}{% if command.livraison.additional %}, {{ command.livraison.additional }}{% endif %},</br> {{ command.livraison.city }} {{ command.livraison.cp }}</p>
+                        {{ order.livraison.number }} {{ order.livraison.type }} {{ order.livraison.street }}{% if order.livraison.additional %}, {{ order.livraison.additional }}{% endif %},</br> {{ order.livraison.city }} {{ order.livraison.cp }}</p>
                     <p class="m-0 py-1 col-2">
-                        {% for book in command.books %}
+                        {% for book in order.books %}
                         - {{ book.title }}</br>
                         {% endfor %}
                     </p>
                     <div class="col-2 d-flex justify-content-center align-items-center">
-                        <a href=" {{ path('dashboard_admin_commandes_imprime',{id: command.id} ) }} " class="pdf d-flex justify-content-center align-items-center">PDF</a>
+                        <a href=" {{ path('dashboard_admin_print_bill', {id: order.id}) }} " class="pdf d-flex justify-content-center align-items-center">PDF</a>
                     </div>
-                    <p class="text-center m-0 py-3 col-1">{{ command.state }}</p>
+                    <p class="text-center m-0 py-3 col-1">{{ order.state }}</p>
                 </div>
             {% endfor %}
 

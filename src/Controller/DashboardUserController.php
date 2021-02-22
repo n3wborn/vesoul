@@ -260,16 +260,16 @@ class DashboardUserController extends AbstractController
      * the modal displayed owns a "download order" that user can use
      * to download the order in pdf.
      *
-     * @Route("/commandes", name="dashboard_user_commands")
+     * @Route("/commandes", name="dashboard_user_orders")
      */
-    public function showCommands(): Response
+    public function showOrders(): Response
     {
         $user = $this->getUser();
         $addresses = $this->addressRepo->findBy(['user' => $user]);
         $cart = $this->cartManager->getCurrentCart();
         $orders = $this->orderRepo->findBy(['user' => $user]);
 
-        return $this->render('dashboard-user/compte-commandes.html.twig', [
+        return $this->render('dashboard-user/orders.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
             'cart' => $cart,

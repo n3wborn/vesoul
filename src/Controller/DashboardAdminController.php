@@ -34,7 +34,7 @@ class DashboardAdminController extends AbstractController
     private EntityManagerInterface $manager;
     private BookRepository $repoBook;
     private ImageRepository $imageRepo;
-    private OrderRepository $commandRepo;
+    private OrderRepository $orderRepo;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -361,30 +361,30 @@ class DashboardAdminController extends AbstractController
      * made before and which orders are in which state.
      * For example: waiting for payement, sent,...
      *
-     * @Route("/commandes", name="dashboard_admin_commandes")
+     * @Route("/commandes", name="dashboard_admin_orders")
      */
-    public function commands(): Response
+    public function showOrders(): Response
     {
-        $allCommands = $this->orderRepo->findAll();
+        $orders = $this->orderRepo->findAll();
         $enCours = 0;
         $expedie = 0;
         $total = 0;
 
-        foreach ($allCommands as $value) {
+        foreach ($orders as $order) {
 
             $total++;
 
-            if ($value->getState() == "en cours") {
+            if ($order->getStatus == "en cours") {
                 $enCours++;
             }
-            if ($value->getState() == "expédié") {
+            if ($order->getStatus() == "expédié") {
                 $expedie++;
             }
         }
 
-        return $this->render('dashboard-admin/commandes.html.twig', [
+        return $this->render('dashboard-admin/orders.html.twig', [
             'title' => 'Commandes',
-            'commands' => $allCommands,
+            'orders' => $orders,
             'total' => $total,
             'enCours' => $enCours,
             'expedie' => $expedie,
@@ -393,13 +393,13 @@ class DashboardAdminController extends AbstractController
 
 
     /**
-     * @Route("/commandes/imprimer/{id}", name="dashboard_admin_commandes_imprime")
+     * @Route("/factures/imprimer/{id}", name="dashboard_admin_print_bill")
      * @param Order $order
      * @param OrderRepository $repo
      */
     public function printBill(Order $order)
     {
-        $orderRef = $order->getOrderRef();
+        $ref = $order->getId();
 
         // Instantiate Dompdf with our options
         $pdfOptions = new Options();
@@ -407,8 +407,8 @@ class DashboardAdminController extends AbstractController
         $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bill/facture.html.twig', [
-            'commandNumero' => $orderRef,
+        $html = $this->renderView('bill/bill.html.twig', [
+            'commandNumero' => $ref,
         ]);
 
         // Load HTML to Dompdf
@@ -421,11 +421,11 @@ class DashboardAdminController extends AbstractController
         $dompdf->render();
 
         // Output the generated PDF to Browser (force download)
-        $dompdf->stream("Facture " . $orderRef. "-IT.pdf", [
+        $dompdf->stream("Facture " . $ref. "-IT.pdf", [
             "Attachment" => true
         ]);
 
-        return $this->redirectToRoute('dashboard_admin_commandes');
+        return $this->redirectToRoute('dashboard_admin_print_bill');
     }
 
 
@@ -479,7 +479,7 @@ class DashboardAdminController extends AbstractController
 
 
     /**
-     * @Route("/bill/{id}", name="test_facture")
+     * @Route("/bill/{id}", name="test_bill")
      * @param Order $order
      * @return Response
      */
@@ -498,7 +498,7 @@ class DashboardAdminController extends AbstractController
         }
 
 
-        return $this->render('bill/facture.html.twig', [
+        return $this->render('bill/bill.html.twig', [
             'reference' => $reference,
         ]);
     }

@@ -6,7 +6,7 @@ use App\Entity\Book;
 use App\Entity\OrderItem;
 use App\Manager\CartManager;
 use App\Factory\OrderFactory;
-use App\Form\CommandType;
+use App\Form\OrderType;
 use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
 use App\Repository\GenreRepository;
@@ -446,27 +446,27 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * /commande is where a user can order something. showCommande()
-     * will search for every products in cart and render  the form
-     * (CommandType) used to make an order.
+     * /commande is where a user can order something. prepareOrder will search
+     * for every products in cart and render the form (OrderType) used to make an
+     * order.
      *
      * User will be able to choose where his books will be delivered
      * and where to send the bill.
      *
-     * @Route("/commande", name="commande")
+     * @Route("/commande", name="order")
      */
-    public function showCommande(Security $security, Request $request)
+    public function prepareOrder(Security $security, Request $request)
     {
-        $cart = $this->session->get('cart');
         $user = $security->getUser();
+        $cart = $this->cartManager->getCurrentCart();
         $addresses = $this->addressRepo->findBy(['user' => $user]);
 
-        $form = $this->createForm(CommandType::class);
+        $form = $this->createForm(OrderType::class);
         $form->handleRequest($request);
 
         // if form is ok ~> go on
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO: Handle "command ok" Logic
+            // TODO: Handle "order ok" Logic
             //
             // Here we must send two emails :
             //  - one to the seller so that he knows "who" want to buy "what"
@@ -484,15 +484,13 @@ class VesoulEditionController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        // if user is unknown ~> propose connection
+        // if user anonymous ~> get login
         if ($user === null) {
-            $commande['confirmation'] = true;
-            $this->session->set('commande', $commande);
             return $this->redirectToRoute('login');
         }
 
-        // render commande template
-        return $this->render('vesoul-edition/commande.html.twig', [
+        // render
+        return $this->render('vesoul-edition/order.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
             'cart' => $cart,
