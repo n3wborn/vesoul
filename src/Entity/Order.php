@@ -101,6 +101,24 @@ class Order
         return $this;
     }
 
+    public function reduceItem(OrderItem $item): self
+    {
+        foreach ($this->getItems() as $existingItem) {
+            // The item already exists, update the quantity
+            if ($existingItem->equals($item)) {
+                $existingItem->setQuantity(
+                    $existingItem->getQuantity() - 1
+                );
+                return $this;
+            }
+        }
+
+        $this->items[] = $item;
+        $item->setOrderRef($this);
+
+        return $this;
+    }
+
     public function removeItem(OrderItem $item): self
     {
         if ($this->items->removeElement($item)) {

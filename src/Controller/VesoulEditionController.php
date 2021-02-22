@@ -293,19 +293,23 @@ class VesoulEditionController extends AbstractController
      */
     public function reduceAjaxItem(Book $book)
     {
-        // get infos
-        $id = $book->getId();
-        $cart = $this->session->get('cart');
+        // get current cart and items
+        $cart = $this->cartManager->getCurrentCart();
+        $items = $cart->getItems();
 
-        // remove 1 item only if 2 minimum
-        if (!empty($cart[$id]) && ($cart[$id]['quantity'] >= 2)) {
+        // remove item if already in cart
+        foreach ($items as $cartItem) {
 
-            // update cart infos
-            $cart[$id]['quantity']--;
-            $this->session->set('cart', $cart);
+            if ($cartItem->getBook() === $book && $cartItem->getQuantity() > 1) {
+                $cart->reduceItem($cartItem);
+                $this->cartManager->save($cart);
+
+                // Return Ok if reduced
+                return new Response(Response::HTTP_OK);
+            }
         }
-
-        return new Response("OK", Response::HTTP_OK);
+        // Return 302 if anything else goes wrong
+        return new Response("Book not in cart", Response::HTTP_FOUND);
     }
 
 
@@ -314,20 +318,23 @@ class VesoulEditionController extends AbstractController
      */
     public function reduceItem(Book $book)
     {
+        // get current cart and items
+        $cart = $this->cartManager->getCurrentCart();
+        $items = $cart->getItems();
 
-        // get infos
-        $id = $book->getId();
-        $cart = $this->session->get('cart');
+        // remove item if already in cart
+        foreach ($items as $cartItem) {
 
-        // remove 1 item only if 2 minimum
-        if (!empty($cart[$id]) && ($cart[$id]['quantity'] >= 2)) {
+            if ($cartItem->getBook() === $book && $cartItem->getQuantity() > 1) {
+                $cart->reduceItem($cartItem);
+                $this->cartManager->save($cart);
 
-            // update cart infos
-            $cart[$id]['quantity']--;
-            $this->session->set('cart', $cart);
+                // Return Ok if reduced
+                return new Response(Response::HTTP_OK);
+            }
         }
-
-        return new Response("OK", Response::HTTP_OK);
+        // Return 302 if anything else goes wrong
+        return new Response("Book not in cart", Response::HTTP_FOUND);
     }
 
 
