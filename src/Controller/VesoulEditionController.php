@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Book;
-use App\Entity\OrderItem;
 use App\Manager\CartManager;
 use App\Factory\OrderFactory;
-use App\Form\OrderType;
+use App\Form\CartType;
 use App\Repository\AddressRepository;
 use App\Repository\BookRepository;
 use App\Repository\GenreRepository;
 use App\Repository\AuthorRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,13 +43,6 @@ class VesoulEditionController extends AbstractController
         $this->cartManager = $cartManager;
         $this->orderFactory = $orderFactory;
     }
-
-
-    /**
-     * @var float
-     */
-    public $totalCost = 0.00;
-
 
     /**
      * @Route("/", name="home")
@@ -454,33 +447,18 @@ class VesoulEditionController extends AbstractController
      * and where to send the bill.
      *
      * @Route("/commande", name="order")
+     * @param Security $security
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function prepareOrder(Security $security, Request $request)
     {
+        // check user/cart infos
         $user = $security->getUser();
         $cart = $this->cartManager->getCurrentCart();
-        $addresses = $this->addressRepo->findBy(['user' => $user]);
-
-        $form = $this->createForm(OrderType::class);
-        $form->handleRequest($request);
-
-        // if form is ok ~> go on
-        if ($form->isSubmitted() && $form->isValid()) {
-            // TODO: Handle "order ok" Logic
-            //
-            // Here we must send two emails :
-            //  - one to the seller so that he knows "who" want to buy "what"
-            //  - one the the buyer, to confirm one more time and to tell him
-            //      how to deal with the seller.
-            //
-            // Here, we also have to tell to the backend he must update his
-            // stock.
-            //
-            return $this->redirectToRoute('showConfirmation');
-        }
 
         // if no cart ~> go back home
-        if ($cart === null) {
+        if ($cart->getId() === null) {
             return $this->redirectToRoute('home');
         }
 
@@ -489,12 +467,37 @@ class VesoulEditionController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
+        // get user addresses and cart infos
+        $total = $cart->getTotal();
+        $addresses = $this->addressRepo->findBy(['user' => $user]);
+
+        // build/handle Order form
+        $form = $this->createForm(CartType::class, $cart);
+        $form->handleRequest($request);
+
+        // if form is ok ~> go on
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cart->setUpdatedAt(new \DateTime());
+            $this->cartManager->save($cart);
+            // - Show every Items
+            // - Let user choose delivery/billing address
+            // - Update Cart Status from 'cart 'to 'Ordered' (?) once form
+            //   validated
+            //
+            // - Send email to admin so that he can process customer order
+            // - Send email to user so he can see seller will take care of him
+            // - Update Stocks
+            //
+            return $this->redirectToRoute('showConfirmation');
+        }
+
         // render
-        return $this->render('vesoul-edition/order.html.twig', [
+        return $this->render('vesoul-edition/order/order.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
             'cart' => $cart,
-            'form' => $form->createView(),
+            'total' =>$total,
+            'form' => $form->createView()
         ]);
     }
 

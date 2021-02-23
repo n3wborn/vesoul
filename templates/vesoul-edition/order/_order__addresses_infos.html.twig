@@ -1,0 +1,66 @@
+{# Addresses #}
+<div class="adresses d-flex flex-column col-4 col-md-4 col-sm-12 m-0 p-3">
+    <div class="card flex-fill p-3">
+        <div class="livraison m-0 p-0 d-flex flex-column">
+            <h2 class="mb-3">Addresses</h2>
+
+            {{ form_row(form.deliveryAddress) }}
+
+            <div class="destinataire m-0 py-2 d-flex align-items-center">
+                <i class="fas fa-user"></i>
+                <div class="d-flex flex-column pl-3">
+                    <p class="prenom m-0"></p>
+                    <p class="nom m-0"></p>
+                </div>
+            </div>
+
+            <div class="place m-0 py-2 d-flex align-items-center">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="d-flex flex-column pl-3">
+                    <p class="adress m-0"></p>
+                    <p class="complement m-0"></p>
+                    <div class="d-flex m-0">
+                        <p class="cp m-0"></p>
+                        <p class="ville m-0"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Billing Address #}
+        <div class="facturation m-0 p-0 d-flex flex-column">
+
+            {{ form_row(form.billAddress) }}
+
+            <div class="destinataire m-0 py-2 d-flex align-items-center">
+                <i class="fas fa-user"></i>
+                <div class="d-flex flex-column pl-3">
+                    <p class="prenom m-0">{{ user.firstname|default('prénom') }}</p>
+                    <p class="nom m-0">{{ user.lastname|default('nom') }}</p>
+                </div>
+            </div>
+
+            <div class="place m-0 py-2 d-flex align-items-center">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="d-flex flex-column pl-3">
+                    <p class="adress m-0">
+                    {{ user.addresses[0].number }} {{ user.addresses[0].street }}
+                    </p>
+                    <p class="complement m-0">{{ user.addresses[0].additional }}</p>
+                    <div class="d-flex m-0">
+                        <p class="cp m-0">{{ user.addresses[0].cp }}</p>
+                        <p class="ville m-0">{{ user.addresses[0].city }}</p>
+                    </div>
+                    <p class="pays m-0">{{ user.addresses[0].country }}</p>
+                </div>
+            </div>
+
+            <div class="m-0 d-flex justify-content-end">
+                <a class="btn btn-light" href="{{ path('dashboard_user_addresses') }}">
+                    Modifier
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

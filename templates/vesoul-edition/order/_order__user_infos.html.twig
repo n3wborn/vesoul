@@ -1,0 +1,31 @@
+{# User Infos #}
+<div class="info-perso m-0 p-0">
+    <div class="card p-3">
+        <h2 class="mb-3">Informations personnelles</h2>
+
+        <div class="user m-0 py-2 d-flex align-items-center">
+            <i class="fas fa-user"></i>
+            <div class="d-flex flex-column pl-3">
+                <p class="prenom m-0">{{ user.firstname }}</p>
+                <p class="nom m-0">{{ user.lastname }}</p>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <i class="fas fa-envelope"></i>
+            <p class="mail m-0 pl-3 py-2">{{ user.username }}</p>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <i class="fas fa-phone"></i>
+            <p class="phone m-0 pl-3 py-2">{{ user.tel }}</p>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-light"
+                    href="{{ path('dashboard_user_informations') }}">
+                Modifier
+            </a>
+        </div>
+    </div>
+</div>

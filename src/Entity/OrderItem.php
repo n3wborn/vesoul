@@ -98,5 +98,10 @@ class OrderItem
     {
         return $this->getBook()->getPrice() * $this->getQuantity();
     }
+
+    public function __toString(): string
+    {
+        return $this->getBook()->getTitle();
+    }
 }
 

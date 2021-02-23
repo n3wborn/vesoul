@@ -36,11 +36,15 @@ class CartType extends AbstractType
             ->add('items', CollectionType::class)
             ->add('deliveryAddress', EntityType::class, [
                 'class' => Address::class,
+                'label' => 'Livraison',
+                'label_attr' => [
+                    'class' => 'm-0 pb-3 font-weight-bold',
+                ],
                 'choice_label' => function (Address $address){
                     return $address->getTitle();
                 },
-                'query_builder' => function (AddressRepository $adressRepo) use ($user) {
-                    return $adressRepo->createQueryBuilder('a')
+                'query_builder' => function (AddressRepository $addressRepo) use ($user) {
+                    return $addressRepo->createQueryBuilder('a')
                         ->where('a.user = :user')
                         ->setParameter('user', $user)
                     ;
@@ -52,11 +56,15 @@ class CartType extends AbstractType
             ])
             ->add('billAddress', EntityType::class, [
                 'class' => Address::class,
+                'label' => 'Facturation',
+                'label_attr' => [
+                    'class' => 'm-0 pb-3 font-weight-bold',
+                ],
                 'choice_label' => function (Address $address){
                     return $address->getTitle();
                 },
-                'query_builder' => function (AddressRepository $adressRepo) use ($user) {
-                    return $adressRepo->createQueryBuilder('a')
+                'query_builder' => function (AddressRepository $addressRepo) use ($user) {
+                    return $addressRepo->createQueryBuilder('a')
                         ->where('a.user = :user')
                         ->setParameter('user', $user)
                     ;
@@ -64,6 +72,12 @@ class CartType extends AbstractType
                 'attr' => [
                     'class' => 'selectpicker custom-select',
                     'data-style' => 'btn-outline-secondary'
+                ]
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Commander',
+                'attr' => [
+                    'class' => 'btn btn-info w-100'
                 ]
             ])
             ;

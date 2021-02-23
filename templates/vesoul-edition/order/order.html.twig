@@ -1,0 +1,27 @@
+{% extends 'vesoul-edition/base.html.twig' %}
+
+{% block title %}Vesoul Edition - Commande{% endblock %}
+
+{% block content %}
+	{{ form_start(form) }}
+	<div id="commande" class="d-flex p-3 m-0">
+
+		{# Delivery/Billing Addresses #}
+		{{ include('vesoul-edition/order/_order__addresses_infos.html.twig') }}
+
+		{# user infos/Delivery additional infos #}
+		<div class="d-flex flex-column col-4 col-md-4 col-sm-12 m-0 p-3">
+
+			{{ include('vesoul-edition/order/_order__user_infos.html.twig') }}
+
+			{{ include('vesoul-edition/order/_order__delivery_infos_additional.html.twig') }}
+
+		</div>
+
+		{# Items Infos #}
+		{{ include('vesoul-edition/order/_order__items_infos.html.twig') }}
+
+	</div>
+
+	{{ form_end(form, {'render_rest': false}) }}
+{% endblock %}

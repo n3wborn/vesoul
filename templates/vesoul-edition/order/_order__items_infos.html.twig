@@ -1,0 +1,40 @@
+{# items description,quantity,price #}
+<div class="recap d-flex flex-column col-4 col-md-4 col-sm-12 m-0 p-3">
+    <div class="card p-3">
+        <h2 class="mb-3">Récapitulatif</h2>
+
+        <div class="items mt-3">
+
+            {% for item in cart.items %}
+
+            <div class="item d-flex justify-content-between">
+                <p class="w-50">{{ item.book.title }}</p>
+                <p class="w-25 text-center">{{ item.quantity }}</p>
+                <p class="price w-25 text-right">{{ item.book.price|number_format(2, ',') }} €</p>
+                <p class="w-25 text-right m-0">{{ item.total|number_format(2, ',') }} €</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="ss-total py-2 mt-3 d-flex justify-content-between">
+            <p class="w-75 m-0">Sous-Total</p>
+            <p class="w-25 text-right m-0">{{ cart.total|number_format(2, ',') }} €</p>
+        </div>
+
+        <div class="livraison py-2 d-flex justify-content-between">
+            <p class="w-75 m-0">Livraison</p>
+            <p class="w-25 text-right m-0">Gratuite</p>
+        </div>
+
+        <row class="total mt-3 py-2 d-flex justify-content-between">
+        <p class="w-75 m-0">Total</p>
+        <p class="w-25 text-right m-0">{{ total|number_format(2, ',') }} €</p>
+        </row>
+
+        {# cancel/submit #}
+        {{ form_row(form.submit) }}
+
+    </div>
+</div>
