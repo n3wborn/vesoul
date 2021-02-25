@@ -10,9 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class CartManager
 {
 
-    private $cartSessionStorage;
-    private $cartFactory;
-    private $entityManager;
+    private CartSessionStorage $cartSessionStorage;
+    private OrderFactory $cartFactory;
+    private EntityManagerInterface $entityManager;
 
 
     public function __construct(
