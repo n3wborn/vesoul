@@ -6,6 +6,7 @@ use App\Form\ChangePasswordType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AddressRepository;
@@ -35,8 +36,7 @@ class DashboardUserController extends AbstractController
         AddressRepository $addressRepo,
         OrderRepository $orderRepo,
         CartManager $cartManager
-    )
-    {
+    ) {
         $this->em = $em;
         $this->encoder = $encoder;
         $this->addressRepo = $addressRepo;
@@ -50,6 +50,8 @@ class DashboardUserController extends AbstractController
      * From here he can show and update his infos/password
      *
      * @Route("/accueil", name="dashboard_user_home")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function home(Request $request)
     {
@@ -70,12 +72,15 @@ class DashboardUserController extends AbstractController
         $changePassword->handleRequest($request);
 
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
-            $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
+            $user->setPassword($this->encoder
+                                    ->encodePassword(
+                                        $user,
+                                        $changePassword->get('newPassword')->getData())
+            );
             $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
             return $this->redirectToRoute('dashboard_user_home');
         }
-
 
         // render default template
         return $this->render('dashboard-user/mon-compte.html.twig', [
@@ -89,12 +94,13 @@ class DashboardUserController extends AbstractController
 
 
     /**
-     * TODO: Suppress this route (same as user home page)
-     *       or make useful
+     * TODO: Suppress this route (same as user home page) or make useful
      * Connected User home Infos page
      * From here he can show and update his infos/password
      *
      * @Route("/informations", name="dashboard_user_informations")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function showInformations(Request $request)
     {
@@ -124,7 +130,10 @@ class DashboardUserController extends AbstractController
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
 
             // persist password update in db and show success message
-            $user->setPassword($this->encoder->encodePassword($user, $changePassword->get('newPassword')->getData()));
+            $user
+                ->setPassword($this->encoder
+                ->encodePassword($user,
+                    $changePassword->get('newPassword')->getData()));
             $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
 
@@ -163,9 +172,9 @@ class DashboardUserController extends AbstractController
         if ($formNew->isSubmitted()) {
 
             $newAddress->setCity(ucfirst($newAddress->getCity()))
-                ->setCountry(strtoupper($newAddress->getCountry()))
-                ->setFirstname(ucfirst($newAddress->getFirstname()))
-                ->setLastname(ucfirst($newAddress->getLastname()));
+                       ->setCountry(strtoupper($newAddress->getCountry()))
+                       ->setFirstname(ucfirst($newAddress->getFirstname()))
+                       ->setLastname(ucfirst($newAddress->getLastname()));
             $newAddress->setUser($user);
 
             $this->em->persist($newAddress);
@@ -204,15 +213,15 @@ class DashboardUserController extends AbstractController
         if ($address->getUser() === $user) {
 
             $address->setTitle(ucfirst($data['title']))
-                ->setFirstname(ucfirst($data['firstname']))
-                ->setLastname(ucfirst($data['lastname']))
-                ->setNumber($data['number'])
-                ->setType($data['type'])
-                ->setCp($data['cp'])
-                ->setCity(ucfirst($data['city']))
-                ->setCountry(ucfirst($data['country']))
-                ->setAdditional($data['additional'])
-            ;
+                    ->setFirstname(ucfirst($data['firstname']))
+                    ->setLastname(ucfirst($data['lastname']))
+                    ->setNumber($data['number'])
+                    ->setType($data['type'])
+                    ->setCp($data['cp'])
+                    ->setCity(ucfirst($data['city']))
+                    ->setCountry(ucfirst($data['country']))
+                    ->setAdditional($data['additional'])
+                ;
 
             $this->em->flush();
 

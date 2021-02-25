@@ -42,8 +42,7 @@ class DashboardAdminController extends AbstractController
         ImageRepository $imageRepo,
         AuthorRepository $authorRepo,
         OrderRepository $orderRepo
-    )
-    {
+    ) {
         $this->manager = $manager;
         $this->repoBook = $repoBook;
         $this->imageRepo = $imageRepo;
@@ -55,19 +54,16 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/accueil", name="dashboard_admin_home")
-     * Dashboard admin Home
      */
-    public function home()
+    public function home(): Response
     {
         return $this->render('dashboard-admin/home.html.twig');
     }
 
-
-
     /**
      * @Route("/livres", name="dashboard_admin_livres")
      */
-    public function books()
+    public function books(): Response
     {
         $criteria = Criteria::create()
             ->orderBy(['year' => 'DESC'])
@@ -82,11 +78,14 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/livres/new", name="admin_add_book")
+     *
+     * @param Request $request
+     * @return Response
      */
     public function addBook(Request $request) : Response
     {
-        $book = new Book(); // Create the book
-        $form = $this->createForm(BookType::class, $book); //Create the form
+        $book = new Book();
+        $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
@@ -106,14 +105,15 @@ class DashboardAdminController extends AbstractController
                         $file
                     );
                 } catch (FileException $e) {
-                    // TODO: handle catched error message
+                    // TODO: handle caught error message
                     $e->getMessage();
                 }
 
                 // link image file to an Image object
                 $img = new Image();
                 $img->setName($file);
-                $img->setUrl($this->getParameter('images_directory') . '/' . $file);
+                $img->setUrl($this
+                    ->getParameter('images_directory') . '/' . $file);
 
                 // and link it with book
                 $book->addImage($img);
@@ -121,8 +121,9 @@ class DashboardAdminController extends AbstractController
 
             $this->manager->persist($book); // persist
             $this->manager->flush();        // save in db
-            $this->addFlash('success', 'Envoi OK');         // show success message
-            return $this->redirectToRoute('admin_add_book');    // TODO: Where to redirect once done??
+            $this->addFlash('success', 'Envoi OK');
+            // TODO: Where to redirect once done??
+            return $this->redirectToRoute('admin_add_book');
         }
 
         return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
@@ -134,15 +135,22 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/livres/delete/{id}", name="admin_delete_book", methods={"POST"})
+     *
      * @param Book $book
      * @return Response
      */
     public function removeBook(Book $book): Response
     {
-        $bookID = $this->manager->getRepository(Book::class)->find($book);
+        $bookID = $this->manager
+                       ->getRepository(Book::class)
+                       ->find($book)
+                   ;
 
         if (!$bookID) {
-            return new Response("Internal Server Error", Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new Response(
+                "Internal Server Error",
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
         // fetch image collection from this book
@@ -151,12 +159,13 @@ class DashboardAdminController extends AbstractController
         // remove each one
         foreach ($images as $image) {
             $filename = $image->getName();
-            $file = $this->getParameter('images_directory') . '/' .$filename;
+            $file = $this
+                ->getParameter('images_directory') . '/' .$filename;
 
             if (is_file($file)) {
                 unlink($file);
             }
-       }
+        }
 
         // and modify/persist all this in database
         $this->manager->remove($book);
@@ -168,6 +177,7 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/livres/edit/{id} ", name="admin_edit_book")
+     *
      * @param Book $book
      * @param Request $request
      * @return RedirectResponse|Response
@@ -181,16 +191,14 @@ class DashboardAdminController extends AbstractController
         // find which book we're editing
         $img_collection = $this->imageRepo->findBy(['book' => $book]);
 
-
         // if valid form submission
-        if($form->isSubmitted() && $form->isValid()){
-
+        if ($form->isSubmitted() && $form->isValid()) {
 
             // get uploaded images
             $images = $form->get('images')->getData();
 
             // For each image uploaded
-            foreach($images as $image){
+            foreach ($images as $image){
                 // rename with uniq id
                 $file = md5(uniqid()) . '.' . $image->guessExtension();
 
@@ -201,22 +209,24 @@ class DashboardAdminController extends AbstractController
                         $file
                     );
                 } catch (FileException $e) {
-                    // TODO: handle FileException error message
-                    $e->getMessage();
+                    $this->addFlash('error', $e->getMessage());
                 }
 
-                // Instanciate a new Image with corresponding spec's and link it to book entity
+                // Instanciate a new Image with corresponding spec's and link it
+                // to book entity
                 $img = new Image();
                 $img->setName($file);
-                $img->setUrl($this->getParameter('images_directory') . '/' . $file);
+                $img->setUrl($this
+                    ->getParameter('images_directory') . '/' . $file);
                 $book->addImage($img);
             }
 
             // update book entity in db
             $this->manager->persist($book);
             $this->manager->flush();
+
             // TODO: replace addFlash with Bootstrap toasts
-            $this->addFlash('success', 'Modification effectuée OK');
+            $this->addFlash('success', 'Modification effectuée');
             return $this->redirectToRoute('dashboard_admin_livres');
         }
 
@@ -230,21 +240,29 @@ class DashboardAdminController extends AbstractController
 
 
     /**
-     * @Route("/image/delete/{id}", name="book_delete_image", methods={"GET|DELETE"})   // GET needed for Symfo debug
+     * @Route("/image/delete/{id}", name="book_delete_image", methods={"DELETE"})
+     *
+     * @param Image $image
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function deleteImage(Image $image, Request $request) {
-
+    public function deleteImage(Image $image, Request $request): JsonResponse
+    {
         // json decode the request
         $data = json_decode($request->getContent(), true);
 
         // if csrf is ok...
-        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
-
+        if ($this->isCsrfTokenValid(
+            'delete'.$image->getId(),
+            $data['_token']
+        )) {
             // get image filename
             $file = $image->getName();
 
             // remove file
-            unlink($this->getParameter('images_directory').'/'.$file);
+            unlink($this->getParameter(
+                'images_directory') . '/' . $file
+            );
 
             // keep modifications in db
             $em = $this->getDoctrine()->getManager();
@@ -252,20 +270,24 @@ class DashboardAdminController extends AbstractController
             $em->flush();
 
             // send success message
-            // Todo: add bootsrap toast
+            // Todo: add bootstrap toast
             return new JsonResponse([
                 'success' => 1
             ], 200);
 
-        // if csrf is not a valid one, send error message accordingly
-        // TODO: add bootstrap toast
+            // if csrf is not a valid one, send error message accordingly
+            // TODO: add bootstrap toast
         } else {
             return new JsonResponse(['error' => 'Token Invalide'], 400);
         }
     }
 
+
     /**
      * @Route("/author/new", name="admin_add_auteur", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
     public function authorNew(Request $request): JsonResponse
     {
@@ -273,8 +295,7 @@ class DashboardAdminController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // if addauthor csrf is ok...
-
-        if($this->isCsrfTokenValid('addauthor', $data['_token'])){
+        if ($this->isCsrfTokenValid('addauthor', $data['_token'])) {
 
             // try to add an author in db
             try {
@@ -294,7 +315,7 @@ class DashboardAdminController extends AbstractController
                     'author_id' => $author->getId()
                 ], 200);
 
-            // say if something went wrong
+                // say if something went wrong
             } catch (Exception $e) {
                 return new JsonResponse([
                     'error' => $e
@@ -302,7 +323,7 @@ class DashboardAdminController extends AbstractController
                 ]);
             }
 
-        // invalid token is a bad thing !
+            // invalid token is a bad thing !
         } else {
             return new JsonResponse([
                 'error' => 'csrf token invalid'
@@ -314,6 +335,9 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/genre/new", name="admin_add_genre", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
     public function genreNew(Request $request): JsonResponse
     {
@@ -394,10 +418,11 @@ class DashboardAdminController extends AbstractController
 
     /**
      * @Route("/factures/imprimer/{id}", name="dashboard_admin_print_bill")
+     *
      * @param Order $order
-     * @param OrderRepository $repo
+     * @return RedirectResponse
      */
-    public function printBill(Order $order)
+    public function printBill(Order $order): RedirectResponse
     {
         $ref = $order->getId();
 
@@ -430,19 +455,22 @@ class DashboardAdminController extends AbstractController
 
 
     /**
+     * @TODO Remove/Update this old remaining thing
+     *  (no more admin entity/repo and... whatever, this must be removed)
+     *
      * @Route("/boutique", name="dashboard_admin_boutique")
      * @param Request $request
      * @return RedirectResponse|Response
      */
     public function info(Request $request)
     {
-        $toggle = false;
+
         if ($request->get('id') != null) {
             $toggle = $request->get('id');
             $info = $this->adminRepo->findBy(['id' => $request->get('id')]);
             $info = $this->getDoctrine()
-                ->getRepository(Admin::class)
-                ->find($request->get('id'));
+                         ->getRepository(Admin::class)
+                         ->find($request->get('id'));
         } else {
             $info = new Admin();
         }
@@ -466,40 +494,14 @@ class DashboardAdminController extends AbstractController
     }
 
 
-
     /**
      * @Route("/mentions", name="dashboard_admin_mentions")
      */
-    public function mentions()
+    public function mentions(): Response
     {
         return $this->render('dashboard-admin/mentions.html.twig', [
             'title' => 'Mentions légales',
         ]);
     }
 
-
-    /**
-     * @Route("/bill/{id}", name="test_bill")
-     * @param Order $order
-     * @return Response
-     */
-    public function testFacture(Order $order)
-    {
-
-        // dump($order);
-        $reference = $order->getOrderRef();
-        $date = $order->getDate();
-
-        // Titre et prix des livres
-        foreach ($order->getItems() as $item) {
-            $title = $item->getTitle();
-            $price = $item->getPrice();
-            $quantity = $item->getQuantity();
-        }
-
-
-        return $this->render('bill/bill.html.twig', [
-            'reference' => $reference,
-        ]);
-    }
 }

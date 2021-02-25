@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,8 +31,7 @@ class SecurityController extends AbstractController
         Swift_Mailer $mailer,
         EntityManagerInterface $manager,
         CartManager $cartManager
-    )
-    {
+    ) {
         $this->authenticationUtils = $authenticationUtils;
         $this->encoder = $encoder;
         $this->mailer = $mailer;
@@ -72,6 +72,8 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/inscription", name="registration")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function registration(Request $request)
     {

@@ -34,8 +34,7 @@ class VesoulEditionController extends AbstractController
         AddressRepository $addressRepo,
         CartManager $cartManager,
         OrderFactory $orderFactory
-    )
-    {
+    ) {
         $this->bookRepo = $bookRepo;
         $this->genreRepo = $genreRepo;
         $this->authorRepo = $authorRepo;
@@ -47,7 +46,7 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home()
+    public function home(): Response
     {
         $cart = $this->cartManager->getCurrentCart();
         $genres = $this->genreRepo->findAll();
@@ -66,10 +65,13 @@ class VesoulEditionController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/home/search/bytitle/{searchValue}", name="search-bytitle")
+     * @param string $searchValue
+     * @return Response
      */
-    public function searchByTitle(string $searchValue) {
+    public function searchByTitle(string $searchValue): Response
+    {
 
         $books = [];
 
@@ -94,10 +96,13 @@ class VesoulEditionController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/home/search/ajax/{searchValue}", name="search-autocomplete")
+     * @param string $searchValue
+     * @return Response
      */
-    public function autocomplete(string $searchValue) {
+    public function autocomplete(string $searchValue): Response
+    {
 
         $books = [];
 
@@ -126,8 +131,11 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/home/load", name="load-home")
+     * @param Request $request
+     * @return Response
      */
-    public function homeload(Request $request) {
+    public function homeload(Request $request): Response
+    {
 
         $page = $request->get('page');
         $orderBy = $request->get('orderBy');
@@ -221,8 +229,10 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-    * @Route("/descYear", name="sortByDescYear")
-    */
+     * @Route("/descYear", name="sortByDescYear")
+     * @param BookRepository $bookRepo
+     * @return JsonResponse
+     */
     public function sortByDescYear(BookRepository $bookRepo) : JsonResponse
     {
         $books = $bookRepo->findAllBooksByDescYear();
@@ -243,8 +253,10 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/add/{id}", name="addItem")
+     * @param Book $book
+     * @return RedirectResponse
      */
-    public function addItem(Book $book)
+    public function addItem(Book $book): RedirectResponse
     {
         // get current/new cart
         $cart = $this->cartManager->getCurrentCart();
@@ -264,8 +276,10 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajax/add/{id}", name="ajaxAddItem")
+     * @param Book $book
+     * @return Response
      */
-    public function ajaxAddItem(Book $book)
+    public function ajaxAddItem(Book $book): Response
     {
         // get current/new cart
         $cart = $this->cartManager->getCurrentCart();
@@ -283,8 +297,10 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajax/reduce/{id}", name="ajaxReduceItem")
+     * @param Book $book
+     * @return Response
      */
-    public function reduceAjaxItem(Book $book)
+    public function reduceAjaxItem(Book $book): Response
     {
         // get current cart and items
         $cart = $this->cartManager->getCurrentCart();
@@ -308,8 +324,10 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/reduce/{id}", name="reduceItem")
+     * @param Book $book
+     * @return Response
      */
-    public function reduceItem(Book $book)
+    public function reduceItem(Book $book): Response
     {
         // get current cart and items
         $cart = $this->cartManager->getCurrentCart();
@@ -333,8 +351,10 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajax/delete/{id}", name="ajaxDeleteItem")
+     * @param Book $book
+     * @return Response
      */
-    public function ajaxDeleteItem(Book $book)
+    public function ajaxDeleteItem(Book $book): Response
     {
         // get current cart and items
         $cart = $this->cartManager->getCurrentCart();
@@ -359,6 +379,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/delete/{id}", name="deleteItem")
+     * @param Book $book
+     * @return RedirectResponse|Response
      */
     public function deleteItem(Book $book)
     {
@@ -386,6 +408,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/product/{id}", name="product")
+     * @param Book $book
+     * @return Response
      */
     public function showProduct(Book $book): Response
     {
@@ -401,6 +425,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/vider", name="cartEmpty")
+     * @param Request $request
+     * @return Response
      */
     public function emptyCart(Request $request): Response
     {
@@ -426,7 +452,7 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/panier", name="cart")
      */
-    public function showCart()
+    public function showCart(): Response
     {
         // get cart infos
         $cart = $this->cartManager->getCurrentCart();
@@ -478,6 +504,7 @@ class VesoulEditionController extends AbstractController
         // if form is ok ~> go on
         if ($form->isSubmitted() && $form->isValid()) {
             $cart->setUpdatedAt(new \DateTime());
+            $this->orderFactory->submit($cart);
             $this->cartManager->save($cart);
             // - Show every Items
             // - Let user choose delivery/billing address
@@ -505,8 +532,9 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/confirmation", name="showConfirmation")
      */
-    public function showConfirmation()
+    public function showConfirmation(): Response
     {
+
         return $this->render('vesoul-edition/confirmation.html.twig', [
             'controller_name' => 'FrontController',
         ]);
