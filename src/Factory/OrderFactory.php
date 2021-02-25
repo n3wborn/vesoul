@@ -25,7 +25,8 @@ class OrderFactory
         $order
             ->setStatus(Order::STATUS_CART)
             ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setUpdatedAt(new \DateTime())
+        ;
 
         return $order;
     }
@@ -44,5 +45,20 @@ class OrderFactory
 
         return $item;
     }
-}
 
+    /**
+     * Submit an order
+     *
+     * @param Order $order
+     * @return Order
+     */
+    public function submit(Order $order): Order
+    {
+        $order
+            ->setStatus(Order::STATUS_NEW_ORDER)
+            ->setUpdatedAt(new \DateTime())
+        ;
+
+        return $order;
+    }
+}
