@@ -42,11 +42,25 @@ class Order
     private $updatedAt;
 
     /**
-     * An order that is in progress, not placed yet.
+     * An order in progress, is a "cart"
      *
      * @var string
      */
     const STATUS_CART = 'cart';
+
+    /**
+     * A cart, once validated, becomes an "new" order
+     *
+     * @var string
+     */
+    const STATUS_NEW_ORDER = 'new';
+
+    /**
+     * An order, once payed, becomes "fulfilled"
+     *
+     * @var string
+     */
+    const STATUS_ORDER_FULLFILLED = 'fulfilled';
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
@@ -63,6 +77,12 @@ class Order
      */
     private $billAddress;
 
+    /**
+     * Possible delivery instructions
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $delivery_instructions;
 
 
     public function __construct()
@@ -237,5 +257,14 @@ class Order
         return $this;
     }
 
-}
+    public function getDeliveryInstructions(): ?string
+    {
+        return $this->delivery_instructions;
+    }
 
+    public function setDeliveryInstructions(?string $delivery_instructions): void
+    {
+        $this->delivery_instructions = $delivery_instructions;
+    }
+
+}
