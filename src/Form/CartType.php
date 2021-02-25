@@ -89,6 +89,7 @@ class CartType extends AbstractType
             ->add('delivery_instructions', TextareaType::class, [
                 'label' => false,
                 'required'   => false,
+                'empty_data' => "",
                 'attr' => [
                     'class' => 'mt-2 w-100',
                     'placeholder' => 'Indiquez ici vos instructions ...'
