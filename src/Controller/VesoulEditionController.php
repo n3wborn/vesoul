@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\Order;
 use App\Manager\CartManager;
 use App\Factory\OrderFactory;
 use App\Form\CartType;
@@ -503,6 +504,7 @@ class VesoulEditionController extends AbstractController
 
         // if form is ok ~> go on
         if ($form->isSubmitted() && $form->isValid()) {
+            $cart->setUser($user);
             $cart->setUpdatedAt(new \DateTime());
             $this->orderFactory->submit($cart);
             $this->cartManager->save($cart);

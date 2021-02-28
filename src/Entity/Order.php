@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
  * @ORM\Table(name="`order`")
  */
 class Order
@@ -69,18 +67,20 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_deliveryAddress")
+     * @ORM\JoinColumn(name="deliveryAddress_id", referencedColumnName="id", nullable=true)
      */
-    private $deliveryAddress;
+    private Address $deliveryAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_billAddress")
+     * @ORM\JoinColumn(name="billAddress_id", referencedColumnName="id", nullable=true)
      */
-    private $billAddress;
+    private Address $billAddress;
 
     /**
      * Possible delivery instructions
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $delivery_instructions;
 
