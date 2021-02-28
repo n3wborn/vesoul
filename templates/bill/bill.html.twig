@@ -1,115 +1,127 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Facture {{ commandNumero }}-IT</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>Facture {{ order.id }}-IT</title>
 
-    <style type="text/css">
-        * {
-            font-family: Verdana, Arial, sans-serif;
-        }
+        <style type="text/css">
 
-        table {
-            font-size: x-small;
-        }
+            * {
+                font-family: Verdana, Arial, sans-serif;
+            }
 
-        tfoot tr td {
-            font-weight: bold;
-            font-size: x-small;
-        }
-        .gray{
-            background-color: rgb(228, 228, 228);
-        }
+            table {
+                font-size: x-small;
+            }
 
-        .lightgray {
-            background-color: lightgray;
-        }
-    </style>
+            tfoot tr td {
+                font-weight: bold;
+                font-size: x-small;
+            }
+            .gray{
+                background-color: rgb(228, 228, 228);
+            }
 
-</head>
+            .lightgray {
+                background-color: lightgray;
+            }
 
-<body>
+        </style>
 
-    <table width="100%">
-        <tr>
-            <td valign="top"><h1><strong>Facture {{ commandNumero }}-IT</strong></h1></td>
-            <td align="right">
-                <h3>Vesoul Edition</h3>
-                <pre>
+    </head>
+
+    <body>
+
+        <table width="100%">
+            <tr>
+                <td valign="top"><h1><strong>Facture {{ order.id }}-IT</strong></h1></td>
+                <td align="right">
+                    <h3>Vesoul Edition</h3>
+                    <pre>
                 70000 Vesoul
                 France
-            </pre>
-                <pre>
+                    </pre>
+                    <pre>
                 06 99 65 86 00
                 vesouledition@sfr.fr
-            </pre>
-            </td>
-        </tr>
-
-    </table>
-
-    <br />
-
-    <table width="100%">
-        <tr>
-            <td><strong>Adresse de facturation :</strong></td>
-            <td><strong>Adresse de livraison :</strong></td>
-        </tr>
-        <tr>
-            <td>
-                <pre>
-                    {{ afPrenom }} {{ afNom }}
-                    {{ afNumero }} {{ afType }} {{ afRue }}{% if afComplement %}, {{ afComplement }}{% endif %},
-                    {{ afVille }} {{ afCp }}, {{ afPays }}
-                </pre>
-            </td>
-            <td>
-                <pre>
-                    {{ alPrenom }} {{ alNom }}
-                    {{ alNumero }} {{ alType }} {{ alRue }}{% if alComplement %}, {{ alComplement }}{% endif %},
-                    {{ alVille }} {{ alCp }}, {{ alPays }}
-                </pre>
-            </td>
-        </tr>
-
-    </table>
-
-    <br />
-    <br />
-    <br />
-
-    <table width="100%">
-        <thead class="lightgray">
-            <tr>
-                <th>ISBN</th>
-                <th>Titre</th>
-                <th>Quantité</th>
-                <th>Prix unitaire €</th>
-                <th>Total €</th>
+                    </pre>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for livre in livres %}
+
+        </table>
+
+        <br />
+
+        <table width="100%">
+
             <tr>
-                <th scope="row">{{ livre[0] }}</th>
-                <td class="gray">{{ livre[1] }}</td>
-                <td align="right">1</td>
-                <td class="gray" align="right"> {{ livre[2] }} </td>
-                <td align="right">{{ livre[2] * 1 }}</td>
+                <td><strong>Adresse de facturation :</strong></td>
+                <td><strong>Adresse de livraison :</strong></td>
             </tr>
-            {% endfor %}
-        </tbody>
 
-        <tfoot>
             <tr>
-                <td colspan="3"></td>
-                <td align="right">Total €</td>
-                <td align="right" class="lightgray">{{ prixTotal }}</td>
+                <td>
+                    <pre>
+                {% for info in order.billAddress %}
+                    {{ info.firstname }} {{ info.lastname }}
+                    {{ info.number }} {{ info.type|default('') }} {{ info.street }}
+                    {{ info.cp }} {{ info.city }}
+                    {{ info.country }}
+                {% endfor %}
+                    </pre>
+                </td>
+                <td>
+                    <pre>
+                {% for info in order.deliveryAddress %}
+                    {{ info.firstname }} {{ info.lastname }}
+                    {{ info.number }} {{ info.type|default('') }} {{ info.street }}
+                    {{ info.cp }} {{ info.city }}
+                    {{ info.country }}
+                {% endfor %}
+                    </pre>
+                </td>
             </tr>
-        </tfoot>
-    </table>
 
-</body>
+        </table>
 
+        <br />
+        <br />
+        <br />
+
+        <table width="100%">
+
+            <thead class="lightgray">
+                <tr>
+                    <th>ISBN</th>
+                    <th>Titre</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in order.items %}
+                <tr>
+                    <th scope="row">{{ item.book.isbn }}</th>
+                    <td class="gray">{{ item.book.isbn }}</td>
+                    <td align="right">{{ item.quantity }}</td>
+                    <td class="gray" align="right"> {{ item.book.price }} </td>
+                    <td align="right">{{ item.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                    <td align="right">Total €</td>
+                    <td align="right" class="lightgray">{{ order.total }}</td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </body>
 </html>
