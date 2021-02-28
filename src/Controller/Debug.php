@@ -11,6 +11,11 @@ use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class Debug
+ * @package App\Controller
+ * @Route("/debug", name="debug")
+ */
 class Debug extends AbstractController
 {
 
@@ -54,12 +59,17 @@ class Debug extends AbstractController
 
 
     /**
-     * @Route("/bill/{id}", name="test_bill")
-     * @param Order $order
+     * @Route("/bill", name="test_bill")
      * @return Response
      */
-    public function testBill(Order $order): Response
+    public function testBill(): Response
     {
+        $order = $this->getDoctrine()
+            ->getRepository(Order::class)
+            ->findOneBy([])
+        ;
+
+        dd($order);
 
         return $this->render('bill/bill.html.twig', [
             'order' => $order,
