@@ -2,14 +2,12 @@
 namespace App\DataFixtures;
 
 use DateTime;
-use DateTimeImmutable;
 use Faker\Factory;
 use App\Entity\Book;
 use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Author;
 use App\Entity\Address;
-use App\Entity\Command;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -116,44 +114,6 @@ class UserFixtures extends Fixture
         ->addBook($book2)
         ->addBook($book3);
         $this->entityManager->persist($author2);
-        // ===== Commands ======================================================
-        $command1 = new Command();
-
-        $command1->setDate(new DateTimeImmutable())
-        ->setNumber("8657185758")
-        ->setQuantity(2)
-        ->setTotalcost(44.0)
-        ->setState("en cours")
-        ->addBook($book2)
-        ->addBook($book1);
-        $this->entityManager->persist($command1);
-        // ------------------------------------------
-        $command2 = new Command();
-
-        // $entityManager->flush();
-
-        $command2->setDate(new DateTimeImmutable())
-        ->setNumber("8917186412")
-        ->setQuantity(3)
-        ->setTotalcost(22.0)
-        ->setState("expédié")
-        ->addBook($book1)
-        ->addBook($book2)
-        ->addBook($book3);
-
-        $this->entityManager->persist($command2);
-        // ------------------------------------------
-        $command3 = new Command();
-        $command3->setDate(new DateTimeImmutable())
-        ->setNumber("8917186412")
-        ->setQuantity(3)
-        ->setTotalcost(22.0)
-        ->setState("expédié")
-        ->addBook($book1)
-        ->addBook($book2)
-        ->addBook($book3);
-
-        $this->entityManager->persist($command3);
         // ===== Adresses ======================================================
         $address1 = new Address();
         $address1->setNumber("2")
@@ -166,8 +126,7 @@ class UserFixtures extends Fixture
         ->setTitle("Maison")
         ->setFirstname("Jean")
         ->setLastname("Pierre")
-        ->addCommandFacturation($command3)
-        ->addCommandLivraison($command3);
+        ;
 
         $this->entityManager->persist($address1);
         // -----------------------------------------
@@ -182,8 +141,8 @@ class UserFixtures extends Fixture
         ->setTitle("Bureau")
         ->setFirstname("Jean")
         ->setLastname("Pierre")
-        ->addCommandFacturation($command1)
-        ->addCommandLivraison($command2);
+        ;
+
         $this->entityManager->persist($address2);
         // ----------------------------------------
         $address3 = new Address();
@@ -196,8 +155,7 @@ class UserFixtures extends Fixture
         ->setTitle("Voisin")
         ->setFirstname("Thomas")
         ->setLastname("Dujardin")
-        ->addCommandFacturation($command2)
-        ->addCommandLivraison($command1);
+        ;
 
         $this->entityManager->persist($address3);
 
@@ -213,21 +171,17 @@ class UserFixtures extends Fixture
          ->setPassword($hash)
          ->setGender('homme')
          ->setBirth(new DateTime())
-         ->addCommand($command1)
-         ->addCommand($command2)
-         ->addCommand($command3)
          ->addAddress($address1)
          ->addAddress($address2)
          ->addAddress($address3)
          ;
 
         $this->entityManager->persist($user);
+
         $this->entityManager->flush();
 
 
-
         // ===== Admin ======================================================
-
 
         $adminAddress = new Address();
 
