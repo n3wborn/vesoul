@@ -534,11 +534,24 @@ class VesoulEditionController extends AbstractController
     /**
      * @Route("/confirmation", name="showConfirmation")
      */
-    public function showConfirmation(): Response
+    public function showConfirmation(Security $security): Response
     {
+        // get last user's order
+        $order = $this->getDoctrine()->getRepository(Order::class)->findOneBy([
+            'user' => $security->getUser(),
+            'status' => 'new'   
+        ],
+        [
+            'id' => 'DESC'
+        ],
+            1,0
+        );
 
+
+        // render last order infos/confirmation
         return $this->render('vesoul-edition/confirmation.html.twig', [
             'controller_name' => 'FrontController',
+            'order' => $order
         ]);
     }
 }
