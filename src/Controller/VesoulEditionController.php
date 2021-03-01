@@ -370,11 +370,10 @@ class VesoulEditionController extends AbstractController
 
                 // Return Ok
                 return new Response(Response::HTTP_OK);
-            } else {
-                // Return 302 if $book not in cart
-                return new Response("Book not in cart", Response::HTTP_FOUND);
             }
         }
+        // Return 302 if $book not in cart
+        return new Response("Book not in cart", Response::HTTP_FOUND);
     }
 
 
@@ -396,14 +395,12 @@ class VesoulEditionController extends AbstractController
                 $cart->removeItem($item);
                 $this->cartManager->save($cart);
 
-                // Refresh cart page
-                return $this->redirectToRoute('cart');
-            } else {
-                // Return 302 if $book not in cart
-                return new Response("Book not in cart", Response::HTTP_FOUND);
+                // Return Ok
+                return new Response(Response::HTTP_OK);
             }
         }
-
+        // Return 302 if $book not in cart
+        return new Response("Book not in cart", Response::HTTP_FOUND);
     }
 
 
@@ -540,8 +537,7 @@ class VesoulEditionController extends AbstractController
         $order = $this->getDoctrine()->getRepository(Order::class)->findOneBy([
             'user' => $security->getUser(),
             'status' => 'new'   
-        ],
-        [
+        ],[
             'id' => 'DESC'
         ],
             1,0
