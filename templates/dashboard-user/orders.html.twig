@@ -4,60 +4,61 @@
 
 {% block content %}
 
-    <div id="compte-page" class="pt-4 pb-4 d-flex">
+<div id="compte-page" class="pt-4 pb-4 d-flex">
 
-        {% include 'dashboard-user/_nav_user_infos.html.twig' %}
+    {% include 'dashboard-user/_nav_user_infos.html.twig' %}
 
-        <div id="commandes-compte" class="col-9 d-flex justify-content-center">
+    <div id="commandes-compte" class="col-9 d-flex justify-content-center">
 
-            <div class="wrapper-commandes d-flex align-items-center flex-column ml-3">
+        <div class="wrapper-commandes d-flex align-items-center flex-column ml-3">
 
-                <div class="title-wrapper">
-                    <div class="title-compte">
-                        <h2>Mes commandes</h2>
-                    </div>
+            <div class="title-wrapper">
+                <div class="title-compte">
+                    <h2>Mes commandes</h2>
                 </div>
-
-                <div class="row commandes-header w-100">
-                    <div class="col-2">N°</div>
-                    <div class="col-2">Date</div>
-                    <div class="col-2">Quantité</div>
-                    <div class="col-2">Montant TTC</div>
-                    <div class="col-2">Statut</div>
-                </div>
-
-
-                {% for order in orders %}
-
-                    <div class="table-commandes w-100 d-flex justify-content-center">
-
-                        <div class="row commandes-tableau w-100">
-                            <div class="col-2">{{ order.number }}</div>
-                            <div class="col-2">{{ order.date | date('d/m/Y') }}</div>
-                            <div class="col-2">{{ order.quantity }}</div>
-                            <div class="col-2">{{ order.totalcost }} €</div>
-                            <div class="col-2 {{ order.state == "en cours" ? "orange" : "green" }}">{{ order.state }}</div>
-                            <div class="col-2">
-                                <button type="button" class="btn"
-                                        data-toggle="modal"
-                                        data-target="#modal-order-{{ order.number }}">
-                                            <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {% include 'dashboard-user/_modal_order_infos.html.twig' %}
-
-                {% endfor %}
-
             </div>
 
+            <div class="row commandes-header w-100">
+                <div class="col-2">N°</div>
+                <div class="col-2">Date</div>
+                <div class="col-2">Quantité</div>
+                <div class="col-2">Montant TTC</div>
+                <div class="col-2">Statut</div>
+            </div>
+
+            {% for order in orders %}
+
+            <div class="table-commandes w-100 d-flex justify-content-center">
+
+                <div class="row commandes-tableau w-100">
+                    <div class="col-2">{{ order.id }}</div>
+                    <div class="col-2">{{ order.createdAt|date('d/m/Y') }}</div>
+                    <div class="col-2">{{ order.items|length }}</div>
+                    <div class="col-2">{{ order.total }} €</div>
+                    <div class="col-2 {{ order.status == "new" ? "orange" : "green" }}">
+                        {{ order.status == "new" ? "en attente" : "envoyée" }} 
+                    </div>
+                    <div class="col-2">
+                        <button type="button" 
+                                class="btn"
+                                data-toggle="modal"
+                                data-target="#modal-order-{{ order.id }}">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            
+            {% include 'dashboard-user/_modal_order_infos.html.twig' %}
+
+            {% endfor %}
 
         </div>
 
+
     </div>
 
+</div>
 
 {% endblock %}

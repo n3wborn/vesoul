@@ -274,15 +274,17 @@ class DashboardUserController extends AbstractController
     public function showOrders(): Response
     {
         $user = $this->getUser();
-        $addresses = $this->addressRepo->findBy(['user' => $user]);
-        $cart = $this->cartManager->getCurrentCart();
-        $orders = $this->orderRepo->findBy(['user' => $user]);
+        $orders = $this->orderRepo->findBy([
+            'user' => $user,
+            'status' => [
+                'fullfiled',
+                'new'
+            ]
+        ]);
 
         return $this->render('dashboard-user/orders.html.twig', [
             'user' => $user,
-            'addresses' => $addresses,
-            'cart' => $cart,
-            'orders' => $orders,
+            'orders' => $orders
         ]);
     }
 
