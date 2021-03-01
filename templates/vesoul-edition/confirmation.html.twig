@@ -37,7 +37,7 @@
                 </div>
                 <div class="m-0 pt-3 d-flex justify-content-between">
                     <p class="m-0">Total</p>
-                    <p class="m-0">{{ order.total }} €</p>
+                    <p class="m-0">{{ order.total }} &euro;</p>
                 </div>
                 <div class="m-0 pt-3 d-flex justify-content-between">
                     <p class="m-0">Paiement</p>
@@ -121,13 +121,13 @@
                                 <tr>
                                     <td class="pl-4">{{ item.book.title }}</th>
                                     <td class="text-center">{{ item.quantity }}</td>
-                                    <td class="text-right pr-4">{{ item.total }} €</td>
+                                    <td class="text-right pr-4">{{ item.total }} &euro;</td>
                                 </tr>
                             {% endfor %} 
                             
                             <tr>
                                 <td class="pl-4" colspan="2">Sous total</td>
-                                <td class="text-right pr-4">{{ order.total }} €</td>
+                                <td class="text-right pr-4">{{ order.total }} &euro;</td>
                             </tr>
                             <tr>
                                 <td class="pl-4" colspan="2">Livraison</td>
@@ -135,7 +135,7 @@
                             </tr>
                             <tr>
                                 <td class="pl-4" colspan="2">Total</td>
-                                <td class="text-right pr-4">{{ order.total }} €</td>
+                                <td class="text-right pr-4">{{ order.total }} &euro;</td>
                             </tr>
                         </tbody>
                     </table>

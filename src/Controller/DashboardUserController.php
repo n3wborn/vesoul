@@ -15,6 +15,7 @@ use App\Form\AddAddressesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Address;
+use App\Entity\Order;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Manager\CartManager;
 
@@ -277,8 +278,8 @@ class DashboardUserController extends AbstractController
         $orders = $this->orderRepo->findBy([
             'user' => $user,
             'status' => [
-                'fullfiled',
-                'new'
+                Order::STATUS_NEW_ORDER,
+                Order::STATUS_ORDER_FULLFILLED
             ]
         ]);
 

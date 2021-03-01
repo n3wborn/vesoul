@@ -34,7 +34,7 @@
                     <div class="col-2">{{ order.id }}</div>
                     <div class="col-2">{{ order.createdAt|date('d/m/Y') }}</div>
                     <div class="col-2">{{ order.items|length }}</div>
-                    <div class="col-2">{{ order.total }} €</div>
+                    <div class="col-2">{{ order.total }} &euro;</div>
                     <div class="col-2 {{ order.status == "new" ? "orange" : "green" }}">
                         {{ order.status == "new" ? "en attente" : "envoyée" }} 
                     </div>

@@ -383,35 +383,33 @@ class DashboardAdminController extends AbstractController
     /**
      * /admin/commandes will show the admin every orders his customers
      * made before and which orders are in which state.
-     * For example: waiting for payement, sent,...
+     * For example: "new", "fullfiled",...
      *
      * @Route("/commandes", name="dashboard_admin_orders")
      */
     public function showOrders(): Response
     {
-        $orders = $this->orderRepo->findAll();
-        $enCours = 0;
-        $expedie = 0;
-        $total = 0;
+        $orders = $this->orderRepo->findBy([
+            'status' => [
+                Order::STATUS_NEW_ORDER,
+                Order::STATUS_ORDER_FULLFILLED
+            ]],[
+            'id' => 'DESC'
+        ]);
 
-        foreach ($orders as $order) {
+        // find new/fulfilled (already sent to customers) orders quantity
+        $new = $this->orderRepo->findBy([
+            'status' => Order::STATUS_NEW_ORDER
+        ]);
 
-            $total++;
-
-            if ($order->getStatus == "en cours") {
-                $enCours++;
-            }
-            if ($order->getStatus() == "expédié") {
-                $expedie++;
-            }
-        }
+        $fulfilled = $this->orderRepo->findBy([
+            'status' => Order::STATUS_ORDER_FULLFILLED
+        ]);
 
         return $this->render('dashboard-admin/orders.html.twig', [
-            'title' => 'Commandes',
             'orders' => $orders,
-            'total' => $total,
-            'enCours' => $enCours,
-            'expedie' => $expedie,
+            'new' => $new,
+            'fulfilled' => $fulfilled
         ]);
     }
 

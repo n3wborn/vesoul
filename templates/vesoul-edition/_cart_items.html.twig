@@ -28,7 +28,7 @@
 
                 {# item price #}
                 <p class="m-0">
-                    <span>{{ item.book.price|number_format(2, ',') }}</span> €
+                    <span>{{ item.book.price|number_format(2, ',') }}</span> &euro;
                 </p>
 
 
@@ -60,7 +60,7 @@
 
                 {# Item total #}
                 <p class="m-0 pr-3 total">
-                    <span>{{ (item.book.price * item.quantity)|number_format(2, ',') }}</span> €
+                    <span>{{ (item.book.price * item.quantity)|number_format(2, ',') }}</span> &euro;
                 </p>
 
 

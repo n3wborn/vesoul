@@ -2,6 +2,8 @@ $color-ajouter: #84B103;
 $color-details: #65b2ff;
 $color-modifier: #1976d2;
 $color-supprimer: #D93A30;
+$color-green: green;
+$color-orange: rgb(196, 127, 0);
 
 main {
     position: absolute;
@@ -19,6 +21,14 @@ main {
 
     @media (max-width: 575.98px) {
         width: 100%;
+    }
+
+    .green {
+        color: $color-green !important;
+    }
+
+    .orange {
+        color: $color-orange !important;
     }
 
     .date {
@@ -99,7 +109,7 @@ main {
 
     // En-tête
     .listBook,
-    .listCommande,
+    .listOrders,
     .info-boutique,
     .mentions {
         width: 85%;

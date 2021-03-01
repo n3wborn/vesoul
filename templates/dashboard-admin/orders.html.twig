@@ -1,61 +1,85 @@
 {% extends "dashboard-admin/base.html.twig" %}
 
-{% block title %} {{ title }} {% endblock %}
+{% block title %}Commandes{% endblock %}
 
 {% block body %}
 
-    <div class="carres row d-flex justify-content-around align-items-center">
-        <div class="carre col-3 text-center">
-            <p>Commandes en cours :</p>
-            <p class="chiffre ">{{ enCours }}</p>
-        </div>
-        <div class="carre col-3 text-center">
-            <p>Commandes Expédiée :</p>
-            <p class="chiffre ">{{ expedie }}</p>
-        </div>
-        <div class="carre col-3 text-center">
-            <p>Nombre totale de commandes :</p>
-            <p class="chiffre ">{{ total }}</p>
-        </div>
+<div class="carres row d-flex justify-content-around align-items-center">
+    <div class="carre col-3 text-center">
+        <p>En cours</p>
+        <p class="chiffre">{{ new ? new|length : '0' }}</p>
     </div>
-
-    <div class="titre d-flex justify-content-between align-items-center">
-        <p class="p-3 m-0">Gestion des commandes</p>
-
+    <div class="carre col-3 text-center">
+        <p>Expédiées</p>
+        <p class="chiffre">{{ fulfilled ? fulfilled|length : '0' }}</p>
     </div>
-    <div class="listCommande">
+    <div class="carre col-3 text-center">
+        <p>Total</p>
+        <p class="chiffre">{{ orders ? orders|length : '0'}}</p>
+    </div>
+</div>
 
-        <div class="nom-colonne w-100 m-0 row pt-2 d-flex justify-content-around align-items-center">
-            <p class="text-center m-0 py-3 col-1">Date</p>
-            <p class="text-center m-0 py-3 col-1">N° Commande</p>
-            <p class="text-center m-0 py-3 col-2">Nom Prenom</p>
-            <p class="text-center m-0 py-3 col-3">Adresse de livraison</p>
-            <p class="text-center m-0 py-3 col-2">Article(s)</p>
-            <p class="text-center m-0 py-3 col-2">Facture</p>
-            <p class="text-center m-0 py-3 col-1">Status</p>
-        </div>
+<div class="titre">
+    <h4 class="p-3 m-0 text-center">Gestion des commandes</h4>
+</div>
 
-        <section class="commandes">
+<div class="listOrders table-responsive">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">N°</th>
+                <th scope="col">Date</th>
+                <th scope="col">Client</th>
+                <th scope="col">Livraison</th>
+                <th scope="col">Articles</th>
+                <th scope="col">Facture</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
 
             {% for order in orders %}
-                <div class="ordere row m-0 d-flex justify-content-between">
-                    <p class="m-0 py-3 col-1">{{ order.date|date("d/m/y") }}</p>
-                    <p class="m-0 py-3 col-1">{{ order.id }}</p>
-                    <p class="m-0 py-3 col-2">{{ order.user.lastname }} {{ order.user.firstname }}</p>
-                    <p class="m-0 py-3 col-3 text-center">
-                        {{ order.livraison.number }} {{ order.livraison.type }} {{ order.livraison.street }}{% if order.livraison.additional %}, {{ order.livraison.additional }}{% endif %},</br> {{ order.livraison.city }} {{ order.livraison.cp }}</p>
-                    <p class="m-0 py-1 col-2">
-                        {% for book in order.books %}
-                        - {{ book.title }}</br>
-                        {% endfor %}
-                    </p>
-                    <div class="col-2 d-flex justify-content-center align-items-center">
-                        <a href=" {{ path('dashboard_admin_print_bill', {id: order.id}) }} " class="pdf d-flex justify-content-center align-items-center">PDF</a>
-                    </div>
-                    <p class="text-center m-0 py-3 col-1">{{ order.state }}</p>
-                </div>
+
+            <tr>
+                <th scope="row">{{ order.id }}</td>
+                <td>{{ order.createdAt|date("y/m/d") }}</td>
+                <td>{{ order.user.firstname }} {{ order.user.lastname }}</td>
+
+                {# shorten address var #}
+                {% set a = order.deliveryAddress %}
+
+                <td>
+                    {{ a.number }} {{ a.type|default('') }} {{ a.street }} </br>
+                    {{ a.additional|default('') }} </br>
+                    {{ a.cp }} {{ a.city }}
+                </td>
+
+                <td>
+                    {% for item in order.items %}
+                    {{ item.book.title }} </br>
+                    {% endfor %}
+                </td>
+
+                <td>
+                    <a href="{{ path('dashboard_admin_print_bill',
+                             {id: order.id}) }}"
+                       class="pdf text-align-center">
+                        PDF
+                    </a>
+                </td>
+
+                <td class="{{ order.status == "new" ? "orange" : "green" }}">
+                    {{ order.status == "new" ? "en attente" : "envoyée" }}
+                </td>
+
+            </tr>
+
             {% endfor %}
 
-        </section>
+        </tbody>
+    </table>
 
+</div>
 {% endblock %}
