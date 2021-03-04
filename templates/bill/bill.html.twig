@@ -1,127 +1,160 @@
 <!doctype html>
-<html lang="fr">
-
+<html>
     <head>
-        <meta charset="UTF-8">
-        <title>Facture {{ order.id }}-IT</title>
+        <title>Facture {{ order.id }}</title>
+        <meta charset="utf-8">
 
-        <style type="text/css">
-
-            * {
-                font-family: Verdana, Arial, sans-serif;
+        <style>
+            .invoice-box {
+                max-width: 1420px;
+                margin: auto;
+                padding: 30px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                font-size: 16px;
+                line-height: 24px;
+                font-family: Roboto, 'Helvetica', Helvetica, Arial, sans-serif;
+                color: #555;
             }
 
-            table {
-                font-size: x-small;
+            .invoice-box table {
+                width: 100%;
+                text-align: left;
             }
 
-            tfoot tr td {
+            .invoice-box table td {
+                padding: 10px;
+                vertical-align: top;
+            }
+
+            .invoice-box table tr.top table td {
+                padding-bottom: 20px;
+            }
+
+            .invoice-box table tr.top table td.title {
+                font-size: 30px;
+                line-height: 30px;
+                color: #333;
+            }
+
+            .invoice-box table tr.information table td {
+                padding-bottom: 60px;
+            }
+
+            .invoice-box table tr.heading td {
+                background: #eee;
+                border-bottom: 1px solid #ddd;
                 font-weight: bold;
-                font-size: x-small;
-            }
-            .gray{
-                background-color: rgb(228, 228, 228);
             }
 
-            .lightgray {
-                background-color: lightgray;
+            .invoice-box table tr.details td {
+                padding-bottom: 20px;
+            }
+
+            .invoice-box table tr.item td{
+                border-bottom: 1px solid #eee;
+            }
+
+            .invoice-box table tr.item.last td {
+                border-bottom: none;
+            }
+
+            .invoice-box table tr.total {
+                border-top: 2px solid #eee;
+                font-weight: bold;
+            }
+
+            .py-40 {
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+
+            .top {
+                margin: 2rem 0;
+            }
+
+            .t-right {
+                text-align: right;
+            }
+            .t-center {
+                text-align: center;
             }
 
         </style>
 
-    </head>
+        <body>
+            <div class="invoice-box">
+                <table cellpadding="0" cellspacing="0">
+                    <tr class="top">
+                        <td colspan="5">
+                            <table class="py-40">
+                                <tr>
+                                    <td class="title">
+                                        <b>Vesoul Edition</b>
+                                    </td>
 
-    <body>
+                                    <td class="t-right">
+                                        Facture N° {{ order.id }}<br><br>
+                                        Établie le {{ "now"|date("d/m/Y") }}<br><br>
+                                        Commande du {{ order.createdAt|date("d/m/Y") }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-        <table width="100%">
-            <tr>
-                <td valign="top"><h1><strong>Facture {{ order.id }}-IT</strong></h1></td>
-                <td align="right">
-                    <h3>Vesoul Edition</h3>
-                    <pre>
-                70000 Vesoul
-                France
-                    </pre>
-                    <pre>
-                06 99 65 86 00
-                vesouledition@sfr.fr
-                    </pre>
-                </td>
-            </tr>
 
-        </table>
+                    <tr class="information">
+                        <td colspan="5">
+                            <table class="py-40">
+                                <tr>
+                                    <td>
+                                        vesouledition@sfr.fr<br>
+                                        06 99 65 86 00<br><br>
+                                        Vesoul Edition<br>
+                                        Boite Postale 10 038<br>
+                                        70 001 Vesoul Cedex<br>
+                                    </td>
+                                    <td class="t-right">
+                                        {% set b = order.billAddress %}
+                                        {{ b.firstname|capitalize }}
+                                        {{ b.lastname|capitalize }}<br><br>
+                                        {{ b.number }} {{ b.street|capitalize }}<br>
+                                        {{ b.country|upper }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-        <br />
+                    <tr class="heading">
+                        <td>Auteur</td>
+                        <td>Titre</td>
+                        <td class="t-center">Quantité</td>
+                        <td class="t-center">Prix</td>
+                        <td class="t-center">Total</td>
+                    </tr>
 
-        <table width="100%">
+                    {% for item in order.items %}
+                    <tr class="item">
+                        <td>
+                            {{ item.book.author.firstname|capitalize }}
+                            {{ item.book.author.lastname|capitalize }}
+                        </td>
+                        <td>{{ item.book.title|capitalize }}</td>
+                        <td class="t-center">{{ item.quantity }}</td>
+                        <td class="t-center">{{ item.book.price }}</td>
+                        <td class="t-center">{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
 
-            <tr>
-                <td><strong>Adresse de facturation :</strong></td>
-                <td><strong>Adresse de livraison :</strong></td>
-            </tr>
+                    <tr class="total">
+                        <td colspan="4" class="t-right">Total : </td>
+                        <td class="t-center">{{ order.total }} &euro;</td>
+                    </tr>
 
-            <tr>
-                <td>
-                    <pre>
-                {% for info in order.billAddress %}
-                    {{ info.firstname }} {{ info.lastname }}
-                    {{ info.number }} {{ info.type|default('') }} {{ info.street }}
-                    {{ info.cp }} {{ info.city }}
-                    {{ info.country }}
-                {% endfor %}
-                    </pre>
-                </td>
-                <td>
-                    <pre>
-                {% for info in order.deliveryAddress %}
-                    {{ info.firstname }} {{ info.lastname }}
-                    {{ info.number }} {{ info.type|default('') }} {{ info.street }}
-                    {{ info.cp }} {{ info.city }}
-                    {{ info.country }}
-                {% endfor %}
-                    </pre>
-                </td>
-            </tr>
-
-        </table>
-
-        <br />
-        <br />
-        <br />
-
-        <table width="100%">
-
-            <thead class="lightgray">
-                <tr>
-                    <th>ISBN</th>
-                    <th>Titre</th>
-                    <th>Quantité</th>
-                    <th>Prix unitaire</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for item in order.items %}
-                <tr>
-                    <th scope="row">{{ item.book.isbn }}</th>
-                    <td class="gray">{{ item.book.isbn }}</td>
-                    <td align="right">{{ item.quantity }}</td>
-                    <td class="gray" align="right"> {{ item.book.price }} </td>
-                    <td align="right">{{ item.total }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-
-            <tfoot>
-                <tr>
-                    <td colspan="3"></td>
-                    <td align="right">Total €</td>
-                    <td align="right" class="lightgray">{{ order.total }}</td>
-                </tr>
-            </tfoot>
-
-        </table>
-
-    </body>
+                </table>
+            </div>
+        </body>
 </html>
+

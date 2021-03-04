@@ -422,29 +422,23 @@ class DashboardAdminController extends AbstractController
      */
     public function printBill(Order $order): RedirectResponse
     {
-        $ref = $order->getId();
-
-        // Instantiate Dompdf with our options
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bill/bill.html.twig', [
-            'commandNumero' => $ref,
+            'order' => $order,
         ]);
 
-        // Load HTML to Dompdf
+
+        $dompdf = new Dompdf();
+        $dompdf->getOptions()
+               ->setChroot($this->getParameter('kernel.project_dir'))
+           ;
+
         $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
-        $dompdf->render();
+        $dompdf->setPaper('A4', 'portrait')->render();
 
         // Output the generated PDF to Browser (force download)
-        $dompdf->stream("Facture " . $ref. "-IT.pdf", [
+        $dompdf->stream("Facture-" . $order->getId() . ".pdf", [
             "Attachment" => true
         ]);
 
