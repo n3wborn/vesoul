@@ -1,0 +1,7 @@
+security:
+    firewalls:
+        # in tests, only use http_basic authentication
+        # https://symfony.com/doc/4.0/testing/http_authentication.html#using-a-faster-authentication-mechanism-only-for-tests
+        main:
+            http_basic: ~
+
