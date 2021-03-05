@@ -253,7 +253,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/add/{id}", name="addItem")
+     * @Route("/panier/ajoute/{id}", name="addItem")
      * @param Book $book
      * @return RedirectResponse
      */
@@ -276,7 +276,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/ajax/add/{id}", name="ajaxAddItem")
+     * @Route("/panier/ajax/ajoute/{id}", name="ajaxAddItem")
      * @param Book $book
      * @return Response
      */
@@ -297,7 +297,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/ajax/reduce/{id}", name="ajaxReduceItem")
+     * @Route("/panier/ajax/reduit/{id}", name="ajaxReduceItem")
      * @param Book $book
      * @return Response
      */
@@ -324,7 +324,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/reduce/{id}", name="reduceItem")
+     * @Route("/panier/reduit/{id}", name="reduceItem")
      * @param Book $book
      * @return Response
      */
@@ -351,7 +351,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/ajax/delete/{id}", name="ajaxDeleteItem")
+     * @Route("/panier/ajax/supprime/{id}", name="ajaxDeleteItem")
      * @param Book $book
      * @return Response
      */
@@ -378,7 +378,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/delete/{id}", name="deleteItem")
+     * @Route("/panier/supprime/{id}", name="deleteItem")
      * @param Book $book
      * @return RedirectResponse|Response
      */
@@ -422,7 +422,7 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-     * @Route("/panier/vider", name="cartEmpty")
+     * @Route("/panier/vide", name="cartEmpty")
      * @param Request $request
      * @return Response
      */

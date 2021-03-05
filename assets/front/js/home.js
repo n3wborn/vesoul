@@ -657,11 +657,11 @@ function applyYearFilter(){
 
 
         switch( action ){
-          case 'add':
+          case 'ajoute':
             quantity += 1;
             break;
 
-          case 'reduce' :
+          case 'reduit' :
             if( quantity > 1 ){
               quantity -= 1;
             }
@@ -712,7 +712,7 @@ function applyYearFilter(){
 
 
         //Suppression session panier
-        let response = await fetch(`/panier/ajax/delete/${idProduct}`);
+        let response = await fetch(`/panier/ajax/supprime/${idProduct}`);
         let status = await response.status;
 
         if( status === 406){

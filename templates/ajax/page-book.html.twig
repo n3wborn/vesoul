@@ -12,8 +12,12 @@
                          alt="image du livre">
                 {% endif %}
                 <div class="overlay d-flex justify-content-center  align-items-center">
-                    <a href="product/{{book.id}}"><button class="btn btn-info p-2">Details</button></a>
+                    <a href="{{ path('product', {'id': book.id}) }}"
+                       class="btn btn-info p-2">
+                       Details
+                    </a>
                 </div>
+
             </div>
             <div class="info p-2 d-flex flex-column justify-content-between">
                 <h3 class="m-0">{{book.title}}</h3>
@@ -26,8 +30,12 @@
                         <p class="m-0 pl-2" id="price"><span>{{book.price}}</span>&euro;</p>
                     </div>
                     <div class="col-8 d-flex justify-content-end">
-                        <a href="{{path('addItem',{'id':book.id})}}">
-                            <button class="btn btn-info">Ajouter<i class="fas fa-shopping-cart"></i></button>
+                        <a href="{{ path('addItem', {'id': book.id}) }}"
+                           class="addItem">
+                            <button class="btn btn-info">
+                                Ajouter
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
                         </a>
                     </div>
                 </div>

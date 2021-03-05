@@ -87,14 +87,11 @@
             <div class="justify-content-center">
 
                 {# Add Product to cart #}
-                <form action="/panier/add/{{book.id}}">
-                    <input type="hidden" value="1" name="quantity">
-                    <button class="submit btn btn-info d-flex
-                        justify-content-center align-items-center m-3">
-                        <i class="fas fa-shopping-cart fa-2x pr-2"></i>
-                        Ajouter au panier
-                    </button>
-                </form>
+                <a href="{{ path("addItem", {id: book.id}) }}"
+                   class="btn btn-info">
+                    <i class="fas fa-shopping-cart"></i>
+                    Ajouter au panier
+                </a>
 
             </div>
 

@@ -38,7 +38,7 @@
 
                     {# Add Item #}
                     <a href="{{ path('addItem', {'id': item.book.id}) }}"
-                        data-action="add"
+                        data-action="ajoute"
                         data-id="{{ item.book.id }}"
                         data-price="{{ item.book.price|number_format(2, ',') }}"
                         class="btn-quantity m-1 btn btn-info d-flex justify-content-center
@@ -48,7 +48,7 @@
 
                     {# Reduce Item #}
                     <a href="{{ path('reduceItem', {'id': item.book.id}) }}"
-                        data-action="reduce"
+                        data-action="reduit"
                         data-id="{{ item.book.id }}"
                         data-price="{{ item.book.price|number_format(2, ',') }}"
                         class="btn-quantity m-1 btn btn-light d-flex justify-content-center
@@ -60,7 +60,7 @@
 
                 {# Item total #}
                 <p class="m-0 pr-3 total">
-                    <span>{{ (item.book.price * item.quantity)|number_format(2, ',') }}</span> &euro;
+                    <span>{{ (item.total|number_format(2, ',')) }}</span> &euro;
                 </p>
 
 
