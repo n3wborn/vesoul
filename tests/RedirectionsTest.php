@@ -45,11 +45,11 @@ class RedirectionsTest extends WebTestCase
         $urlGenerator = $client->getContainer()->get("router");
 
         /** generate urls */
-        $order = $urlGenerator->generate("commande");
+        $order = $urlGenerator->generate("order");
         $userHome = $urlGenerator->generate("dashboard_user_home");
         $userInfos = $urlGenerator->generate("dashboard_user_informations");
         $userAddresses = $urlGenerator->generate("dashboard_user_addresses");
-        $userOrders = $urlGenerator->generate("dashboard_user_commands");
+        $userOrders = $urlGenerator->generate("dashboard_user_orders");
 
 
         /** yield every generated urls */
