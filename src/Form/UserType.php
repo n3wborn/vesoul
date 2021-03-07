@@ -17,7 +17,8 @@ class UserType extends AbstractType
     {
 
         $builder
-            ->add('username', EmailType::class, [
+            ->add(
+                'username', EmailType::class, [
                 'label' => 'Email',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -25,8 +26,10 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('gender', ChoiceType::class, [
+                ]
+            )
+            ->add(
+                'gender', ChoiceType::class, [
                 'choices'  => [
                     'Homme' => 0,
                     'Femme' => 1,
@@ -38,8 +41,10 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control custom-select',
                 ]
-            ])
-            ->add('firstname', TextType::class, [
+                ]
+            )
+            ->add(
+                'firstname', TextType::class, [
                 'label' => 'Prénom',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -47,8 +52,10 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('lastname', TextType::class, [
+                ]
+            )
+            ->add(
+                'lastname', TextType::class, [
                 'label' => 'Nom',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -56,8 +63,10 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('tel', TextType::class, [
+                ]
+            )
+            ->add(
+                'tel', TextType::class, [
                 'label' => 'Téléphone',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -65,14 +74,16 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
-        ]);
+            ]
+        );
     }
 }

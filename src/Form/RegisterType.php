@@ -16,25 +16,28 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('gender', ChoiceType::class, [
+            ->add(
+                'gender', ChoiceType::class, [
                 'data' => 0,
                 'choices' => [ 'Homme' => 0, 'Femme' => 1],
                 'expanded' => true,
                 'label' => 'Civilités'
-            ])
+                ]
+            )
             ->add('firstname')
             ->add('lastname')
             ->add('password', PasswordType::class)
             ->add('confirm_password', PasswordType::class)
             ->add('username', EmailType::class)
             ->add('tel')
-            ->add('birth', DateType::class, [
+            ->add(
+                'birth', DateType::class, [
                 'html5' => false,
                 'widget' => 'single_text',
                 'format' => 'dd-mm-yyyy',
 
-            ])
-            ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

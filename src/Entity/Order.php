@@ -67,13 +67,13 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_deliveryAddress")
-     * @ORM\JoinColumn(name="deliveryAddress_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="deliveryAddress_id",  referencedColumnName="id", nullable=true)
      */
     private Address $deliveryAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="order_billAddress")
-     * @ORM\JoinColumn(name="billAddress_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="billAddress_id",      referencedColumnName="id", nullable=true)
      */
     private Address $billAddress;
 
@@ -266,5 +266,4 @@ class Order
     {
         $this->delivery_instructions = $delivery_instructions;
     }
-
 }

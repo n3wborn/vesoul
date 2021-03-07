@@ -28,7 +28,8 @@ class BookType extends AbstractType
     {
 
         $builder
-            ->add('title', TextType::class, [
+            ->add(
+                'title', TextType::class, [
                 'label' => 'Titre',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -37,8 +38,10 @@ class BookType extends AbstractType
                     'class' => 'form-control',
                     'autofocus' => true,
                 ]
-            ])
-            ->add('author',  EntityType::class, [
+                ]
+            )
+            ->add(
+                'author',  EntityType::class, [
                 'label' => 'Auteur',
                 'class' => Author::class,
                 'choice_label' =>  function (Author $author) {
@@ -47,9 +50,9 @@ class BookType extends AbstractType
                     $choices = $first. ' ' .$last;
                     return $choices;
                 },
-                'query_builder' => function(EntityRepository $author) {
+                'query_builder' => function (EntityRepository $author) {
                     return $author->createQueryBuilder('a')
-                                  ->orderBy('a.firstname','ASC');
+                        ->orderBy('a.firstname', 'ASC');
                 },
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -58,8 +61,10 @@ class BookType extends AbstractType
                     'class' => 'selectpicker form-control',
                     'data-style' => 'btn-outline-secondary'
                 ]
-            ])
-            ->add('genres', EntityType::class, [
+                ]
+            )
+            ->add(
+                'genres', EntityType::class, [
                 'required' => false,
                 'multiple' => true,
                 'label' => 'Catégorie',
@@ -67,9 +72,9 @@ class BookType extends AbstractType
                 'choice_label' =>  function (Genre $genre) {
                     return $genre->getName();
                 },
-                'query_builder' => function(EntityRepository $genre) {
+                'query_builder' => function (EntityRepository $genre) {
                     return $genre->createQueryBuilder('g')
-                                 ->orderBy('g.name','ASC');
+                        ->orderBy('g.name', 'ASC');
                 },
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -79,8 +84,10 @@ class BookType extends AbstractType
                     'data-style' => 'btn-outline-secondary',
                     'title' => 'Choisissez ...'
                 ]
-            ])
-            ->add('stock', NumberType::class, [
+                ]
+            )
+            ->add(
+                'stock', NumberType::class, [
                 'label' => 'Quantité',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -88,8 +95,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
-            ])
-            ->add('price', NumberType::class, [
+                ]
+            )
+            ->add(
+                'price', NumberType::class, [
                 'label' => 'Prix',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -97,8 +106,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
-            ])
-            ->add('isbn', TextType::class, [
+                ]
+            )
+            ->add(
+                'isbn', TextType::class, [
                 'label' => 'ISBN',
                 'label_attr' => [
                     'class' => 'font-weight-bold',
@@ -106,8 +117,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('length', NumberType::class, [
+                ]
+            )
+            ->add(
+                'length', NumberType::class, [
                 'required' => false,
                 'label' => 'Nombre de pages',
                 'label_attr' => [
@@ -116,8 +129,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('year', NumberType::class, [
+                ]
+            )
+            ->add(
+                'year', NumberType::class, [
                 'required' => false,
                 'label' => 'Année de sortie',
                 'label_attr' => [
@@ -126,8 +141,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('new', CheckboxType::class, [
+                ]
+            )
+            ->add(
+                'new', CheckboxType::class, [
                 'required' => false,
                 'label' => false,
                 'data' => false,
@@ -135,14 +152,18 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('newbtn', ButtonType::class, [
+                ]
+            )
+            ->add(
+                'newbtn', ButtonType::class, [
                 'label'=> 'Nouveauté ?',
                 'attr' => [
                     'class' => 'btn btn-outline-secondary',
                 ],
-            ])
-            ->add('height', NumberType::class, [
+                ]
+            )
+            ->add(
+                'height', NumberType::class, [
                 'required' => false,
                 'label' => 'Hauteur',
                 'label_attr' => [
@@ -151,8 +172,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('width', NumberType::class, [
+                ]
+            )
+            ->add(
+                'width', NumberType::class, [
                 'required' => false,
                 'label' => 'Largeur',
                 'label_attr' => [
@@ -161,8 +184,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('description', TextareaType::class, [
+                ]
+            )
+            ->add(
+                'description', TextareaType::class, [
                 'label' => 'Description',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -170,8 +195,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('images', FileType::class, [
+                ]
+            )
+            ->add(
+                'images', FileType::class, [
                 'required' => false,
                 'label_attr' => [
                     'class' => 'custom-file-label',
@@ -185,23 +212,30 @@ class BookType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Count(['max' => 3]),
-                    new All([
-                        new File([
+                    new All(
+                        [
+                        new File(
+                            [
                             'maxSize' => '5M',
                             'mimeTypes' => [
                                 'image/jpeg',
                                 'image/png'
                             ]
-                        ])
-                    ])
+                            ]
+                        )
+                        ]
+                    )
                 ],
-            ])
-            ->add('submit', SubmitType::class, [
+                ]
+            )
+            ->add(
+                'submit', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
                     'class' => 'btn btn-secondary text-light m-2'
                 ]
-            ]);
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

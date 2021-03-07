@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Debug
- * @package App\Controller
+ *
+ * @package         App\Controller
  * @Route("/debug", name="debug")
  */
 class Debug extends AbstractController
@@ -21,8 +22,7 @@ class Debug extends AbstractController
 
     private Swift_Mailer $mailer;
 
-    public function __construct
-    (
+    public function __construct(
         Swift_Mailer $mailer
     ) {
         $this->mailer = $mailer;
@@ -31,7 +31,7 @@ class Debug extends AbstractController
 
     /**
      * @Route("/test/mail", name="mail_test")
-     * @return RedirectResponse
+     * @return              RedirectResponse
      */
     public function testMail(): RedirectResponse
     {
@@ -49,8 +49,7 @@ class Debug extends AbstractController
                         // TODO: send first and lastname
                     ]
                 ), 'text/html'
-            )
-        ;
+            );
 
         $this->mailer->send($message);
 
@@ -60,19 +59,20 @@ class Debug extends AbstractController
 
     /**
      * @Route("/bill", name="test_bill")
-     * @return Response
+     * @return         Response
      */
     public function testBill(): Response
     {
         $order = $this->getDoctrine()
             ->getRepository(Order::class)
-            ->findOneBy([])
-        ;
+            ->findOneBy([]);
 
         dd($order);
 
-        return $this->render('bill/bill.html.twig', [
+        return $this->render(
+            'bill/bill.html.twig', [
             'order' => $order,
-        ]);
+            ]
+        );
     }
 }

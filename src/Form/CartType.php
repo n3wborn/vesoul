@@ -18,7 +18,7 @@ class CartType extends AbstractType
     private Security $security;
     private AddressRepository $addressRepo;
 
-    public function __construct (
+    public function __construct(
         Security $security,
         AddressRepository $addressRepo
     ) {
@@ -38,7 +38,7 @@ class CartType extends AbstractType
      * So, there's no product to add here as these are already in current cart
      *
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -46,47 +46,50 @@ class CartType extends AbstractType
         $user = $this->security->getUser();
 
         $builder
-            ->add('deliveryAddress', EntityType::class, [
+            ->add(
+                'deliveryAddress', EntityType::class, [
                 'class' => Address::class,
                 'label' => 'Livraison',
                 'label_attr' => [
                     'class' => 'm-0 pb-3 font-weight-bold',
                 ],
-                'choice_label' => function (Address $address){
+                'choice_label' => function (Address $address) {
                     return $address->getTitle();
                 },
                 'query_builder' => function (AddressRepository $addressRepo) use ($user) {
                     return $addressRepo->createQueryBuilder('a')
                         ->where('a.user = :user')
-                        ->setParameter('user', $user)
-                    ;
+                        ->setParameter('user', $user);
                 },
                 'attr' => [
                     'class' => 'selectpicker custom-select',
                     'data-style' => 'btn-outline-secondary'
                 ]
-            ])
-            ->add('billAddress', EntityType::class, [
+                ]
+            )
+            ->add(
+                'billAddress', EntityType::class, [
                 'class' => Address::class,
                 'label' => 'Facturation',
                 'label_attr' => [
                     'class' => 'm-0 pb-3 font-weight-bold',
                 ],
-                'choice_label' => function (Address $address){
+                'choice_label' => function (Address $address) {
                     return $address->getTitle();
                 },
                 'query_builder' => function (AddressRepository $addressRepo) use ($user) {
                     return $addressRepo->createQueryBuilder('a')
                         ->where('a.user = :user')
-                        ->setParameter('user', $user)
-                    ;
+                        ->setParameter('user', $user);
                 },
                 'attr' => [
                     'class' => 'selectpicker custom-select',
                     'data-style' => 'btn-outline-secondary'
                 ]
-            ])
-            ->add('delivery_instructions', TextareaType::class, [
+                ]
+            )
+            ->add(
+                'delivery_instructions', TextareaType::class, [
                 'label' => false,
                 'required'   => false,
                 'empty_data' => "",
@@ -94,14 +97,16 @@ class CartType extends AbstractType
                     'class' => 'mt-2 w-100',
                     'placeholder' => 'Indiquez ici vos instructions ...'
                 ]
-            ])
-            ->add('submit', SubmitType::class, [
+                ]
+            )
+            ->add(
+                'submit', SubmitType::class, [
                 'label' => 'Commander',
                 'attr' => [
                     'class' => 'btn btn-info w-100'
                 ]
-            ])
-            ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -13,7 +13,8 @@ class GenreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add(
+                'name', TextType::class, [
                 'label' => 'Genre',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -21,8 +22,8 @@ class GenreType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

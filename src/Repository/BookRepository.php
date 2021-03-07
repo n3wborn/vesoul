@@ -24,7 +24,8 @@ class BookRepository extends ServiceEntityRepository
     }
 
 
-    public function findTitle($title){
+    public function findTitle($title)
+    {
 
         return $this->createQueryBuilder('b')
             ->select('b.id, b.title')
@@ -36,28 +37,30 @@ class BookRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function maxAndMinYear(){
+    public function maxAndMinYear()
+    {
         return $this->createQueryBuilder('b')
             ->select('max(b.year) as maxyear, min(b.year) as minyear')
             ->getQuery()
             ->getScalarResult();
     }
 
-    public function countBooks($new, $genre, $author, $yearmin, $yearmax, $title){
+    public function countBooks($new, $genre, $author, $yearmin, $yearmax, $title)
+    {
 
         $queryParameters = [];
 
         $query =  $this->createQueryBuilder('b')
-                        ->select('count(b.id) as count')
-                        ->join('b.genres', 'g')
-                        ->join('b.author', 'a');
+            ->select('count(b.id) as count')
+            ->join('b.genres', 'g')
+            ->join('b.author', 'a');
 
-        if( $new === "true" ){
+        if($new === "true" ) {
             $query = $query->andWhere('b.new = :new');
             $queryParameters[':new'] = $new;
         }
 
-        if( count($genre) > 0 ){
+        if(count($genre) > 0 ) {
 
             $queryGenre = "";
 
@@ -69,13 +72,13 @@ class BookRepository extends ServiceEntityRepository
             $query = $query->andWhere($queryGenre);
         }
 
-        if( count($author) > 0 ){
+        if(count($author) > 0 ) {
 
             $queryAuthor = "";
 
             for( $i = 0; $i < count($author); $i++){
                 $authorFirstAndLastName = explode('-', $author[$i]);
-                if( count($authorFirstAndLastName) === 2 ){
+                if(count($authorFirstAndLastName) === 2 ) {
                     $queryAuthor .= ($i === 0 ) ? ' ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' : ' OR ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' ;
                     $queryParameters[':authorfirstname'.$i] = $authorFirstAndLastName[0];
                     $queryParameters[':authorlastname'.$i] = $authorFirstAndLastName[1];
@@ -87,7 +90,7 @@ class BookRepository extends ServiceEntityRepository
         }
 
 
-        if( strlen( $title ) > 0 ){
+        if(strlen($title) > 0 ) {
             $query = $query->andWhere('b.title like :title');
             $queryParameters[':title'] = '%'.$title.'%';
         }
@@ -98,7 +101,7 @@ class BookRepository extends ServiceEntityRepository
         $queryParameters[':yearmin'] = $yearmin;
         $queryParameters[':yearmax'] = $yearmax;
 
-        if(count($queryParameters) > 0 ){
+        if(count($queryParameters) > 0 ) {
             $query = $query->setParameters($queryParameters);
         }
 
@@ -236,7 +239,8 @@ class BookRepository extends ServiceEntityRepository
     }
     */
 
-    public function findPageOfListBook($offset, $orderBy, $new, $genre, $author, $yearmin, $yearmax, $title) {
+    public function findPageOfListBook($offset, $orderBy, $new, $genre, $author, $yearmin, $yearmax, $title)
+    {
 
         $fieldOrderBy = 'title';
         $howOrderBy = 'ASC';
@@ -244,36 +248,36 @@ class BookRepository extends ServiceEntityRepository
 
         switch($orderBy){
 
-            case 'ascName' :
-                $fieldOrderBy = 'title';
-                $howOrderBy = 'ASC';
-                break;
-            case 'descName' :
-                $fieldOrderBy = 'title';
-                $howOrderBy = 'DESC';
-                break;
-            case 'ascYear' :
-                $fieldOrderBy = 'year';
-                $howOrderBy = 'ASC';
-                break;
-            case 'descYear' :
-                $fieldOrderBy = 'year';
-                $howOrderBy = 'DESC';
-                break;
+        case 'ascName' :
+            $fieldOrderBy = 'title';
+            $howOrderBy = 'ASC';
+            break;
+        case 'descName' :
+            $fieldOrderBy = 'title';
+            $howOrderBy = 'DESC';
+            break;
+        case 'ascYear' :
+            $fieldOrderBy = 'year';
+            $howOrderBy = 'ASC';
+            break;
+        case 'descYear' :
+            $fieldOrderBy = 'year';
+            $howOrderBy = 'DESC';
+            break;
         }
 
         $query =  $this->createQueryBuilder('b')
-                        ->select('b','a','i')
-                        ->join('b.author', 'a')
-                        ->join('b.images', 'i')
-                        ->join('b.genres', 'g');
+            ->select('b', 'a', 'i')
+            ->join('b.author', 'a')
+            ->join('b.images', 'i')
+            ->join('b.genres', 'g');
 
-        if( $new === "true" ){
+        if($new === "true" ) {
             $query = $query->andWhere('b.new = :new');
             $queryParameters[':new'] = $new;
         }
 
-        if( count($genre) > 0 ){
+        if(count($genre) > 0 ) {
 
             $queryGenre = "";
 
@@ -286,14 +290,14 @@ class BookRepository extends ServiceEntityRepository
 
         }
 
-        if( count($author) > 0 ){
+        if(count($author) > 0 ) {
 
             $queryAuthor = "";
 
 
             for( $i = 0; $i < count($author); $i++){
                 $authorFirstAndLastName = explode('-', $author[$i]);
-                if( count($authorFirstAndLastName) === 2 ){
+                if(count($authorFirstAndLastName) === 2 ) {
                     $queryAuthor .= ($i === 0 ) ? ' ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' : ' OR ( a.firstname = :authorfirstname'.$i.' and a.lastname = :authorlastname'.$i.' ) ' ;
                     $queryParameters[':authorfirstname'.$i] = $authorFirstAndLastName[0];
                     $queryParameters[':authorlastname'.$i] = $authorFirstAndLastName[1];
@@ -305,7 +309,7 @@ class BookRepository extends ServiceEntityRepository
         }
 
 
-        if (strlen( $title ) > 0) {
+        if (strlen($title) > 0) {
             $query = $query->andWhere('b.title like :title');
             $queryParameters[':title'] = '%'.$title.'%';
         }
@@ -315,19 +319,19 @@ class BookRepository extends ServiceEntityRepository
         $queryParameters[':yearmax'] = $yearmax;
 
 
-        if (count($queryParameters) > 0 ){
+        if (count($queryParameters) > 0 ) {
             $query = $query->setParameters($queryParameters);
         }
 
         return $query->orderBy('b.'.$fieldOrderBy, $howOrderBy)
-            ->setFirstResult( $offset )
-            ->setMaxResults( self::LIMIT )
+            ->setFirstResult($offset)
+            ->setMaxResults(self::LIMIT)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-    public function searchByTitle($title) {
+    public function searchByTitle($title)
+    {
 
         $fieldOrderBy = 'title';
         $howOrderBy = 'ASC';
@@ -337,7 +341,6 @@ class BookRepository extends ServiceEntityRepository
             ->setParameter(':title', '%'.$title.'%')
             ->orderBy('b.'.$fieldOrderBy, $howOrderBy)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

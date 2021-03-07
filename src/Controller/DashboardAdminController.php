@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Dompdf\Dompdf;
-use Dompdf\Options;
 use App\Entity\Order;
 use App\Entity\Image;
 use App\Repository\ImageRepository;
@@ -66,20 +65,21 @@ class DashboardAdminController extends AbstractController
     public function books(): Response
     {
         $criteria = Criteria::create()
-            ->orderBy(['year' => 'DESC'])
-        ;
+            ->orderBy(['year' => 'DESC']);
 
-        return $this->render('dashboard-admin/books.html.twig', [
+        return $this->render(
+            'dashboard-admin/books.html.twig', [
             'title' => 'Livres',
             'books' => $this->repoBook->matching($criteria)
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/livres/new", name="admin_add_book")
      *
-     * @param Request $request
+     * @param  Request $request
      * @return Response
      */
     public function addBook(Request $request) : Response
@@ -88,7 +88,7 @@ class DashboardAdminController extends AbstractController
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid()) {
             // get uploaded images
             $images = $form->get('images')->getData();
 
@@ -112,8 +112,10 @@ class DashboardAdminController extends AbstractController
                 // link image file to an Image object
                 $img = new Image();
                 $img->setName($file);
-                $img->setUrl($this
-                    ->getParameter('images_directory') . '/' . $file);
+                $img->setUrl(
+                    $this
+                    ->getParameter('images_directory') . '/' . $file
+                );
 
                 // and link it with book
                 $book->addImage($img);
@@ -126,25 +128,26 @@ class DashboardAdminController extends AbstractController
             return $this->redirectToRoute('admin_add_book');
         }
 
-        return $this->render('dashboard-admin/book-crud/add-book.html.twig', [
+        return $this->render(
+            'dashboard-admin/book-crud/add-book.html.twig', [
             'title' => 'Ajouter un livre',
             'form' => $form->createView()
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/livres/delete/{id}", name="admin_delete_book", methods={"POST"})
      *
-     * @param Book $book
+     * @param  Book $book
      * @return Response
      */
     public function removeBook(Book $book): Response
     {
         $bookID = $this->manager
-                       ->getRepository(Book::class)
-                       ->find($book)
-                   ;
+            ->getRepository(Book::class)
+            ->find($book);
 
         if (!$bookID) {
             return new Response(
@@ -178,8 +181,8 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/livres/edit/{id} ", name="admin_edit_book")
      *
-     * @param Book $book
-     * @param Request $request
+     * @param  Book    $book
+     * @param  Request $request
      * @return RedirectResponse|Response
      */
     public function editBooks(Book $book, Request $request)
@@ -216,8 +219,10 @@ class DashboardAdminController extends AbstractController
                 // to book entity
                 $img = new Image();
                 $img->setName($file);
-                $img->setUrl($this
-                    ->getParameter('images_directory') . '/' . $file);
+                $img->setUrl(
+                    $this
+                    ->getParameter('images_directory') . '/' . $file
+                );
                 $book->addImage($img);
             }
 
@@ -231,19 +236,21 @@ class DashboardAdminController extends AbstractController
         }
 
         // render the page
-        return $this->render('dashboard-admin/book-crud/edit-book.html.twig', [
+        return $this->render(
+            'dashboard-admin/book-crud/edit-book.html.twig', [
             'title' => 'Modifier un livre',
             'images' => $img_collection,
             'form' => $form->createView() //Display the form
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/image/delete/{id}", name="book_delete_image", methods={"DELETE"})
      *
-     * @param Image $image
-     * @param Request $request
+     * @param  Image   $image
+     * @param  Request $request
      * @return JsonResponse
      */
     public function deleteImage(Image $image, Request $request): JsonResponse
@@ -255,13 +262,16 @@ class DashboardAdminController extends AbstractController
         if ($this->isCsrfTokenValid(
             'delete'.$image->getId(),
             $data['_token']
-        )) {
+        )
+        ) {
             // get image filename
             $file = $image->getName();
 
             // remove file
-            unlink($this->getParameter(
-                'images_directory') . '/' . $file
+            unlink(
+                $this->getParameter(
+                    'images_directory'
+                ) . '/' . $file
             );
 
             // keep modifications in db
@@ -271,9 +281,11 @@ class DashboardAdminController extends AbstractController
 
             // send success message
             // Todo: add bootstrap toast
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'success' => 1
-            ], 200);
+                ], 200
+            );
 
             // if csrf is not a valid one, send error message accordingly
             // TODO: add bootstrap toast
@@ -286,7 +298,7 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/author/new", name="admin_add_auteur", methods={"POST"})
      *
-     * @param Request $request
+     * @param  Request $request
      * @return JsonResponse
      */
     public function authorNew(Request $request): JsonResponse
@@ -308,27 +320,33 @@ class DashboardAdminController extends AbstractController
 
                 // and return success and infos
                 // (for the browser only Id is unknown, but why not ?!)
-                return new JsonResponse([
+                return new JsonResponse(
+                    [
                     'success' => 1,
                     'firstname' => $author->getFirstname(),
                     'lastname' => $author->getLastname(),
                     'author_id' => $author->getId()
-                ], 200);
+                    ], 200
+                );
 
                 // say if something went wrong
             } catch (Exception $e) {
-                return new JsonResponse([
+                return new JsonResponse(
+                    [
                     'error' => $e
                     , 400
-                ]);
+                    ]
+                );
             }
 
             // invalid token is a bad thing !
         } else {
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'error' => 'csrf token invalid'
                 , 400
-            ]);
+                ]
+            );
         }
     }
 
@@ -336,7 +354,7 @@ class DashboardAdminController extends AbstractController
     /**
      * @Route("/genre/new", name="admin_add_genre", methods={"POST"})
      *
-     * @param Request $request
+     * @param  Request $request
      * @return JsonResponse
      */
     public function genreNew(Request $request): JsonResponse
@@ -345,7 +363,7 @@ class DashboardAdminController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // if addgenre csrf token is ok...
-        if($this->isCsrfTokenValid('addgenre', $data['_token'])){
+        if($this->isCsrfTokenValid('addgenre', $data['_token'])) {
 
             // try to add a genre in db
             try {
@@ -356,26 +374,32 @@ class DashboardAdminController extends AbstractController
                 $this->manager->flush();
 
                 // and return success and infos (even if only id is really needed for js)
-                return new JsonResponse([
+                return new JsonResponse(
+                    [
                     'success' => 1,
                     'genre' => $genre->getName(),
                     'genre_id' => $genre->getId()
-                ], 200);
+                    ], 200
+                );
 
                 // say if something went wrong
             } catch (Exception $e) {
-                return new JsonResponse([
+                return new JsonResponse(
+                    [
                     'error' => $e
                     , 400
-                ]);
+                    ]
+                );
             }
 
             // invalid token is a bad thing !
         } else {
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'error' => 'csrf token invalid'
                 , 400
-            ]);
+                ]
+            );
         }
     }
 
@@ -389,58 +413,69 @@ class DashboardAdminController extends AbstractController
      */
     public function showOrders(): Response
     {
-        $orders = $this->orderRepo->findBy([
+        $orders = $this->orderRepo->findBy(
+            [
             'status' => [
                 Order::STATUS_NEW_ORDER,
                 Order::STATUS_ORDER_FULLFILLED
-            ]],[
+            ]], [
             'id' => 'DESC'
-        ]);
+            ]
+        );
 
         // find new/fulfilled (already sent to customers) orders quantity
-        $new = $this->orderRepo->findBy([
+        $new = $this->orderRepo->findBy(
+            [
             'status' => Order::STATUS_NEW_ORDER
-        ]);
+            ]
+        );
 
-        $fulfilled = $this->orderRepo->findBy([
+        $fulfilled = $this->orderRepo->findBy(
+            [
             'status' => Order::STATUS_ORDER_FULLFILLED
-        ]);
+            ]
+        );
 
-        return $this->render('dashboard-admin/orders.html.twig', [
+        return $this->render(
+            'dashboard-admin/orders.html.twig', [
             'orders' => $orders,
             'new' => $new,
             'fulfilled' => $fulfilled
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/factures/imprimer/{id}", name="dashboard_admin_print_bill")
      *
-     * @param Order $order
+     * @param  Order $order
      * @return RedirectResponse
      */
     public function printBill(Order $order): RedirectResponse
     {
 
         // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bill/bill.html.twig', [
+        $html = $this->renderView(
+            'bill/bill.html.twig', [
             'order' => $order,
-        ]);
+            ]
+        );
 
 
         $dompdf = new Dompdf();
         $dompdf->getOptions()
-               ->setChroot($this->getParameter('kernel.project_dir'))
-           ;
+            ->setChroot($this->getParameter('kernel.project_dir'));
 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait')->render();
 
         // Output the generated PDF to Browser (force download)
-        $dompdf->stream("Facture-" . $order->getId() . ".pdf", [
+        $dompdf->stream(
+            "Facture-" . $order->getId() . ".pdf", [
             "Attachment" => true
-        ]);
+            ]
+        );
 
         return $this->redirectToRoute('dashboard_admin_print_bill');
     }
@@ -451,38 +486,19 @@ class DashboardAdminController extends AbstractController
      *  (no more admin entity/repo and... whatever, this must be removed)
      *
      * @Route("/boutique", name="dashboard_admin_boutique")
-     * @param Request $request
-     * @return RedirectResponse|Response
+     * @param              Request $request
+     * @return             Response
      */
-    public function info(Request $request)
+    public function info()
     {
+        $admin = $this->adminRepo->findBy(['role' => 'ROLE_ADMIN']);
 
-        if ($request->get('id') != null) {
-            $toggle = $request->get('id');
-            $info = $this->adminRepo->findBy(['id' => $request->get('id')]);
-            $info = $this->getDoctrine()
-                         ->getRepository(Admin::class)
-                         ->find($request->get('id'));
-        } else {
-            $info = new Admin();
-        }
-
-        $form = $this->createForm(AdminType::class, $info);
-        $form->handleRequest($request);
-        $allInfo = $this->adminRepo->findAll();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($info);
-            $this->manager->flush();
-            return $this->redirectToRoute('dashboard_admin_boutique');
-        } else {
-            return $this->render('dashboard-admin/info.html.twig', [
-                'title' => 'Information Boutique',
-                'infos' => $allInfo,
-                'form' => $form->createView(),
-                'toggle' => $toggle,
-            ]);
-        }
+        return $this->render(
+            'dashboard-admin/info.html.twig', [
+            'title' => 'Information Boutique',
+            'admin' => $admin
+            ]
+        );
     }
 
 
@@ -491,9 +507,11 @@ class DashboardAdminController extends AbstractController
      */
     public function mentions(): Response
     {
-        return $this->render('dashboard-admin/mentions.html.twig', [
+        return $this->render(
+            'dashboard-admin/mentions.html.twig', [
             'title' => 'Mentions légales',
-        ]);
+            ]
+        );
     }
 
 }

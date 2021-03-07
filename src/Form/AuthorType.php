@@ -13,7 +13,8 @@ class AuthorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class, [
+            ->add(
+                'firstname', TextType::class, [
                 'label' => 'Firstname',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -21,8 +22,10 @@ class AuthorType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ->add('lastname', TextType::class, [
+                ]
+            )
+            ->add(
+                'lastname', TextType::class, [
                 'label' => 'Lastname',
                 'label_attr' => [
                     'class' => 'font-weight-bold'
@@ -30,8 +33,8 @@ class AuthorType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
-            ])
-            ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

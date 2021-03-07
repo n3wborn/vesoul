@@ -271,7 +271,7 @@ class Book
     /**
      * Set the value of new
      *
-     * @return  self
+     * @return self
      */
     public function setNew($new)
     {
@@ -281,7 +281,7 @@ class Book
     }
 
     /**
-     * @param mixed $height
+     * @param  mixed $height
      * @return Book
      */
     public function setHeight($height)
@@ -297,5 +297,4 @@ class Book
     {
         return $this->height;
     }
-
 }

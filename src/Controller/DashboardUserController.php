@@ -51,8 +51,8 @@ class DashboardUserController extends AbstractController
      * From here he can show and update his infos/password
      *
      * @Route("/accueil", name="dashboard_user_home")
-     * @param Request $request
-     * @return RedirectResponse|Response
+     * @param             Request $request
+     * @return            RedirectResponse|Response
      */
     public function home(Request $request)
     {
@@ -73,10 +73,12 @@ class DashboardUserController extends AbstractController
         $changePassword->handleRequest($request);
 
         if ($changePassword->isSubmitted() && $changePassword->isValid()) {
-            $user->setPassword($this->encoder
-                                    ->encodePassword(
-                                        $user,
-                                        $changePassword->get('newPassword')->getData())
+            $user->setPassword(
+                $this->encoder
+                    ->encodePassword(
+                        $user,
+                        $changePassword->get('newPassword')->getData()
+                    )
             );
             $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
@@ -84,13 +86,15 @@ class DashboardUserController extends AbstractController
         }
 
         // render default template
-        return $this->render('dashboard-user/mon-compte.html.twig', [
+        return $this->render(
+            'dashboard-user/mon-compte.html.twig', [
             'title' => 'Mon compte',
             'user' => $user,
             'form' => $form->createView(),
             'form_password' => $changePassword->createView(),
             'cart' => $cart,
-        ]);
+            ]
+        );
     }
 
 
@@ -100,8 +104,8 @@ class DashboardUserController extends AbstractController
      * From here he can show and update his infos/password
      *
      * @Route("/informations", name="dashboard_user_informations")
-     * @param Request $request
-     * @return RedirectResponse|Response
+     * @param                  Request $request
+     * @return                 RedirectResponse|Response
      */
     public function showInformations(Request $request)
     {
@@ -132,9 +136,13 @@ class DashboardUserController extends AbstractController
 
             // persist password update in db and show success message
             $user
-                ->setPassword($this->encoder
-                ->encodePassword($user,
-                    $changePassword->get('newPassword')->getData()));
+                ->setPassword(
+                    $this->encoder
+                        ->encodePassword(
+                            $user,
+                            $changePassword->get('newPassword')->getData()
+                        )
+                );
             $this->em->flush();
             $this->addFlash('success', 'Mot de passe mis à jour');
 
@@ -144,12 +152,14 @@ class DashboardUserController extends AbstractController
 
 
         // render template
-        return $this->render('dashboard-user/mon-compte.html.twig', [
+        return $this->render(
+            'dashboard-user/mon-compte.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
             'form_password' => $changePassword->createView(),
             'cart' => $cart
-        ]);
+            ]
+        );
     }
 
     /**
@@ -173,9 +183,9 @@ class DashboardUserController extends AbstractController
         if ($formNew->isSubmitted()) {
 
             $newAddress->setCity(ucfirst($newAddress->getCity()))
-                       ->setCountry(strtoupper($newAddress->getCountry()))
-                       ->setFirstname(ucfirst($newAddress->getFirstname()))
-                       ->setLastname(ucfirst($newAddress->getLastname()));
+                ->setCountry(strtoupper($newAddress->getCountry()))
+                ->setFirstname(ucfirst($newAddress->getFirstname()))
+                ->setLastname(ucfirst($newAddress->getLastname()));
             $newAddress->setUser($user);
 
             $this->em->persist($newAddress);
@@ -184,11 +194,13 @@ class DashboardUserController extends AbstractController
             return $this->redirectToRoute('dashboard_user_addresses');
         }
 
-        return $this->render('dashboard-user/compte-adresses.html.twig', [
+        return $this->render(
+            'dashboard-user/compte-adresses.html.twig', [
             'adresses' => $this->addressRepo->findBy(['user' => $user]),
             'formNew' => $formNew->createView(),
             'cart' => $cart
-        ]);
+            ]
+        );
     }
 
 
@@ -214,15 +226,14 @@ class DashboardUserController extends AbstractController
         if ($address->getUser() === $user) {
 
             $address->setTitle(ucfirst($data['title']))
-                    ->setFirstname(ucfirst($data['firstname']))
-                    ->setLastname(ucfirst($data['lastname']))
-                    ->setNumber($data['number'])
-                    ->setType($data['type'])
-                    ->setCp($data['cp'])
-                    ->setCity(ucfirst($data['city']))
-                    ->setCountry(ucfirst($data['country']))
-                    ->setAdditional($data['additional'])
-                ;
+                ->setFirstname(ucfirst($data['firstname']))
+                ->setLastname(ucfirst($data['lastname']))
+                ->setNumber($data['number'])
+                ->setType($data['type'])
+                ->setCp($data['cp'])
+                ->setCity(ucfirst($data['city']))
+                ->setCountry(ucfirst($data['country']))
+                ->setAdditional($data['additional']);
 
             $this->em->flush();
 
@@ -275,18 +286,22 @@ class DashboardUserController extends AbstractController
     public function showOrders(): Response
     {
         $user = $this->getUser();
-        $orders = $this->orderRepo->findBy([
+        $orders = $this->orderRepo->findBy(
+            [
             'user' => $user,
             'status' => [
                 Order::STATUS_NEW_ORDER,
                 Order::STATUS_ORDER_FULLFILLED
             ]
-        ]);
+            ]
+        );
 
-        return $this->render('dashboard-user/orders.html.twig', [
+        return $this->render(
+            'dashboard-user/orders.html.twig', [
             'user' => $user,
             'orders' => $orders
-        ]);
+            ]
+        );
     }
 
 }

@@ -56,20 +56,22 @@ class VesoulEditionController extends AbstractController
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
 
-        return $this->render('vesoul-edition/home.html.twig', [
+        return $this->render(
+            'vesoul-edition/home.html.twig', [
             'genres' => $genres,
             'authors' => $authors,
             'minyear' => $minYear,
             'maxyear' => $maxYear,
             'cart' => $cart
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/home/search/bytitle/{searchValue}", name="search-bytitle")
-     * @param string $searchValue
-     * @return Response
+     * @param                                       string $searchValue
+     * @return                                      Response
      */
     public function searchByTitle(string $searchValue): Response
     {
@@ -86,37 +88,43 @@ class VesoulEditionController extends AbstractController
         $minYear = $maxAndMinYear[0]['minyear'];
         $maxYear = $maxAndMinYear[0]['maxyear'];
 
-        return $this->render('vesoul-edition/home.html.twig', [
+        return $this->render(
+            'vesoul-edition/home.html.twig', [
             'genres' => $genres,
             'authors' => $authors,
             'minyear' => $minYear,
             'maxyear' => $maxYear,
             'books'   => $books,
             'searchValue' => $searchValue
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/home/search/ajax/{searchValue}", name="search-autocomplete")
-     * @param string $searchValue
-     * @return Response
+     * @param                                    string $searchValue
+     * @return                                   Response
      */
     public function autocomplete(string $searchValue): Response
     {
 
         $books = [];
 
-        if( strlen( $searchValue ) >= 3 ){
+        if(strlen($searchValue) >= 3 ) {
             $books = $this->bookRepo->findTitle($searchValue);
         }
 
         $response = new Response();
-        if( count($books) > 0 ){
+        if(count($books) > 0 ) {
 
-            $response->setContent(json_encode([
-                'books' => $books,
-            ]));
+            $response->setContent(
+                json_encode(
+                    [
+                    'books' => $books,
+                    ]
+                )
+            );
             $response->setStatusCode(Response::HTTP_OK);
             $response->headers->set('Content-Type', 'application/json');
 
@@ -132,8 +140,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/home/load", name="load-home")
-     * @param Request $request
-     * @return Response
+     * @param               Request $request
+     * @return              Response
      */
     public function homeload(Request $request): Response
     {
@@ -156,8 +164,8 @@ class VesoulEditionController extends AbstractController
         $response = new Response();
         $response->setCharset('utf-8');
         $response->headers->set('Content-Type', 'text/html');
-        $response->headers->set('X-TotalBooks', $total_books );
-        $response->headers->set('X-TotalPage', $pages );
+        $response->headers->set('X-TotalBooks', $total_books);
+        $response->headers->set('X-TotalPage', $pages);
         $response->setStatusCode(Response::HTTP_OK);
         $response->send();
         return $this->render(
@@ -170,8 +178,8 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-    * @Route("/ascName", name="sortByAscName")
-    */
+     * @Route("/ascName", name="sortByAscName")
+     */
     public function sortByAscName() : JsonResponse
     {
         $books = $this->bookRepo->findAllBooksByAscName();
@@ -210,8 +218,8 @@ class VesoulEditionController extends AbstractController
 
 
     /**
-    * @Route("/ascYear", name="sortByAscYear")
-    */
+     * @Route("/ascYear", name="sortByAscYear")
+     */
     public function sortByAscYear() : JsonResponse
     {
         $books = $this->bookRepo->findAllBooksByAscYear();
@@ -231,8 +239,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/descYear", name="sortByDescYear")
-     * @param BookRepository $bookRepo
-     * @return JsonResponse
+     * @param              BookRepository $bookRepo
+     * @return             JsonResponse
      */
     public function sortByDescYear(BookRepository $bookRepo) : JsonResponse
     {
@@ -254,8 +262,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajoute/{id}", name="addItem")
-     * @param Book $book
-     * @return RedirectResponse
+     * @param                        Book $book
+     * @return                       RedirectResponse
      */
     public function addItem(Book $book): RedirectResponse
     {
@@ -277,8 +285,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajax/ajoute/{id}", name="ajaxAddItem")
-     * @param Book $book
-     * @return Response
+     * @param                             Book $book
+     * @return                            Response
      */
     public function ajaxAddItem(Book $book): Response
     {
@@ -298,8 +306,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajax/reduit/{id}", name="ajaxReduceItem")
-     * @param Book $book
-     * @return Response
+     * @param                             Book $book
+     * @return                            Response
      */
     public function reduceAjaxItem(Book $book): Response
     {
@@ -325,8 +333,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/reduit/{id}", name="reduceItem")
-     * @param Book $book
-     * @return Response
+     * @param                        Book $book
+     * @return                       Response
      */
     public function reduceItem(Book $book): Response
     {
@@ -352,8 +360,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/ajax/supprime/{id}", name="ajaxDeleteItem")
-     * @param Book $book
-     * @return Response
+     * @param                               Book $book
+     * @return                              Response
      */
     public function ajaxDeleteItem(Book $book): Response
     {
@@ -379,8 +387,8 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/panier/supprime/{id}", name="deleteItem")
-     * @param Book $book
-     * @return RedirectResponse|Response
+     * @param                          Book $book
+     * @return                         RedirectResponse|Response
      */
     public function deleteItem(Book $book)
     {
@@ -406,25 +414,27 @@ class VesoulEditionController extends AbstractController
 
     /**
      * @Route("/product/{id}", name="product")
-     * @param Book $book
-     * @return Response
+     * @param                  Book $book
+     * @return                 Response
      */
     public function showProduct(Book $book): Response
     {
         $cart = $this->cartManager->getCurrentCart();
 
-        return $this->render('vesoul-edition/product.html.twig', [
+        return $this->render(
+            'vesoul-edition/product.html.twig', [
             'images' => $book->getImages(),
             'book' => $book,
             'cart' => $cart
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/panier/vide", name="cartEmpty")
-     * @param Request $request
-     * @return Response
+     * @param                 Request $request
+     * @return                Response
      */
     public function emptyCart(Request $request): Response
     {
@@ -437,9 +447,11 @@ class VesoulEditionController extends AbstractController
 
         // if ajax request, send ok, else show cart page
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse([
+            return new JsonResponse(
+                [
                 'status' => 'OK',
-            ], 200);
+                ], 200
+            );
         }
 
         // else go to cart page
@@ -456,9 +468,11 @@ class VesoulEditionController extends AbstractController
         $cart = $this->cartManager->getCurrentCart();
 
         // render cart infos
-        return $this->render('vesoul-edition/cart.html.twig', [
+        return $this->render(
+            'vesoul-edition/cart.html.twig', [
             'cart' => $cart,
-        ]);
+            ]
+        );
     }
 
 
@@ -471,9 +485,9 @@ class VesoulEditionController extends AbstractController
      * and where to send the bill.
      *
      * @Route("/commande", name="order")
-     * @param Security $security
-     * @param Request $request
-     * @return RedirectResponse|Response
+     * @param              Security $security
+     * @param              Request  $request
+     * @return             RedirectResponse|Response
      */
     public function prepareOrder(Security $security, Request $request)
     {
@@ -518,13 +532,15 @@ class VesoulEditionController extends AbstractController
         }
 
         // render
-        return $this->render('vesoul-edition/order/order.html.twig', [
+        return $this->render(
+            'vesoul-edition/order/order.html.twig', [
             'user' => $user,
             'addresses' => $addresses,
             'cart' => $cart,
             'total' =>$total,
             'form' => $form->createView()
-        ]);
+            ]
+        );
     }
 
 
@@ -534,20 +550,23 @@ class VesoulEditionController extends AbstractController
     public function showConfirmation(Security $security): Response
     {
         // get last user's order
-        $order = $this->getDoctrine()->getRepository(Order::class)->findOneBy([
+        $order = $this->getDoctrine()->getRepository(Order::class)->findOneBy(
+            [
             'user' => $security->getUser(),
-            'status' => 'new'   
-        ],[
+            'status' => 'new'
+            ], [
             'id' => 'DESC'
-        ],
-            1,0
+            ],
+            1, 0
         );
 
 
         // render last order infos/confirmation
-        return $this->render('vesoul-edition/confirmation.html.twig', [
+        return $this->render(
+            'vesoul-edition/confirmation.html.twig', [
             'controller_name' => 'FrontController',
             'order' => $order
-        ]);
+            ]
+        );
     }
 }

@@ -44,7 +44,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Assert\Length(min="8", minMessage="Votre mot de passe doit faire minimum 8 caractères")
+     * @Assert\Length(min="8",    minMessage="Votre mot de passe doit faire minimum 8 caractères")
      */
     private $password;
 
@@ -189,11 +189,13 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSalt() {
+    public function getSalt()
+    {
         return null;
     }
 
-    public function eraseCredentials() {
+    public function eraseCredentials()
+    {
 
     }
 
@@ -209,7 +211,8 @@ class User implements UserInterface
         return $this;
     }
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->firstname;
     }
 

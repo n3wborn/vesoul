@@ -45,20 +45,22 @@ class SecurityController extends AbstractController
     public function login(): Response
     {
 
-         if ($this->getUser()) {
-             return $this->redirectToRoute('dashboard_user_home');
-         }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('dashboard_user_home');
+        }
 
         $error = $this->authenticationUtils->getLastAuthenticationError();
         $lastUsername = $this->authenticationUtils->getLastUsername();
         $cart = $this->cartManager->getCurrentCart();
 
 
-        return $this->render('security/login.html.twig', [
+        return $this->render(
+            'security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'cart' => $cart
-        ]);
+            ]
+        );
     }
 
 
@@ -72,8 +74,8 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/inscription", name="registration")
-     * @param Request $request
-     * @return RedirectResponse|Response
+     * @param                 Request $request
+     * @return                RedirectResponse|Response
      */
     public function registration(Request $request)
     {
@@ -109,7 +111,7 @@ class SecurityController extends AbstractController
                             'email' => $user->getUsername(),
                             'contact' => $contact
                         ]
-                    ),'text/html'
+                    ), 'text/html'
                 );
 
             // send email, then redirect
@@ -117,9 +119,11 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('security/inscription.html.twig', [
+        return $this->render(
+            'security/inscription.html.twig', [
             'form' => $form->createView(),
             'cart' => $cart
-        ]);
+            ]
+        );
     }
 }

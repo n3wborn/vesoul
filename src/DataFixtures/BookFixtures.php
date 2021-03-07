@@ -36,7 +36,7 @@ class BookFixtures extends Fixture
             $genre->setName(self::GENRES[$i]);
             $manager->persist($genre);
 
-            $this->addReference( "genreReference_".$i , $genre);
+            $this->addReference("genreReference_".$i, $genre);
         }
 
 
@@ -68,7 +68,7 @@ class BookFixtures extends Fixture
                 ->setHeight($faker->numberBetween(10, 50))
                 ->setNew($faker->numberBetween(0, 1))
                 ->addImage($image)
-                ->addGenre($this->getReference("genreReference_".random_int(0, count(self::GENRES ) - 1 )));
+                ->addGenre($this->getReference("genreReference_".random_int(0, count(self::GENRES) - 1)));
 
             // save it
             $manager->persist($book);
