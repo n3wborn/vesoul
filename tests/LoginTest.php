@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use Generator;
@@ -10,15 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LoginTest
+ *
  * @package App\Tests
  */
 class LoginTest extends WebTestCase
 {
+    use SetupTrait;
+
     public function testGood()
     {
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
+        static::kernelShutdown();
 
+        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator */
@@ -53,9 +58,9 @@ class LoginTest extends WebTestCase
      */
     public function testBad(array $formData, string $errorMessage)
     {
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
+        static::kernelShutdown();
 
+        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Entity\Book;
@@ -9,8 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * ProductTest
+ *
+ * @package App\Tests
+ */
 class ProductTest extends WebTestCase
 {
+    use SetupTrait;
+
     /**
      * Test if a random product details page lives
      *
@@ -18,9 +27,10 @@ class ProductTest extends WebTestCase
      */
     public function test()
     {
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
 
+        static::kernelShutdown();
+
+        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator  */

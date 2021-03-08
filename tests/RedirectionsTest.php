@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tests;
 
@@ -9,8 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+
+/**
+ * RedirectionsTest
+ *
+ * @package App\Tests
+ */
 class RedirectionsTest extends WebTestCase
 {
+    use SetupTrait;
+
     /**
      * RedirectionsTest check only the simplest pages that must respond with
      * HTTP_FOUND (302) when current user isn't connected yet.
@@ -20,11 +29,12 @@ class RedirectionsTest extends WebTestCase
      */
     public function test(string $uri)
     {
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
+        static::kernelShutdown();
 
-        /** get client and check response */
+        /** @var KernelBrowser $client */
         $client = static::createClient();
+
+        /** request uri and check response */
         $client->request(Request::METHOD_GET, $uri);
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
     }
@@ -35,10 +45,7 @@ class RedirectionsTest extends WebTestCase
      */
     public function provideUri(): Generator
     {
-
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
-
+        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator */

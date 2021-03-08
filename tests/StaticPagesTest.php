@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use Generator;
@@ -7,9 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class StaticPagesTest extends WebTestCase
 {
+
+    use SetupTrait;
+
     /**
      * StaticPagesTest check only the simplest pages that must respond with
      * 200 for every kind of user.
@@ -19,11 +25,11 @@ class StaticPagesTest extends WebTestCase
      */
     public function test(string $uri)
     {
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
+        static::kernelShutdown();
 
-        /** get client and check response */
+        /** @var KernelBrowser $client */
         $client = static::createClient();
+
         $client->request(Request::METHOD_GET, $uri);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
@@ -34,9 +40,9 @@ class StaticPagesTest extends WebTestCase
      */
     public function provideUri(): Generator
     {
-        /** avoid deprecation notice */
-        static::ensureKernelShutdown();
+        static::kernelShutdown();
 
+        /** @var KernelBrowser $client */
         $client = static::createClient();
 
         /** @var UrlGeneratorInterface $urlGenerator */
