@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use DateTimeInterface;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -25,38 +24,39 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer", options={"default":null})
      */
-    private $gender;
+    private ?int $gender;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $firstname;
+    private string $firstname;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $lastname;
+    private string $lastname;
 
     /**
      * @ORM\Column(type="string", length=150)
      * @Assert\Length(min="8",    minMessage="Votre mot de passe doit faire minimum 8 caractères")
      */
-    private $password;
+    private string $password;
 
     /**
      * @Assert\EqualTo(propertyPath="password", message="Votre mot de passe ne correspond pas au champ de vérification")
      */
-    public $confirm_password;
+    public string $confirm_password;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="user")
@@ -66,17 +66,17 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="simple_array")
      */
-    private $roles = [];
+    private array $roles;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $tel;
+    private ?string $tel;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $birth;
+    private ?DateTime $birth;
 
     /**
      * @ORM\OneToMany(targetEntity=Address::class, mappedBy="user")
@@ -107,7 +107,7 @@ class User implements UserInterface
         return $this->gender;
     }
 
-    public function setGender(string $gender): self
+    public function setGender(int $gender): self
     {
         $this->gender = $gender;
 
@@ -199,12 +199,12 @@ class User implements UserInterface
 
     }
 
-    public function getBirth(): ?DateTimeInterface
+    public function getBirth(): ?DateTime
     {
         return $this->birth;
     }
 
-    public function setBirth(?DateTimeInterface $birth): self
+    public function setBirth(?DateTime $birth): self
     {
         $this->birth = $birth;
 
