@@ -35,8 +35,8 @@ class LoginTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
         $form = $crawler->filter('.form-signin')->form([
-            'username' => 'lucas.rob1@live.fr',
-            'password' => 'online@2017'
+            'username' => 'user+1@email.com',
+            'password' => 'password'
         ]);
 
 
@@ -97,7 +97,7 @@ class LoginTest extends WebTestCase
         /* bad password */
         yield [
             [
-                "username" => "lucas.rob1@live.fr",
+                "username" => "user+1@email.com",
                 "password" => "bad"
             ],
             'Identifiants invalides.'
@@ -107,7 +107,7 @@ class LoginTest extends WebTestCase
         yield [
             [
                 "username" => "bad",
-                "password" => "online@2017"
+                "password" => "password"
             ],
             'Identifiants invalides.'
         ];
