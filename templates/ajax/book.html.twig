@@ -7,17 +7,18 @@
 
             {# image name is returned as "name" by bookRepo request #}
             {% if book.name|length %}
-                <img class="book-pic"
-                src="{{ asset('static/book/uploads/') ~ book.name }}"
-                alt="image du livre">
+            <img class="book-pic"
+                 src="{{ asset('static/book/uploads/') ~ book.name }}"
+                 alt="image du livre">
             {% else %}
-                <img class="book-pic" src="{{ asset('images/cover.png') }}"
-                                      alt="image du livre">
+            <img class="book-pic" src="{{ asset('images/cover.png') }}"
+                                  alt="image du livre">
             {% endif %}
 
             <div class="overlay d-flex justify-content-center align-items-center">
-                <a href="{{ path('product', {'id': book.id}) }}">
-                    <button class="btn btn-info p-2">Details</button>
+                <a href="{{ path('product', {'id': book.id}) }}"
+                   class="btn btn-info p-2">
+                    Details
                 </a>
             </div>
         </div>
@@ -34,10 +35,10 @@
                     </p>
                 </div>
                 <div class="col-8 d-flex justify-content-end">
-                    <a class="addItem" href="{{ path('addItem', {'id':book.id}) }}">
-                        <button class="btn btn-info">Ajouter
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
+                    <a href="{{ path('addItem', {'id':book.id}) }}"
+                       class="addItem btn btn-info">
+                        <i class="fas fa-shopping-cart"></i>
+                        Ajouter
                     </a>
                 </div>
             </div>

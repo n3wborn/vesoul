@@ -47,13 +47,13 @@
 
 						{# bouton modifier les détails #}
 						<a href="{{ path('admin_edit_book', {'id' : book.id }) }}"
-						   type="button" class="btn btn-primary mx-1">
+						   class="btn btn-primary mx-1">
 							<i title="Modifier" class="fas fa-pen text-light"></i>
 						</a>
 
 						{# supprimer le livre #}
 						<a href="{{ path('admin_delete_book', {'id' : book.id }) }}"
-						   type="button" class="delete-link btn btn-danger mx-1"
+						   class="delete-link btn btn-danger mx-1"
 						   data-toggle="modal" data-target="#delete-modal">
 							<i title="Effacer" class="fas fa-trash text-light"></i>
 						</a>
@@ -79,8 +79,8 @@
 					<p class="h3 py-3 text-center">Veuillez confirmer votre choix</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-outline-danger" data-dismiss="modal" id="cancel-delete">Annuler</button>
-					<button type="button" class="btn btn-danger" id="confirm-delete">Supprimer</button>
+					<button class="btn btn-outline-danger" data-dismiss="modal" id="cancel-delete">Annuler</button>
+					<button class="btn btn-danger" id="confirm-delete">Supprimer</button>
 				</div>
 			</div>
 		</div>

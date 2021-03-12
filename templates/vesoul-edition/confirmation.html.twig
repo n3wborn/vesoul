@@ -23,7 +23,7 @@
             </div>
         </row>
         <row class="infos px-5 d-flex">
-            
+
             {# Order Infos #}
             <div class="col-4">
                 <h3 class="m-0">Infos Commande</h3>
@@ -123,8 +123,8 @@
                                     <td class="text-center">{{ item.quantity }}</td>
                                     <td class="text-right pr-4">{{ item.total }} &euro;</td>
                                 </tr>
-                            {% endfor %} 
-                            
+                            {% endfor %}
+
                             <tr>
                                 <td class="pl-4" colspan="2">Sous total</td>
                                 <td class="text-right pr-4">{{ order.total }} &euro;</td>
@@ -145,8 +145,8 @@
 
         <row class="d-flex justify-content-center">
             <div class="col-6 p-4">
-                <a href="{{ path("home") }}">
-                    <button class="btn btn-info w-100">Accueil</button>
+                <a href="{{ path("home") }}" class="btn btn-info w-100">
+                    Accueil
                 </a>
             </div>
         </row>
