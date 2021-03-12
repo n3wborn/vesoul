@@ -18,7 +18,7 @@ use App\Entity\Address;
 use App\Entity\Order;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Manager\CartManager;
-
+use Dompdf\Dompdf;
 
 /**
  * @Route("/panel-client")
@@ -302,6 +302,45 @@ class DashboardUserController extends AbstractController
             'orders' => $orders
             ]
         );
+    }
+
+
+    /**
+     * @Route("/facture/{id}", name="dashboard_user_print_bill")
+     *
+     * @param  Order $order
+     * @return RedirectResponse
+     */
+    public function printBill(Order $order): RedirectResponse
+    {
+        // Redirect to orders page is current user
+        if ($order->getUser() != $this->getUser()) {
+            return $this->redirectToRoute('dashboard_user_orders');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView(
+            'bill/bill.html.twig', [
+            'order' => $order,
+            ]
+        );
+
+        $dompdf = new Dompdf();
+        $dompdf->getOptions()
+            ->setChroot($this->getParameter('kernel.project_dir'));
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait')->render();
+
+        // Output the generated PDF to Browser (force download)
+        $dompdf->stream(
+            "Facture-" . $order->getId() . ".pdf", [
+            "Attachment" => true
+            ]
+        );
+
+        return $this->redirectToRoute('dashboard_user_print_bill');
+
     }
 
 }

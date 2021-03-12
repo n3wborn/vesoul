@@ -36,20 +36,19 @@
                     <div class="col-2">{{ order.items|length }}</div>
                     <div class="col-2">{{ order.total }} &euro;</div>
                     <div class="col-2 {{ order.status == "new" ? "orange" : "green" }}">
-                        {{ order.status == "new" ? "en attente" : "envoyée" }} 
+                        {{ order.status == "new" ? "en attente" : "envoyée" }}
                     </div>
                     <div class="col-2">
-                        <button type="button" 
-                                class="btn"
-                                data-toggle="modal"
-                                data-target="#modal-order-{{ order.id }}">
+                        <a class="btn btn-info"
+                           data-toggle="modal"
+                           data-target="#modal-order-{{ order.id }}">
                             <i class="fas fa-search"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
 
             </div>
-            
+
             {% include 'dashboard-user/_modal_order_infos.html.twig' %}
 
             {% endfor %}

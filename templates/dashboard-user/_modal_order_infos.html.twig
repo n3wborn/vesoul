@@ -9,7 +9,7 @@
 
             <div class="modal-head d-flex">
 
-                <div class="col-8 offset-2 d-flex justify-content-center 
+                <div class="col-8 offset-2 d-flex justify-content-center
                               align-items-center">
                     <h5 class="modal-title" id="cmd-title">
                         Détail de votre commande
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="col-1 offset-1 pt-2">
-                    <button type="button" class="close" data-dismiss="modal" 
+                    <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -160,11 +160,11 @@
                             <tr>
                                 <th scope="row">
                                     <span class="th-title">
-                                        {{ item.book.title[:30] ~ 
+                                        {{ item.book.title[:30] ~
                                         (item.book.title|length > 30 ? '...') }}
                                     </span>
-                                    {{ item.book.author.firstname }} 
-                                    {{ item.book.author.lastname }} 
+                                    {{ item.book.author.firstname }}
+                                    {{ item.book.author.lastname }}
                                 </th>
 
                                 <td>{{ item.book.price }} &euro;</td>
@@ -208,16 +208,16 @@
                 </div>
             </div>
 
-            <div class="modal-footer d-flex justify-content-between pl-5 pr-5 
+            <div class="modal-footer d-flex justify-content-between pl-5 pr-5
                          pb-5">
-                <button type="button" class="btn btn-info">
+                <a href="{{ path("dashboard_user_print_bill", {'id': order.id}) }}"
+                    class="btn btn-info">
                     <i class="fas fa-file-pdf mr-3"></i>
                     Télécharger en PDF
-                </button>
-
-                <button type="button" class="btn" data-dismiss="modal">
+                </a>
+                <a class="btn btn-danger" data-dismiss="modal">
                     FERMER
-                </button>
+                </a>
             </div>
         </div>
     </div>
