@@ -447,6 +447,54 @@ class DashboardAdminController extends AbstractController
 
 
     /**
+     * @Route("/commandes/valider/{id}", name="dashboard_admin_fulfill_order")
+     *
+     * @param Order $order
+     * @return Response
+     */
+    public function fulfillOrder(Order $order)
+    {
+        if ($order->getStatus() === Order::STATUS_NEW_ORDER) {
+            $order->setStatus(Order::STATUS_ORDER_FULLFILLED);
+
+            $this->manager->persist($order);
+            $this->manager->flush();
+
+        } else {
+            $this->addFlash('info', "Cette commande ne peut être validée");
+        }
+
+        return $this->redirectToRoute('dashboard_admin_orders');
+
+    }
+
+
+    /**
+     * NOTE: This is only used to cancel a "new" order. Another controller
+     * or service will remove old carts and canceled orders
+     *
+     * @Route("/commandes/supprimer/{id}", name="dashboard_admin_delete_order")
+     *
+     * @param Order $order
+     * @return Response
+     */
+    public function deleteOrder(Order $order)
+    {
+        if ($order->getStatus() === Order::STATUS_NEW_ORDER) {
+            $order->setStatus(Order::STATUS_ORDER_ABORTED);
+
+            $this->manager->persist($order);
+            $this->manager->flush();
+
+        } else {
+            $this->addFlash('info', "Cette commande ne peut être annulée");
+        }
+
+        return $this->redirectToRoute('dashboard_admin_orders');
+    }
+
+
+    /**
      * @Route("/factures/imprimer/{id}", name="dashboard_admin_print_bill")
      *
      * @param  Order $order

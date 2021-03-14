@@ -60,6 +60,15 @@ class Order
      */
     const STATUS_ORDER_FULLFILLED = 'fulfilled';
 
+
+    /**
+     * An new order, once canceled, becomes aborted
+     *
+     * @var string
+     */
+    const STATUS_ORDER_ABORTED = 'aborted';
+
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
      */

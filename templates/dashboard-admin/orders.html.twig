@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{{ include('bundles/TwigBundle/_flash_messages.html.twig') }}
+
 <div class="carres row d-flex justify-content-around align-items-center">
     <div class="carre col-3 text-center">
         <p>En cours</p>
@@ -64,22 +66,45 @@
 
                 <td>
                     <a href="{{ path('dashboard_admin_print_bill',
-                             {id: order.id}) }}"
+                               {id: order.id}) }}"
                        class="pdf text-align-center">
                         PDF
                     </a>
                 </td>
 
                 <td class="{{ order.status == "new" ? "orange" : "green" }}">
-                    {{ order.status == "new" ? "en attente" : "envoyée" }}
+                    {{ order.status == "new" ? "en cours" : "validée" }}
                 </td>
 
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Status
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+                            <a href="{{ path('dashboard_admin_fulfill_order', {'id' : order.id }) }}"
+                               class="dropdown-item">
+                                Valider
+                            </a>
+
+                            <a href="{{ path('dashboard_admin_delete_order', {'id' : order.id }) }}"
+                               class="dropdown-item"
+                               data-toggle="modal"
+                               data-target="#modal-delete-order-{{ order.id }}">
+                                Supprimer
+                            </a>
+                        </div>
+                    </div>
+                </td>
             </tr>
+
+            {% include 'dashboard-admin/_modal_delete_order.html.twig' %}
 
             {% endfor %}
 
         </tbody>
     </table>
-
 </div>
 {% endblock %}
