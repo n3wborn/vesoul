@@ -12,19 +12,20 @@
             font-family: Helvetica, Arial, sans-serif;
         }
         h1 {
-            background-color: #264459;
+            background-color: #00bcd4;
             color: #ffffff;
-            padding: 30px 0 50px 0;
+            padding: 1.8rem 0;
             font-weight: normal;
         }
         hr {
             border: none;
             border-top: 3px solid #264459;
-            margin: 20px;
+            margin: 1.2rem;
         }
         .container {
             background-color: #fefefe;
-            width: 580px;
+            width: 100%;
+            max-width: 580px;
             margin: 0 auto;
         }
         .bottom {
@@ -32,22 +33,23 @@
         }
         .block {
             margin: 0;
-            padding: 10px 20px 20px 20px;
+            padding: 0.8rem 1.2rem 1.2rem 1.2rem;
         }
         .logo {
-            width: 100%;
+            max-width: 250px;
+            width: 50%:
         }
         .text-center {
             text-align: center;
         }
         .btn {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: #264459;
+            padding: 0.8rem 1.2rem;
+            background-color: #00bcd4;
             color: #fefefe;
             border: 1px solid #fff;
             border-radius: 3px;
-            font-size: 20px;
+            font-size: 1.2rem;
             font-weight: bold;
             text-decoration: none;
         }
@@ -57,43 +59,52 @@
 <body>
 <div class="body">
     <div class="container">
+
         <div class="header text-center">
           <a href="{{ url('home') }}">
-              <img src="{{ absolute_url(asset('build/images/book-open.png')) }}" class="logo" alt="SpaceBar Logo">
+              <img src="{{ absolute_url(asset('build/images/book-open.png')) }}"
+                   class="logo" alt="Logo">
             </a>
         </div>
+
         <div class="content">
-            <h1 class="text-center">Nice to meet you !</h1>
+            <h1 class="text-center">Merci pour pour votre confiance !</h1>
+
             <p class="block">
-                Welcome to <strong>the Space Bar</strong>, we can't wait to read what you have to write.
-                Get started on your first article and connect with the space bar community.
+            <strong>Votre commande est en cours de préparation</strong>.<br><br>
+                Nous allons vous recontacter très vite afin d'établir les
+                modalités de paiement.
             </p>
+
+            <p class="block">
+                Nous pourrons ensuite vous faire parvenir votre commande au plus
+                vite !
+            </p>
+
             <p class="block text-center">
-                <a href="{{ url('home') }}" class="btn">Home</a>
+                <a href="{{ url('home') }}" class="btn ">Vesoul Edition</a>
             </p>
-            <p class="block">
-                Check out our existing articles and share your thoughts in the comments!
-            </p>
+
             <p class="block text-center">
-                <a href="{{ url('home') }}" class="btn">Home</a>
+                En cliquant sur ce lien il vous sera possible de suivre
+                l'avancement de votre commande.
             </p>
+
+            <p class="block text-center">
+                <a href="{{ url('dashboard_user_orders') }}" class="btn ">
+                    Mes commandes
+                </a>
+            </p>
+
             <p class="block">
-                We're so excited that you've decided to join us in our corner of the universe,
-                it's a friendly one with other creative and insightful writers just like you!
-                Need help from a friend? We're always just a message away.
+                Cordialement,<br><br>
+                <em>Votre fidèle serviteur</em>, Christian Petit.
             </p>
         </div>
-        <div class="footer">
-            <p class="block">
-                Cheers,<br><br>
-                Your friendly <em>Space Bar Team</em>
-            </p>
-            <p class="block bottom text-center">
-                Sent with ❤️ from the friendly folks at The Space Bar
-            </p>
-        </div>
+
     </div>
 </div>
+
 </body>
 </html>
 
