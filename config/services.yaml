@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     images_directory: '%kernel.project_dir%/public/static/book/uploads'
+    adminEmailAddress: 'admin@email.com'
 
 services:
     # default configuration for services in *this* file
@@ -34,3 +35,8 @@ services:
 
     App\Factory\OrderItem:
         factory: ['@App\Factory\OrderFactory', 'createItem']
+
+
+    App\Manager\MailManager:
+        arguments:
+            $adminEmailAddress: '%adminEmailAddress%'

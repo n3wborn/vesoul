@@ -527,7 +527,6 @@ class VesoulEditionController extends AbstractController
             // - Let user choose delivery/billing address
             // - Update Cart Status from 'cart 'to 'Ordered' (?) once form
             //   validated
-            $this->mailManager->sendNewOrderMail();
             // - Send email to admin so that he can process customer order
             // - Send email to user so he can see seller will take care of him
             // - Update Stocks
@@ -564,6 +563,7 @@ class VesoulEditionController extends AbstractController
             1, 0
         );
 
+        $this->mailManager->sendNewOrderMail($order);
 
         // render last order infos/confirmation
         return $this->render(
